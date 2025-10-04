@@ -1,0 +1,16 @@
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\bin\Debug\net9.0-windows\NT106.exe
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\bin\Debug\net9.0-windows\NT106.deps.json
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\bin\Debug\net9.0-windows\NT106.runtimeconfig.json
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\bin\Debug\net9.0-windows\NT106.dll
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\bin\Debug\net9.0-windows\NT106.pdb
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\obj\Debug\net9.0-windows\NT106.Form1.resources
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\obj\Debug\net9.0-windows\NT106.csproj.GenerateResource.cache
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\obj\Debug\net9.0-windows\NT106.GeneratedMSBuildEditorConfig.editorconfig
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\obj\Debug\net9.0-windows\NT106.AssemblyInfoInputs.cache
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\obj\Debug\net9.0-windows\NT106.AssemblyInfo.cs
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\obj\Debug\net9.0-windows\NT106.csproj.CoreCompileInputs.cache
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\obj\Debug\net9.0-windows\NT106.dll
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\obj\Debug\net9.0-windows\refint\NT106.dll
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\obj\Debug\net9.0-windows\NT106.pdb
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\obj\Debug\net9.0-windows\NT106.genruntimeconfig.cache
+D:\Daihoc\Nam2\nt106\th\NT106\NT106\obj\Debug\net9.0-windows\ref\NT106.dll
