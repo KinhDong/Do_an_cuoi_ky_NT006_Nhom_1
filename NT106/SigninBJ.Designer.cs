@@ -38,16 +38,17 @@
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.ChatGPT_Image_13_53_42_29_thg_9__2025;
-            pictureBox1.Location = new Point(407, 0);
+            pictureBox1.Location = new Point(383, 0);
             pictureBox1.Margin = new Padding(4, 5, 4, 5);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(869, 748);
+            pictureBox1.Size = new Size(702, 642);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
@@ -55,47 +56,48 @@
             // textBox1
             // 
             textBox1.Font = new Font("Times New Roman", 9F);
-            textBox1.Location = new Point(60, 198);
+            textBox1.Location = new Point(83, 199);
             textBox1.Margin = new Padding(4, 5, 4, 5);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(268, 28);
+            textBox1.Size = new Size(214, 28);
             textBox1.TabIndex = 1;
             // 
             // textBox2
             // 
             textBox2.Font = new Font("Times New Roman", 9F);
-            textBox2.Location = new Point(60, 295);
+            textBox2.Location = new Point(83, 296);
             textBox2.Margin = new Padding(4, 5, 4, 5);
             textBox2.Name = "textBox2";
-            textBox2.Size = new Size(268, 28);
+            textBox2.Size = new Size(214, 28);
             textBox2.TabIndex = 2;
             // 
             // button1
             // 
-            button1.Font = new Font("Times New Roman", 9F);
-            button1.Location = new Point(146, 381);
+            button1.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.Location = new Point(39, 359);
             button1.Margin = new Padding(4, 5, 4, 5);
             button1.Name = "button1";
             button1.Size = new Size(107, 47);
             button1.TabIndex = 3;
             button1.Text = "Đăng nhập";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(131, 107);
+            label1.Font = new Font("Times New Roman", 15F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(119, 96);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(143, 33);
+            label1.Size = new Size(161, 35);
             label1.TabIndex = 5;
             label1.Text = "Đăng nhập ";
             // 
             // button3
             // 
-            button3.Font = new Font("Times New Roman", 9F);
-            button3.Location = new Point(223, 462);
+            button3.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button3.Location = new Point(130, 515);
             button3.Margin = new Padding(4, 5, 4, 5);
             button3.Name = "button3";
             button3.Size = new Size(107, 47);
@@ -116,7 +118,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Times New Roman", 9F);
-            label3.Location = new Point(60, 473);
+            label3.Location = new Point(108, 474);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
             label3.Size = new Size(154, 20);
@@ -126,30 +128,41 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Times New Roman", 9F);
-            label4.Location = new Point(60, 168);
+            label4.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label4.Location = new Point(83, 169);
             label4.Margin = new Padding(4, 0, 4, 0);
             label4.Name = "label4";
-            label4.Size = new Size(114, 20);
+            label4.Size = new Size(122, 20);
             label4.TabIndex = 9;
             label4.Text = "Tên tài khoản ";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Font = new Font("Times New Roman", 9F);
-            label5.Location = new Point(60, 265);
+            label5.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label5.Location = new Point(83, 266);
             label5.Margin = new Padding(4, 0, 4, 0);
             label5.Name = "label5";
-            label5.Size = new Size(78, 20);
+            label5.Size = new Size(85, 20);
             label5.TabIndex = 10;
             label5.Text = "Mật khẩu";
             // 
-            // Form1
+            // button2
+            // 
+            button2.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button2.Location = new Point(180, 359);
+            button2.Name = "button2";
+            button2.Size = new Size(154, 47);
+            button2.TabIndex = 11;
+            button2.Text = "Quên mật khẩu";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // RoomSelection
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1276, 750);
+            ClientSize = new Size(1024, 640);
+            Controls.Add(button2);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -161,7 +174,7 @@
             Controls.Add(textBox1);
             Controls.Add(pictureBox1);
             Margin = new Padding(4, 5, 4, 5);
-            Name = "Form1";
+            Name = "RoomSelection";
             Text = "BLACKJACK";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
@@ -180,5 +193,6 @@
         private Label label3;
         private Label label4;
         private Label label5;
+        private Button button2;
     }
 }

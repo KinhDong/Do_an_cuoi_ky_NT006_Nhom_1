@@ -35,28 +35,34 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(12, 12);
+            textBox1.BackColor = Color.MediumSeaGreen;
+            textBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            textBox1.Location = new Point(121, 24);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.ScrollBars = ScrollBars.Both;
-            textBox1.Size = new Size(776, 367);
+            textBox1.Size = new Size(817, 506);
             textBox1.TabIndex = 1;
             textBox1.Text = resources.GetString("textBox1.Text");
             // 
             // button1
             // 
-            button1.Location = new Point(345, 397);
+            button1.BackColor = Color.FromArgb(0, 192, 192);
+            button1.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button1.Location = new Point(470, 560);
             button1.Name = "button1";
             button1.Size = new Size(112, 34);
             button1.TabIndex = 2;
             button1.Text = "Đã hiểu";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
             // HowToPlay
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            BackColor = Color.FromArgb(0, 64, 0);
+            ClientSize = new Size(1024, 640);
             Controls.Add(button1);
             Controls.Add(textBox1);
             Name = "HowToPlay";

@@ -37,13 +37,15 @@
             label3 = new Label();
             label6 = new Label();
             textBox4 = new TextBox();
+            label4 = new Label();
+            textBox1 = new TextBox();
             SuspendLayout();
             // 
             // label5
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Times New Roman", 9F);
-            label5.Location = new Point(33, 275);
+            label5.Location = new Point(47, 281);
             label5.Margin = new Padding(4, 0, 4, 0);
             label5.Name = "label5";
             label5.Size = new Size(78, 20);
@@ -74,7 +76,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(119, 92);
+            label1.Location = new Point(123, 38);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new Size(116, 33);
@@ -85,7 +87,7 @@
             // textBox2
             // 
             textBox2.Font = new Font("Times New Roman", 9F);
-            textBox2.Location = new Point(33, 305);
+            textBox2.Location = new Point(47, 311);
             textBox2.Margin = new Padding(4, 5, 4, 5);
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(268, 28);
@@ -93,7 +95,7 @@
             // 
             // textBox3
             // 
-            textBox3.Location = new Point(33, 400);
+            textBox3.Location = new Point(47, 400);
             textBox3.Margin = new Padding(4, 5, 4, 5);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(268, 31);
@@ -103,7 +105,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Times New Roman", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(34, 370);
+            label3.Location = new Point(48, 370);
             label3.Margin = new Padding(4, 0, 4, 0);
             label3.Name = "label3";
             label3.Size = new Size(150, 20);
@@ -114,7 +116,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Times New Roman", 9F);
-            label6.Location = new Point(33, 177);
+            label6.Location = new Point(48, 96);
             label6.Margin = new Padding(4, 0, 4, 0);
             label6.Name = "label6";
             label6.Size = new Size(114, 20);
@@ -124,17 +126,35 @@
             // textBox4
             // 
             textBox4.Font = new Font("Times New Roman", 9F);
-            textBox4.Location = new Point(33, 207);
+            textBox4.Location = new Point(47, 223);
             textBox4.Margin = new Padding(4, 5, 4, 5);
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(268, 28);
             textBox4.TabIndex = 24;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(47, 184);
+            label4.Name = "label4";
+            label4.Size = new Size(54, 25);
+            label4.TabIndex = 26;
+            label4.Text = "Email";
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(47, 132);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(268, 31);
+            textBox1.TabIndex = 27;
             // 
             // SignupBJ
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(363, 542);
+            Controls.Add(textBox1);
+            Controls.Add(label4);
             Controls.Add(label6);
             Controls.Add(textBox4);
             Controls.Add(label3);
@@ -162,5 +182,7 @@
         private Label label3;
         private Label label6;
         private TextBox textBox4;
+        private Label label4;
+        private TextBox textBox1;
     }
 }

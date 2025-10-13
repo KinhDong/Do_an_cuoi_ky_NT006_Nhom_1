@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace NT106
 {
-    public partial class GamePlayPVP : Form
+    public partial class Setting : Form
     {
-        public GamePlayPVP()
+        public Setting()
         {
             InitializeComponent();
         }

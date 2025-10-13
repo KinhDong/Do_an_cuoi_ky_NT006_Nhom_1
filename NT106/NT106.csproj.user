@@ -1,19 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Compile Update="Account.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CreateRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ForgetPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="HowToPlay.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Room.cs">
+    <Compile Update="ResetPassword.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="GamePlayPVP.cs">
+    <Compile Update="Room.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="PVP.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Menu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Setting.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="SigninBJ.cs">
