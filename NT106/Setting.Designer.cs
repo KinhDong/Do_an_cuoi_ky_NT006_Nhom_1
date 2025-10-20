@@ -31,12 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Setting));
             label1 = new Label();
             label2 = new Label();
-            button1 = new Button();
-            trackBar1 = new TrackBar();
-            trackBar2 = new TrackBar();
-            button2 = new Button();
-            ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
+            btn_Apply = new Button();
+            trackBar_Sound = new TrackBar();
+            trackBar_Music = new TrackBar();
+            btn_Back = new Button();
+            ((System.ComponentModel.ISupportInitialize)trackBar_Sound).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar_Music).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -63,43 +63,43 @@
             label2.TabIndex = 1;
             label2.Text = "Nhạc";
             // 
-            // button1
+            // btn_Apply
             // 
-            button1.BackColor = Color.LightSkyBlue;
-            button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(129, 212);
-            button1.Name = "button1";
-            button1.Size = new Size(112, 34);
-            button1.TabIndex = 2;
-            button1.Text = "Áp dụng";
-            button1.UseVisualStyleBackColor = false;
+            btn_Apply.BackColor = Color.LightSkyBlue;
+            btn_Apply.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_Apply.Location = new Point(129, 212);
+            btn_Apply.Name = "btn_Apply";
+            btn_Apply.Size = new Size(112, 34);
+            btn_Apply.TabIndex = 2;
+            btn_Apply.Text = "Áp dụng";
+            btn_Apply.UseVisualStyleBackColor = false;
             // 
-            // trackBar1
+            // trackBar_Sound
             // 
-            trackBar1.BackColor = Color.FromArgb(0, 64, 64);
-            trackBar1.Location = new Point(202, 46);
-            trackBar1.Name = "trackBar1";
-            trackBar1.Size = new Size(379, 69);
-            trackBar1.TabIndex = 3;
+            trackBar_Sound.BackColor = Color.FromArgb(0, 64, 64);
+            trackBar_Sound.Location = new Point(202, 46);
+            trackBar_Sound.Name = "trackBar_Sound";
+            trackBar_Sound.Size = new Size(379, 69);
+            trackBar_Sound.TabIndex = 3;
             // 
-            // trackBar2
+            // trackBar_Music
             // 
-            trackBar2.BackColor = Color.FromArgb(0, 64, 64);
-            trackBar2.Location = new Point(202, 121);
-            trackBar2.Name = "trackBar2";
-            trackBar2.Size = new Size(379, 69);
-            trackBar2.TabIndex = 4;
+            trackBar_Music.BackColor = Color.FromArgb(0, 64, 64);
+            trackBar_Music.Location = new Point(202, 121);
+            trackBar_Music.Name = "trackBar_Music";
+            trackBar_Music.Size = new Size(379, 69);
+            trackBar_Music.TabIndex = 4;
             // 
-            // button2
+            // btn_Back
             // 
-            button2.BackColor = Color.SkyBlue;
-            button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.Location = new Point(414, 212);
-            button2.Name = "button2";
-            button2.Size = new Size(112, 34);
-            button2.TabIndex = 5;
-            button2.Text = "Quay lại";
-            button2.UseVisualStyleBackColor = false;
+            btn_Back.BackColor = Color.SkyBlue;
+            btn_Back.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_Back.Location = new Point(414, 212);
+            btn_Back.Name = "btn_Back";
+            btn_Back.Size = new Size(112, 34);
+            btn_Back.TabIndex = 5;
+            btn_Back.Text = "Quay lại";
+            btn_Back.UseVisualStyleBackColor = false;
             // 
             // Setting
             // 
@@ -109,16 +109,16 @@
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(663, 302);
-            Controls.Add(button2);
-            Controls.Add(trackBar2);
-            Controls.Add(trackBar1);
-            Controls.Add(button1);
+            Controls.Add(btn_Back);
+            Controls.Add(trackBar_Music);
+            Controls.Add(trackBar_Sound);
+            Controls.Add(btn_Apply);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "Setting";
             Text = "Cài đặt";
-            ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar_Sound).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar_Music).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -127,9 +127,9 @@
 
         private Label label1;
         private Label label2;
-        private Button button1;
-        private TrackBar trackBar1;
-        private TrackBar trackBar2;
-        private Button button2;
+        private Button btn_Apply;
+        private TrackBar trackBar_Sound;
+        private TrackBar trackBar_Music;
+        private Button btn_Back;
     }
 }

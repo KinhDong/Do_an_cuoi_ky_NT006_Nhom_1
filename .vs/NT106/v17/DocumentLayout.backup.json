@@ -1,111 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\Project\\LapTrinhMAng\\NT106\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{421EE4F8-4A82-47AF-92E5-56DE513A6E9F}|NT106\\NT106.csproj|D:\\Project\\LapTrinhMAng\\NT106\\nt106\\signinbj.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{421EE4F8-4A82-47AF-92E5-56DE513A6E9F}|NT106\\NT106.csproj|solutionrelative:nt106\\signinbj.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{421EE4F8-4A82-47AF-92E5-56DE513A6E9F}|NT106\\NT106.csproj|D:\\Project\\LapTrinhMAng\\NT106\\nt106\\setting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{421EE4F8-4A82-47AF-92E5-56DE513A6E9F}|NT106\\NT106.csproj|solutionrelative:nt106\\setting.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{421EE4F8-4A82-47AF-92E5-56DE513A6E9F}|NT106\\NT106.csproj|D:\\Project\\LapTrinhMAng\\NT106\\nt106\\createroom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{421EE4F8-4A82-47AF-92E5-56DE513A6E9F}|NT106\\NT106.csproj|solutionrelative:nt106\\createroom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{421EE4F8-4A82-47AF-92E5-56DE513A6E9F}|NT106\\NT106.csproj|D:\\Project\\LapTrinhMAng\\NT106\\nt106\\room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{421EE4F8-4A82-47AF-92E5-56DE513A6E9F}|NT106\\NT106.csproj|solutionrelative:nt106\\room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{421EE4F8-4A82-47AF-92E5-56DE513A6E9F}|NT106\\NT106.csproj|D:\\Project\\LapTrinhMAng\\NT106\\nt106\\pvp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{421EE4F8-4A82-47AF-92E5-56DE513A6E9F}|NT106\\NT106.csproj|solutionrelative:nt106\\pvp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{421EE4F8-4A82-47AF-92E5-56DE513A6E9F}|NT106\\NT106.csproj|D:\\Project\\LapTrinhMAng\\NT106\\nt106\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{421EE4F8-4A82-47AF-92E5-56DE513A6E9F}|NT106\\NT106.csproj|solutionrelative:nt106\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "SigninBJ.cs [Design]",
-              "DocumentMoniker": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\SigninBJ.cs",
-              "RelativeDocumentMoniker": "NT106\\SigninBJ.cs",
-              "ToolTip": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\SigninBJ.cs [Design]",
-              "RelativeToolTip": "NT106\\SigninBJ.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-13T02:27:43.788Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Setting.cs [Design]",
-              "DocumentMoniker": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\Setting.cs",
-              "RelativeDocumentMoniker": "NT106\\Setting.cs",
-              "ToolTip": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\Setting.cs [Design]",
-              "RelativeToolTip": "NT106\\Setting.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-13T02:27:35.491Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "CreateRoom.cs [Design]",
-              "DocumentMoniker": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\CreateRoom.cs",
-              "RelativeDocumentMoniker": "NT106\\CreateRoom.cs",
-              "ToolTip": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\CreateRoom.cs [Design]",
-              "RelativeToolTip": "NT106\\CreateRoom.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-13T02:27:06.869Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "PVP.cs [Design]",
-              "DocumentMoniker": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\PVP.cs",
-              "RelativeDocumentMoniker": "NT106\\PVP.cs",
-              "ToolTip": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\PVP.cs [Design]",
-              "RelativeToolTip": "NT106\\PVP.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-13T02:26:46.812Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Menu.cs [Design]",
-              "DocumentMoniker": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\Menu.cs",
-              "RelativeDocumentMoniker": "NT106\\Menu.cs",
-              "ToolTip": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\Menu.cs [Design]",
-              "RelativeToolTip": "NT106\\Menu.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-13T02:24:52.39Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Room.cs [Design]",
-              "DocumentMoniker": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\Room.cs",
-              "RelativeDocumentMoniker": "NT106\\Room.cs",
-              "ToolTip": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\Room.cs [Design]",
-              "RelativeToolTip": "NT106\\Room.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T15:05:59.7Z"
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }

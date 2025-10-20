@@ -38,8 +38,8 @@
             checkBox8 = new CheckBox();
             checkBox9 = new CheckBox();
             checkBox10 = new CheckBox();
-            button1 = new Button();
-            button2 = new Button();
+            btn_CreateRoom = new Button();
+            btn_Back = new Button();
             groupBox1 = new GroupBox();
             groupBox2 = new GroupBox();
             groupBox1.SuspendLayout();
@@ -149,27 +149,27 @@
             checkBox10.Text = "50";
             checkBox10.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btn_CreateRoom
             // 
-            button1.BackColor = Color.Lime;
-            button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(282, 569);
-            button1.Name = "button1";
-            button1.Size = new Size(112, 34);
-            button1.TabIndex = 12;
-            button1.Text = "Tạo";
-            button1.UseVisualStyleBackColor = false;
+            btn_CreateRoom.BackColor = Color.Lime;
+            btn_CreateRoom.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_CreateRoom.Location = new Point(282, 569);
+            btn_CreateRoom.Name = "btn_CreateRoom";
+            btn_CreateRoom.Size = new Size(112, 34);
+            btn_CreateRoom.TabIndex = 12;
+            btn_CreateRoom.Text = "Tạo";
+            btn_CreateRoom.UseVisualStyleBackColor = false;
             // 
-            // button2
+            // btn_Back
             // 
-            button2.BackColor = Color.Lime;
-            button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.Location = new Point(616, 566);
-            button2.Name = "button2";
-            button2.Size = new Size(112, 34);
-            button2.TabIndex = 13;
-            button2.Text = "Quay lại";
-            button2.UseVisualStyleBackColor = false;
+            btn_Back.BackColor = Color.Lime;
+            btn_Back.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_Back.Location = new Point(616, 566);
+            btn_Back.Name = "btn_Back";
+            btn_Back.Size = new Size(112, 34);
+            btn_Back.TabIndex = 13;
+            btn_Back.Text = "Quay lại";
+            btn_Back.UseVisualStyleBackColor = false;
             // 
             // groupBox1
             // 
@@ -213,8 +213,8 @@
             ClientSize = new Size(1024, 640);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btn_Back);
+            Controls.Add(btn_CreateRoom);
             Name = "CreateRoom";
             Text = "Form1";
             groupBox1.ResumeLayout(false);
@@ -235,8 +235,8 @@
         private CheckBox checkBox8;
         private CheckBox checkBox9;
         private CheckBox checkBox10;
-        private Button button1;
-        private Button button2;
+        private Button btn_CreateRoom;
+        private Button btn_Back;
         private GroupBox groupBox1;
         private GroupBox groupBox2;
     }

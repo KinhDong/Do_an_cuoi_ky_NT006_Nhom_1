@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             pictureBox1 = new PictureBox();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            button1 = new Button();
+            tb_AccountName = new TextBox();
+            tb_Password = new TextBox();
+            btn_SignIn = new Button();
             label1 = new Label();
-            button3 = new Button();
+            btn_CreateAccount = new Button();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
-            button2 = new Button();
+            btn_ForgotPassword = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -53,35 +53,35 @@
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
-            // textBox1
+            // tb_AccountName
             // 
-            textBox1.Font = new Font("Times New Roman", 9F);
-            textBox1.Location = new Point(83, 199);
-            textBox1.Margin = new Padding(4, 5, 4, 5);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(214, 28);
-            textBox1.TabIndex = 1;
+            tb_AccountName.Font = new Font("Times New Roman", 9F);
+            tb_AccountName.Location = new Point(83, 199);
+            tb_AccountName.Margin = new Padding(4, 5, 4, 5);
+            tb_AccountName.Name = "tb_AccountName";
+            tb_AccountName.Size = new Size(214, 28);
+            tb_AccountName.TabIndex = 1;
             // 
-            // textBox2
+            // tb_Password
             // 
-            textBox2.Font = new Font("Times New Roman", 9F);
-            textBox2.Location = new Point(83, 296);
-            textBox2.Margin = new Padding(4, 5, 4, 5);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(214, 28);
-            textBox2.TabIndex = 2;
+            tb_Password.Font = new Font("Times New Roman", 9F);
+            tb_Password.Location = new Point(83, 296);
+            tb_Password.Margin = new Padding(4, 5, 4, 5);
+            tb_Password.Name = "tb_Password";
+            tb_Password.Size = new Size(214, 28);
+            tb_Password.TabIndex = 2;
             // 
-            // button1
+            // btn_SignIn
             // 
-            button1.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(39, 359);
-            button1.Margin = new Padding(4, 5, 4, 5);
-            button1.Name = "button1";
-            button1.Size = new Size(107, 47);
-            button1.TabIndex = 3;
-            button1.Text = "Đăng nhập";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            btn_SignIn.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_SignIn.Location = new Point(39, 359);
+            btn_SignIn.Margin = new Padding(4, 5, 4, 5);
+            btn_SignIn.Name = "btn_SignIn";
+            btn_SignIn.Size = new Size(107, 47);
+            btn_SignIn.TabIndex = 3;
+            btn_SignIn.Text = "Đăng nhập";
+            btn_SignIn.UseVisualStyleBackColor = true;
+            btn_SignIn.Click += button1_Click;
             // 
             // label1
             // 
@@ -94,16 +94,16 @@
             label1.TabIndex = 5;
             label1.Text = "Đăng nhập ";
             // 
-            // button3
+            // btn_CreateAccount
             // 
-            button3.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button3.Location = new Point(130, 515);
-            button3.Margin = new Padding(4, 5, 4, 5);
-            button3.Name = "button3";
-            button3.Size = new Size(107, 47);
-            button3.TabIndex = 6;
-            button3.Text = "Đăng ký ";
-            button3.UseVisualStyleBackColor = true;
+            btn_CreateAccount.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_CreateAccount.Location = new Point(130, 515);
+            btn_CreateAccount.Margin = new Padding(4, 5, 4, 5);
+            btn_CreateAccount.Name = "btn_CreateAccount";
+            btn_CreateAccount.Size = new Size(107, 47);
+            btn_CreateAccount.TabIndex = 6;
+            btn_CreateAccount.Text = "Đăng ký ";
+            btn_CreateAccount.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -147,31 +147,31 @@
             label5.TabIndex = 10;
             label5.Text = "Mật khẩu";
             // 
-            // button2
+            // btn_ForgotPassword
             // 
-            button2.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.Location = new Point(180, 359);
-            button2.Name = "button2";
-            button2.Size = new Size(154, 47);
-            button2.TabIndex = 11;
-            button2.Text = "Quên mật khẩu";
-            button2.UseVisualStyleBackColor = true;
+            btn_ForgotPassword.Font = new Font("Times New Roman", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_ForgotPassword.Location = new Point(180, 359);
+            btn_ForgotPassword.Name = "btn_ForgotPassword";
+            btn_ForgotPassword.Size = new Size(154, 47);
+            btn_ForgotPassword.TabIndex = 11;
+            btn_ForgotPassword.Text = "Quên mật khẩu";
+            btn_ForgotPassword.UseVisualStyleBackColor = true;
             // 
             // RoomSelection
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1024, 640);
-            Controls.Add(button2);
+            Controls.Add(btn_ForgotPassword);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
-            Controls.Add(button3);
+            Controls.Add(btn_CreateAccount);
             Controls.Add(label1);
-            Controls.Add(button1);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(btn_SignIn);
+            Controls.Add(tb_Password);
+            Controls.Add(tb_AccountName);
             Controls.Add(pictureBox1);
             Margin = new Padding(4, 5, 4, 5);
             Name = "RoomSelection";
@@ -184,15 +184,15 @@
         #endregion
 
         private PictureBox pictureBox1;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private Button button1;
+        private TextBox tb_AccountName;
+        private TextBox tb_Password;
+        private Button btn_SignIn;
         private Label label1;
-        private Button button3;
+        private Button btn_CreateAccount;
         private Label label2;
         private Label label3;
         private Label label4;
         private Label label5;
-        private Button button2;
+        private Button btn_ForgotPassword;
     }
 }

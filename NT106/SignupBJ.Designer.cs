@@ -30,15 +30,15 @@
         {
             label5 = new Label();
             label2 = new Label();
-            button3 = new Button();
+            btn_CreateAccount = new Button();
             label1 = new Label();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
+            tb_Password = new TextBox();
+            tb_ConfirmPassword = new TextBox();
             label3 = new Label();
             label6 = new Label();
-            textBox4 = new TextBox();
+            tb_Email = new TextBox();
             label4 = new Label();
-            textBox1 = new TextBox();
+            tb_AccountName = new TextBox();
             SuspendLayout();
             // 
             // label5
@@ -61,16 +61,16 @@
             label2.Size = new Size(0, 25);
             label2.TabIndex = 18;
             // 
-            // button3
+            // btn_CreateAccount
             // 
-            button3.Font = new Font("Times New Roman", 9F);
-            button3.Location = new Point(123, 468);
-            button3.Margin = new Padding(4, 5, 4, 5);
-            button3.Name = "button3";
-            button3.Size = new Size(107, 47);
-            button3.TabIndex = 17;
-            button3.Text = "Đăng ký ";
-            button3.UseVisualStyleBackColor = true;
+            btn_CreateAccount.Font = new Font("Times New Roman", 9F);
+            btn_CreateAccount.Location = new Point(123, 468);
+            btn_CreateAccount.Margin = new Padding(4, 5, 4, 5);
+            btn_CreateAccount.Name = "btn_CreateAccount";
+            btn_CreateAccount.Size = new Size(107, 47);
+            btn_CreateAccount.TabIndex = 17;
+            btn_CreateAccount.Text = "Đăng ký ";
+            btn_CreateAccount.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -84,22 +84,22 @@
             label1.Text = "Đăng ký ";
             label1.Visible = false;
             // 
-            // textBox2
+            // tb_Password
             // 
-            textBox2.Font = new Font("Times New Roman", 9F);
-            textBox2.Location = new Point(47, 311);
-            textBox2.Margin = new Padding(4, 5, 4, 5);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(268, 28);
-            textBox2.TabIndex = 13;
+            tb_Password.Font = new Font("Times New Roman", 9F);
+            tb_Password.Location = new Point(47, 311);
+            tb_Password.Margin = new Padding(4, 5, 4, 5);
+            tb_Password.Name = "tb_Password";
+            tb_Password.Size = new Size(268, 28);
+            tb_Password.TabIndex = 13;
             // 
-            // textBox3
+            // tb_ConfirmPassword
             // 
-            textBox3.Location = new Point(47, 400);
-            textBox3.Margin = new Padding(4, 5, 4, 5);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(268, 31);
-            textBox3.TabIndex = 22;
+            tb_ConfirmPassword.Location = new Point(47, 400);
+            tb_ConfirmPassword.Margin = new Padding(4, 5, 4, 5);
+            tb_ConfirmPassword.Name = "tb_ConfirmPassword";
+            tb_ConfirmPassword.Size = new Size(268, 31);
+            tb_ConfirmPassword.TabIndex = 22;
             // 
             // label3
             // 
@@ -123,14 +123,14 @@
             label6.TabIndex = 25;
             label6.Text = "Tên tài khoản ";
             // 
-            // textBox4
+            // tb_Email
             // 
-            textBox4.Font = new Font("Times New Roman", 9F);
-            textBox4.Location = new Point(47, 223);
-            textBox4.Margin = new Padding(4, 5, 4, 5);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(268, 28);
-            textBox4.TabIndex = 24;
+            tb_Email.Font = new Font("Times New Roman", 9F);
+            tb_Email.Location = new Point(47, 223);
+            tb_Email.Margin = new Padding(4, 5, 4, 5);
+            tb_Email.Name = "tb_Email";
+            tb_Email.Size = new Size(268, 28);
+            tb_Email.TabIndex = 24;
             // 
             // label4
             // 
@@ -141,29 +141,29 @@
             label4.TabIndex = 26;
             label4.Text = "Email";
             // 
-            // textBox1
+            // tb_AccountName
             // 
-            textBox1.Location = new Point(47, 132);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(268, 31);
-            textBox1.TabIndex = 27;
+            tb_AccountName.Location = new Point(47, 132);
+            tb_AccountName.Name = "tb_AccountName";
+            tb_AccountName.Size = new Size(268, 31);
+            tb_AccountName.TabIndex = 27;
             // 
             // SignupBJ
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(363, 542);
-            Controls.Add(textBox1);
+            Controls.Add(tb_AccountName);
             Controls.Add(label4);
             Controls.Add(label6);
-            Controls.Add(textBox4);
+            Controls.Add(tb_Email);
             Controls.Add(label3);
-            Controls.Add(textBox3);
+            Controls.Add(tb_ConfirmPassword);
             Controls.Add(label5);
             Controls.Add(label2);
-            Controls.Add(button3);
+            Controls.Add(btn_CreateAccount);
             Controls.Add(label1);
-            Controls.Add(textBox2);
+            Controls.Add(tb_Password);
             Margin = new Padding(4, 5, 4, 5);
             Name = "SignupBJ";
             Text = "SignupBJ";
@@ -175,14 +175,14 @@
 
         private Label label5;
         private Label label2;
-        private Button button3;
+        private Button btn_CreateAccount;
         private Label label1;
-        private TextBox textBox2;
-        private TextBox textBox3;
+        private TextBox tb_Password;
+        private TextBox tb_ConfirmPassword;
         private Label label3;
         private Label label6;
-        private TextBox textBox4;
+        private TextBox tb_Email;
         private Label label4;
-        private TextBox textBox1;
+        private TextBox tb_AccountName;
     }
 }

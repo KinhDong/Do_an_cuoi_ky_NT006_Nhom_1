@@ -28,19 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
+            btn_Confirm = new Button();
             label1 = new Label();
-            textBox1 = new TextBox();
+            tb_AccountName = new TextBox();
             SuspendLayout();
             // 
-            // button1
+            // btn_Confirm
             // 
-            button1.Location = new Point(157, 171);
-            button1.Name = "button1";
-            button1.Size = new Size(112, 34);
-            button1.TabIndex = 0;
-            button1.Text = "Xác nhận";
-            button1.UseVisualStyleBackColor = true;
+            btn_Confirm.Location = new Point(157, 171);
+            btn_Confirm.Name = "btn_Confirm";
+            btn_Confirm.Size = new Size(112, 34);
+            btn_Confirm.TabIndex = 0;
+            btn_Confirm.Text = "Xác nhận";
+            btn_Confirm.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -51,21 +51,21 @@
             label1.TabIndex = 1;
             label1.Text = "Nhập tên tài khoản";
             // 
-            // textBox1
+            // tb_AccountName
             // 
-            textBox1.Location = new Point(134, 102);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(163, 31);
-            textBox1.TabIndex = 2;
+            tb_AccountName.Location = new Point(134, 102);
+            tb_AccountName.Name = "tb_AccountName";
+            tb_AccountName.Size = new Size(163, 31);
+            tb_AccountName.TabIndex = 2;
             // 
             // ForgetPassword
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(413, 268);
-            Controls.Add(textBox1);
+            Controls.Add(tb_AccountName);
             Controls.Add(label1);
-            Controls.Add(button1);
+            Controls.Add(btn_Confirm);
             Name = "ForgetPassword";
             Text = "Quên mật khẩu? Gà";
             ResumeLayout(false);
@@ -74,8 +74,8 @@
 
         #endregion
 
-        private Button button1;
+        private Button btn_Confirm;
         private Label label1;
-        private TextBox textBox1;
+        private TextBox tb_AccountName;
     }
 }

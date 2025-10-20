@@ -32,8 +32,8 @@
             button2 = new Button();
             button3 = new Button();
             button4 = new Button();
-            button5 = new Button();
-            button6 = new Button();
+            btn_Account = new Button();
+            btn_Setting = new Button();
             textBox1 = new TextBox();
             pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -80,27 +80,27 @@
             button4.Text = "Thoát";
             button4.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // btn_Account
             // 
-            button5.BackgroundImage = Properties.Resources.account_icon;
-            button5.BackgroundImageLayout = ImageLayout.Stretch;
-            button5.Location = new Point(931, 20);
-            button5.Margin = new Padding(4, 5, 4, 5);
-            button5.Name = "button5";
-            button5.Size = new Size(66, 61);
-            button5.TabIndex = 4;
-            button5.UseVisualStyleBackColor = true;
+            btn_Account.BackgroundImage = Properties.Resources.account_icon;
+            btn_Account.BackgroundImageLayout = ImageLayout.Stretch;
+            btn_Account.Location = new Point(931, 20);
+            btn_Account.Margin = new Padding(4, 5, 4, 5);
+            btn_Account.Name = "btn_Account";
+            btn_Account.Size = new Size(66, 61);
+            btn_Account.TabIndex = 4;
+            btn_Account.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // btn_Setting
             // 
-            button6.BackgroundImage = Properties.Resources.Setting_Icon;
-            button6.BackgroundImageLayout = ImageLayout.Stretch;
-            button6.Location = new Point(931, 104);
-            button6.Margin = new Padding(4, 5, 4, 5);
-            button6.Name = "button6";
-            button6.Size = new Size(66, 56);
-            button6.TabIndex = 5;
-            button6.UseVisualStyleBackColor = true;
+            btn_Setting.BackgroundImage = Properties.Resources.Setting_Icon;
+            btn_Setting.BackgroundImageLayout = ImageLayout.Stretch;
+            btn_Setting.Location = new Point(931, 104);
+            btn_Setting.Margin = new Padding(4, 5, 4, 5);
+            btn_Setting.Name = "btn_Setting";
+            btn_Setting.Size = new Size(66, 56);
+            btn_Setting.TabIndex = 5;
+            btn_Setting.UseVisualStyleBackColor = true;
             // 
             // textBox1
             // 
@@ -129,8 +129,8 @@
             ClientSize = new Size(1024, 640);
             Controls.Add(pictureBox1);
             Controls.Add(textBox1);
-            Controls.Add(button6);
-            Controls.Add(button5);
+            Controls.Add(btn_Setting);
+            Controls.Add(btn_Account);
             Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(button2);
@@ -149,8 +149,8 @@
         private Button button2;
         private Button button3;
         private Button button4;
-        private Button button5;
-        private Button button6;
+        private Button btn_Account;
+        private Button btn_Setting;
         private TextBox textBox1;
         private PictureBox pictureBox1;
     }

@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HowToPlay));
             textBox1 = new TextBox();
-            button1 = new Button();
+            btn_Back = new Button();
             SuspendLayout();
             // 
             // textBox1
@@ -45,17 +45,17 @@
             textBox1.TabIndex = 1;
             textBox1.Text = resources.GetString("textBox1.Text");
             // 
-            // button1
+            // btn_Back
             // 
-            button1.BackColor = Color.FromArgb(0, 192, 192);
-            button1.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.Location = new Point(470, 560);
-            button1.Name = "button1";
-            button1.Size = new Size(112, 34);
-            button1.TabIndex = 2;
-            button1.Text = "Đã hiểu";
-            button1.UseVisualStyleBackColor = false;
-            button1.Click += button1_Click;
+            btn_Back.BackColor = Color.FromArgb(0, 192, 192);
+            btn_Back.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_Back.Location = new Point(470, 560);
+            btn_Back.Name = "btn_Back";
+            btn_Back.Size = new Size(112, 34);
+            btn_Back.TabIndex = 2;
+            btn_Back.Text = "Đã hiểu";
+            btn_Back.UseVisualStyleBackColor = false;
+            btn_Back.Click += button1_Click;
             // 
             // HowToPlay
             // 
@@ -63,7 +63,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(0, 64, 0);
             ClientSize = new Size(1024, 640);
-            Controls.Add(button1);
+            Controls.Add(btn_Back);
             Controls.Add(textBox1);
             Name = "HowToPlay";
             Text = "Hướng dẫn";
@@ -73,6 +73,6 @@
 
         #endregion
         private TextBox textBox1;
-        private Button button1;
+        private Button btn_Back;
     }
 }
