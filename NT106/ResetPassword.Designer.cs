@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             label2 = new Label();
-            this.tb_NewPassword = new TextBox();
             btn_Confirm = new Button();
+            tb_NewPassword = new TextBox();
             SuspendLayout();
             // 
             // label2
@@ -42,13 +42,6 @@
             label2.TabIndex = 1;
             label2.Text = "Nhập mật khẩu mới\r\n\r\n";
             // 
-            // tb_NewPassword
-            // 
-            this.tb_NewPassword.Location = new Point(143, 91);
-            this.tb_NewPassword.Name = "tb_NewPassword";
-            this.tb_NewPassword.Size = new Size(150, 31);
-            this.tb_NewPassword.TabIndex = 3;
-            // 
             // btn_Confirm
             // 
             btn_Confirm.Location = new Point(160, 157);
@@ -58,13 +51,20 @@
             btn_Confirm.Text = "Xác nhận";
             btn_Confirm.UseVisualStyleBackColor = true;
             // 
+            // tb_NewPassword
+            // 
+            tb_NewPassword.Location = new Point(143, 103);
+            tb_NewPassword.Name = "tb_NewPassword";
+            tb_NewPassword.Size = new Size(150, 31);
+            tb_NewPassword.TabIndex = 5;
+            // 
             // ResetPassword
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(450, 226);
+            Controls.Add(tb_NewPassword);
             Controls.Add(btn_Confirm);
-            Controls.Add(this.tb_NewPassword);
             Controls.Add(label2);
             Name = "ResetPassword";
             Text = "ResetPassword";
@@ -81,5 +81,6 @@
         private Button btn_Confirm;
         private Label label3;
         private TextBox textBox3;
+        private TextBox tb_NewPassword;
     }
 }

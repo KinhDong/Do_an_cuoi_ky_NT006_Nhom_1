@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace NT106
 {
-    public partial class Choivoing : Form
+    public partial class PVP : Form
     {
-        public Choivoing()
+        public PVP()
         {
             InitializeComponent();
         }

@@ -1,6 +1,6 @@
 ﻿namespace NT106
 {
-    partial class Choivoing
+    partial class PVP
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Choivoing));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PVP));
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
             pictureBox4 = new PictureBox();

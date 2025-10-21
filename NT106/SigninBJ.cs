@@ -1,8 +1,8 @@
 namespace NT106
 {
-    public partial class RoomSelection : Form
+    public partial class SigninBJ : Form
     {
-        public RoomSelection()
+        public SigninBJ()
         {
             InitializeComponent();
         }

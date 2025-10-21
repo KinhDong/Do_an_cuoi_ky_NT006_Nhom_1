@@ -1,6 +1,6 @@
 ﻿namespace NT106
 {
-    partial class RoomSelection
+    partial class SigninBJ
     {
         /// <summary>
         ///  Required designer variable.
