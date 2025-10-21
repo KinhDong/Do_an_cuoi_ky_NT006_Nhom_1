@@ -22,7 +22,7 @@ namespace NT106
         public SigninBJ()
         {
             InitializeComponent();
-            //tb_Password.PasswordChar = '*';
+            tb_Password.PasswordChar = '*';
 
             var config = new FirebaseAuthConfig
             {
