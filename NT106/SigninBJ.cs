@@ -29,11 +29,10 @@ namespace NT106
                 ApiKey = WebApiKey,
                 AuthDomain = "nt106-cf479.firebaseapp.com",
 
-                // THÊM DÒNG NÀY VÀO
                 Providers = new FirebaseAuthProvider[]
                 {
                     // Báo cho thư viện biết bạn sẽ dùng Email/Password
-                    new EmailAndPasswordProvider()
+                    new EmailProvider()
                 }
             };
             authClient = new FirebaseAuthClient(config);
