@@ -1,8 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "EgxOPRSq8hE=",
+  "dgSpecHash": "w9z+fnlOOII=",
   "success": true,
-  "projectFilePath": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\NT106.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\W\\source\\repos\\KinhDong\\Do_an_cuoi_ky_NT006_Nhom_1\\NT106\\NT106.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\W\\.nuget\\packages\\firebaseauthentication.net\\4.1.0\\firebaseauthentication.net.4.1.0.nupkg.sha512",
+    "C:\\Users\\W\\.nuget\\packages\\firebasedatabase.net\\5.0.0\\firebasedatabase.net.5.0.0.nupkg.sha512",
+    "C:\\Users\\W\\.nuget\\packages\\litedb\\5.0.17\\litedb.5.0.17.nupkg.sha512",
+    "C:\\Users\\W\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\W\\.nuget\\packages\\system.reactive\\6.1.0\\system.reactive.6.1.0.nupkg.sha512"
+  ],
   "logs": []
 }
