@@ -41,6 +41,66 @@ namespace NT106
         };
         private static readonly FirebaseAuthClient authClient = new FirebaseAuthClient(authConfig);
 
+        // Đăng kí bằng Email + Username + Password and Confirm Password
+        public static async Task<bool> RegisterAsync(string username, string email, string password, string confirm)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email) ||
+                    string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirm))
+                    throw new Exception("Vui lòng điền đầy đủ thông tin!");
+
+                if (password != confirm)
+                    throw new Exception("Mật khẩu xác nhận không khớp!");
+
+                // Kiểm tra username đã tồn tại hay chưa
+                var checkUsername = await firebaseClient
+                    .Child("Usernames")
+                    .Child(username)
+                    .OnceSingleAsync<string>();
+
+                if (!string.IsNullOrEmpty(checkUsername))
+                    throw new Exception("Tên tài khoản đã tồn tại!");
+
+                // Tạo người dùng trong Firebase Authentication
+                var credential = await authClient.CreateUserWithEmailAndPasswordAsync(email, password);
+                string uid = credential.User.Uid;
+
+                // Lưu thông tin mapping username -> email
+                await firebaseClient
+                    .Child("Usernames")
+                    .Child(username)
+                    .PutAsync(email);
+
+                // Lưu thông tin người dùng trong "Users"
+                var userData = new
+                {
+                    Username = username,
+                    Email = email,
+                    InGameName = username,
+                    Money = 0,
+                    isLoggedIn = false
+                };
+
+                await firebaseClient
+                    .Child("Users")
+                    .Child(uid)
+                    .PutAsync(userData);
+
+                return true;
+            }
+            catch (FirebaseAuthException ex)
+            {
+                Console.WriteLine($"Lỗi FirebaseAuth: {ex.Reason}");
+                throw new Exception("Không thể đăng ký tài khoản! Email có thể đã được sử dụng.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi đăng ký: {ex.Message}");
+                throw;
+            }
+        }
+
         // ====== Đăng nhập bằng username + password ======
         public static async Task<bool> LoginAsync(string username, string password)
         {

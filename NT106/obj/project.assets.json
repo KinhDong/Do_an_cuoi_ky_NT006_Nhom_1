@@ -196,23 +196,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\your name\\.nuget\\packages\\": {},
+    "C:\\Users\\HUNG PHAT\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\NT106.csproj",
+      "projectUniqueName": "D:\\VisualStudio\\Đồ Án NT106\\NT106\\NT106.csproj",
       "projectName": "NT106",
-      "projectPath": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\NT106.csproj",
-      "packagesPath": "C:\\Users\\your name\\.nuget\\packages\\",
-      "outputPath": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\obj\\",
+      "projectPath": "D:\\VisualStudio\\Đồ Án NT106\\NT106\\NT106.csproj",
+      "packagesPath": "C:\\Users\\HUNG PHAT\\.nuget\\packages\\",
+      "outputPath": "D:\\VisualStudio\\Đồ Án NT106\\NT106\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\your name\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\HUNG PHAT\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
