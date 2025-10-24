@@ -31,15 +31,13 @@ namespace NT106
 
                 if (result)
                 {
-                    MessageBox.Show("Đăng ký thành công! Hãy đăng nhập để tiếp tục.",
-                                    "Thành công",
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Information);
+                    MessageBox.Show("Đăng ký thành công! Vui lòng kiểm tra email để xác minh tài khoản trước khi đăng nhập.",
+                   "Xác minh email",
+                   MessageBoxButtons.OK,
+                   MessageBoxIcon.Information);
 
-                    // Sau khi đăng ký, mở form đăng nhập (SigninBJ)
+                    // Mở form đăng nhập
                     SigninBJ signinForm = new SigninBJ();
-
-                    // Giữ nguyên vị trí form
                     signinForm.StartPosition = FormStartPosition.Manual;
                     signinForm.Location = this.Location;
 
