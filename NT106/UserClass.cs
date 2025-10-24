@@ -52,7 +52,7 @@ namespace NT106
                 if (password != confirm)
                     throw new Exception("Mật khẩu xác nhận không khớp!");
 
-                // Kiểm tra username đã tồn tại hay chưa
+                // Kiểm tra username đã tồn tại chưa
                 var checkUsername = await firebaseClient
                     .Child("Usernames")
                     .Child(username)
@@ -61,31 +61,51 @@ namespace NT106
                 if (!string.IsNullOrEmpty(checkUsername))
                     throw new Exception("Tên tài khoản đã tồn tại!");
 
-                // Tạo người dùng trong Firebase Authentication
+                // Tạo người dùng Firebase
                 var credential = await authClient.CreateUserWithEmailAndPasswordAsync(email, password);
-                string uid = credential.User.Uid;
+                var user = credential.User;
 
-                // Lưu thông tin mapping username -> email
+                // Lưu thông tin username -> email
                 await firebaseClient
                     .Child("Usernames")
                     .Child(username)
                     .PutAsync($"\"{email}\"");
 
-                // Lưu thông tin người dùng trong "Users"
-                var userData = new
-                {
-                    Username = username,
-                    Email = email,
-                    InGameName = username,
-                    Money = 0,
-                    isLoggedIn = false
-                };
-
+                // Lưu thông tin người dùng vào Realtime Database
                 await firebaseClient
                     .Child("Users")
-                    .Child(uid)
-                    .PutAsync(userData);
+                    .Child(user.Uid)
+                    .PutAsync(new
+                    {
+                        Username = username,
+                        Email = email,
+                        InGameName = username,
+                        Money = 0,
+                        isLoggedIn = false
+                    });
 
+                // Gửi email xác minh qua REST API
+                string idToken = await user.GetIdTokenAsync();
+                using (var client = new HttpClient())
+                {
+                    var content = new
+                    {
+                        requestType = "VERIFY_EMAIL",
+                        idToken = idToken
+                    };
+
+                    var response = await client.PostAsync(
+                        $"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={ApiKey}",
+                        new StringContent(System.Text.Json.JsonSerializer.Serialize(content), Encoding.UTF8, "application/json")
+                    );
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new Exception("Không thể gửi email xác minh. Vui lòng thử lại sau.");
+                    }
+                }
+
+                Console.WriteLine($"Đã gửi email xác minh đến: {email}");
                 return true;
             }
             catch (FirebaseAuthException ex)
@@ -99,6 +119,7 @@ namespace NT106
                 throw;
             }
         }
+
 
         // ====== Đăng nhập bằng username + password ======
         public static async Task<bool> LoginAsync(string username, string password)
@@ -118,6 +139,9 @@ namespace NT106
                 var credential = await authClient.SignInWithEmailAndPasswordAsync(email, password);
                 var user = credential.User;
                 string uid = user.Uid;
+
+                if (!user.Info.IsEmailVerified)
+                    throw new Exception("Vui lòng xác minh email trước khi đăng nhập!");
 
                 // Lấy thông tin user từ Realtime Database
                 var userData = await firebaseClient
