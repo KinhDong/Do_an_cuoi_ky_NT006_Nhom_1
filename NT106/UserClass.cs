@@ -6,7 +6,6 @@ using Firebase.Auth.Providers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,7 +69,7 @@ namespace NT106
                 await firebaseClient
                     .Child("Usernames")
                     .Child(username)
-                    .PutAsync(email);
+                    .PutAsync($"\"{email}\"");
 
                 // Lưu thông tin người dùng trong "Users"
                 var userData = new
