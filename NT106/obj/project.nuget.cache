@@ -1,14 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "ZFe56YXwR28=",
+  "dgSpecHash": "i5NunBno4PA=",
   "success": true,
-  "projectFilePath": "D:\\Project\\LapTrinhMAng\\NT106\\NT106\\NT106.csproj",
+  "projectFilePath": "D:\\VisualStudio\\Đồ Án NT106\\NT106\\NT106.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\your name\\.nuget\\packages\\firebaseauthentication.net\\4.1.0\\firebaseauthentication.net.4.1.0.nupkg.sha512",
-    "C:\\Users\\your name\\.nuget\\packages\\firebasedatabase.net\\5.0.0\\firebasedatabase.net.5.0.0.nupkg.sha512",
-    "C:\\Users\\your name\\.nuget\\packages\\litedb\\5.0.17\\litedb.5.0.17.nupkg.sha512",
-    "C:\\Users\\your name\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
-    "C:\\Users\\your name\\.nuget\\packages\\system.reactive\\6.1.0\\system.reactive.6.1.0.nupkg.sha512"
+    "C:\\Users\\HUNG PHAT\\.nuget\\packages\\firebaseauthentication.net\\4.1.0\\firebaseauthentication.net.4.1.0.nupkg.sha512",
+    "C:\\Users\\HUNG PHAT\\.nuget\\packages\\firebasedatabase.net\\5.0.0\\firebasedatabase.net.5.0.0.nupkg.sha512",
+    "C:\\Users\\HUNG PHAT\\.nuget\\packages\\litedb\\5.0.17\\litedb.5.0.17.nupkg.sha512",
+    "C:\\Users\\HUNG PHAT\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\HUNG PHAT\\.nuget\\packages\\system.reactive\\6.1.0\\system.reactive.6.1.0.nupkg.sha512"
   ],
   "logs": []
 }
