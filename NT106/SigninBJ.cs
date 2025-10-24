@@ -42,5 +42,19 @@ namespace NT106
                 MessageBox.Show("Đăng nhập thất bại");
             }
         }
+
+        private void btn_CreateAccount_Click(object sender, EventArgs e)
+        {
+            SignupBJ signupForm = new SignupBJ();
+
+            // Giữ nguyên vị trí form hiện tại
+            signupForm.StartPosition = FormStartPosition.Manual;
+            signupForm.Location = this.Location;
+
+            signupForm.FormClosed += (s, args) => this.Show();
+
+            signupForm.Show();
+            this.Hide();
+        }
     }
 }
