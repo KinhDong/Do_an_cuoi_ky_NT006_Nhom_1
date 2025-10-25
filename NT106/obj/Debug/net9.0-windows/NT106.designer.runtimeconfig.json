@@ -12,8 +12,8 @@
       }
     ],
     "additionalProbingPaths": [
-      "C:\\Users\\HUNG PHAT\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\HUNG PHAT\\.nuget\\packages",
+      "C:\\Users\\dohoa\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\dohoa\\.nuget\\packages",
       "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
     ],
     "configProperties": {

@@ -1,11 +1,13 @@
-﻿using Firebase.Database;
-using Firebase.Database.Query;
-using System.Reactive.Linq;
-using Firebase.Auth;
+﻿using Firebase.Auth;
 using Firebase.Auth.Providers;
+using Firebase.Database;
+using Firebase.Database.Query;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -202,6 +204,66 @@ namespace NT106
             catch (Exception ex)
             {
                 Console.WriteLine($"Lỗi đăng xuất: {ex.Message}");
+            }
+        }
+
+        //====== Lấy Email từ username ======
+        public static async Task<string> GetEmailFromUsernameAsync(string username)
+        {
+            try
+            {
+
+                string email = await firebaseClient
+                    .Child("Usernames")
+                    .Child(username)
+                    .OnceSingleAsync<string>();
+                if (string.IsNullOrEmpty(email))
+                    throw new Exception("Không tìm thấy tài khoản!");
+                return email;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi lấy email từ username: {ex.Message}");
+                throw;
+            }
+        }
+
+        //======
+        public static async Task<bool> SendPasswordResetEmailAsync(string email)
+        {
+            try
+            {
+                //Endpoint API của Firebase để gửi email đặt lại mật khẩu
+                string url = $"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={ApiKey}";
+                var data = new
+                {
+                    requestType = "PASSWORD_RESET",
+                    email = email
+                };
+
+                // Chuyển đổi dữ liệu thành JSON
+                string json = JsonConvert.SerializeObject(data);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // Gửi yêu cầu POST đến Firebase
+                using (HttpClient client = new HttpClient())
+                {
+                    // Gửi yêu cầu
+                    HttpResponseMessage response = await client.PostAsync(url, content);
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine($"Lỗi từ Firebase: {result}");
+                        throw new Exception("Không thể gửi email đặt lại mật khẩu!");
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi gửi email đặt lại mật khẩu: {ex.Message}");
+                throw;
             }
         }
     }
