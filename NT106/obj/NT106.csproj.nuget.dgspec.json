@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Daihoc\\Nam2\\nt106\\Do_an\\Do_an_cuoi_ky_NT006_Nhom_1\\NT106\\NT106.csproj": {}
+    "D:\\Project\\LapTrinhMAng\\NT106_2\\NT106\\NT106.csproj": {}
   },
   "projects": {
-    "D:\\Daihoc\\Nam2\\nt106\\Do_an\\Do_an_cuoi_ky_NT006_Nhom_1\\NT106\\NT106.csproj": {
+    "D:\\Project\\LapTrinhMAng\\NT106_2\\NT106\\NT106.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Daihoc\\Nam2\\nt106\\Do_an\\Do_an_cuoi_ky_NT006_Nhom_1\\NT106\\NT106.csproj",
+        "projectUniqueName": "D:\\Project\\LapTrinhMAng\\NT106_2\\NT106\\NT106.csproj",
         "projectName": "NT106",
-        "projectPath": "D:\\Daihoc\\Nam2\\nt106\\Do_an\\Do_an_cuoi_ky_NT006_Nhom_1\\NT106\\NT106.csproj",
-        "packagesPath": "C:\\Users\\dohoa\\.nuget\\packages\\",
-        "outputPath": "D:\\Daihoc\\Nam2\\nt106\\Do_an\\Do_an_cuoi_ky_NT006_Nhom_1\\NT106\\obj\\",
+        "projectPath": "D:\\Project\\LapTrinhMAng\\NT106_2\\NT106\\NT106.csproj",
+        "packagesPath": "C:\\Users\\your name\\.nuget\\packages\\",
+        "outputPath": "D:\\Project\\LapTrinhMAng\\NT106_2\\NT106\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\dohoa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\your name\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -50,6 +50,10 @@
         "net9.0-windows7.0": {
           "targetAlias": "net9.0-windows",
           "dependencies": {
+            "CloudinaryDotNet": {
+              "target": "Package",
+              "version": "[1.27.8, )"
+            },
             "FirebaseAuthentication.net": {
               "target": "Package",
               "version": "[4.1.0, )"

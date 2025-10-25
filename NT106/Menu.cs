@@ -17,24 +17,26 @@ namespace NT106
             InitializeComponent();
 
             // Đăng xuất khi đóng form (Nhấn 'X')
-            this.FormClosing += MainForm_FormClosing;
+            this.FormClosing += AllForm.HandleFormClosing;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Menu_Load(object sender, EventArgs e)
         {
+            
 
         }
 
-        private async void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void btn_Account_Click(object sender, EventArgs e)
         {
-            if (e.CloseReason == CloseReason.UserClosing)
-            {
-                // Tự động đăng xuất khi đóng app
-                await UserClass.LogoutAsync();
-            }
+            // Mở form tài khoản
+            Account signinForm = new Account();
+            signinForm.StartPosition = FormStartPosition.Manual;
+            signinForm.Location = this.Location;
 
-            // Tắt hoàn toàn chương trình, ngăn ngừa chạy ngầm
-            Environment.Exit(0);
+            signinForm.Show();
+            this.Hide();
         }
+
+        
     }
 }

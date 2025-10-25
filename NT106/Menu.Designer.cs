@@ -48,7 +48,6 @@
             button1.TabIndex = 0;
             button1.Text = "Chơi với người ";
             button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
             // 
             // button2
             // 
@@ -90,6 +89,7 @@
             btn_Account.Size = new Size(66, 61);
             btn_Account.TabIndex = 4;
             btn_Account.UseVisualStyleBackColor = true;
+            btn_Account.Click += btn_Account_Click;
             // 
             // btn_Setting
             // 
@@ -138,6 +138,7 @@
             Margin = new Padding(4, 5, 4, 5);
             Name = "Menu";
             Text = "Menu";
+            Load += Menu_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();

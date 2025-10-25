@@ -16,6 +16,8 @@ namespace NT106
         public SigninBJ()
         {
             InitializeComponent();
+
+            this.FormClosing += AllForm.HandleFormClosing;
         }
 
         private async void btn_SignIn_Click(object sender, EventArgs e)
@@ -54,6 +56,18 @@ namespace NT106
             signupForm.FormClosed += (s, args) => this.Show();
 
             signupForm.Show();
+            this.Hide();
+        }
+
+        private void btn_ForgotPassword_Click(object sender, EventArgs e)
+        {
+            ForgetPassword f = new ForgetPassword();
+
+            // Form mới xuất hiện đúng vị trí form cũ
+            f.StartPosition = FormStartPosition.Manual;
+            f.Location = this.Location;
+            f.Show();
+
             this.Hide();
         }
     }

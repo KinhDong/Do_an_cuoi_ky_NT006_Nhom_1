@@ -127,6 +127,7 @@
             btn_Back.TabIndex = 8;
             btn_Back.Text = "Quay lại";
             btn_Back.UseVisualStyleBackColor = true;
+            btn_Back.Click += btn_Back_Click;
             // 
             // Account
             // 
@@ -146,6 +147,7 @@
             Controls.Add(pic_Avatar);
             Name = "Account";
             Text = "Tài khoản";
+            Load += Account_Load;
             ((System.ComponentModel.ISupportInitialize)pic_Avatar).EndInit();
             ResumeLayout(false);
             PerformLayout();

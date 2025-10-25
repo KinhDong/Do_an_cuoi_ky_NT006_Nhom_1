@@ -22,7 +22,7 @@ namespace NT106
         public static string Email { get; set; }
         public static string InGameName { get; set; }
         public static long Money { get; set; }
-        public static Byte[] Avatar { get; set; }
+        public static Image Avatar { get; set; }
 
         // === CẤU HÌNH FIREBASE ===
         private const string DatabaseUrl = "https://nt106-cf479-default-rtdb.firebaseio.com";
@@ -30,6 +30,8 @@ namespace NT106
 
         private static FirebaseClient firebaseClient = new FirebaseClient(DatabaseUrl);
         private static readonly string AuthDomain = "nt106-cf479.firebaseapp.com";
+
+        private static readonly CloudinaryHelper cloudinary = new CloudinaryHelper();
 
         private static readonly FirebaseAuthConfig authConfig = new FirebaseAuthConfig
         {
@@ -41,7 +43,7 @@ namespace NT106
             }
         };
         private static readonly FirebaseAuthClient authClient = new FirebaseAuthClient(authConfig);
-
+        
         // Đăng kí bằng Email + Username + Password and Confirm Password
         public static async Task<bool> RegisterAsync(string username, string email, string password, string confirm)
         {
@@ -82,9 +84,12 @@ namespace NT106
                         Username = username,
                         Email = email,
                         InGameName = username,
-                        Money = 0,
+                        Money = 1000,
                         isLoggedIn = false
                     });
+
+                // Tải lên ảnh đại diện mặc định
+                cloudinary.CopyImage(user.Uid);
 
                 // Gửi email xác minh qua REST API
                 string idToken = await user.GetIdTokenAsync();
@@ -108,6 +113,7 @@ namespace NT106
                 }
 
                 Console.WriteLine($"Đã gửi email xác minh đến: {email}");
+
                 return true;
             }
             catch (FirebaseAuthException ex)
@@ -121,7 +127,6 @@ namespace NT106
                 throw;
             }
         }
-
 
         // ====== Đăng nhập bằng username + password ======
         public static async Task<bool> LoginAsync(string username, string password)
@@ -166,8 +171,9 @@ namespace NT106
                 Uid = uid;
                 UserName = username;
                 Email = email;
-                InGameName = userData.InGameName ?? username;
-                // Money = userData.money ?? username;
+                InGameName = userData.InGameName;
+                Money = userData.Money;
+                Avatar = await cloudinary.GetImageAsync($"avatar/{Uid}");
 
                 return true;
             }
@@ -177,10 +183,11 @@ namespace NT106
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Lỗi đăng nhập: {ex.Message}");
+                MessageBox.Show($"Lỗi đăng nhập: {ex.Message}");
                 return false;
             }
         }
+
 
         // ====== Đăng xuất ======
         public static async Task LogoutAsync()
@@ -228,7 +235,7 @@ namespace NT106
             }
         }
 
-        //======
+        // Quên và lấy lại mật khẩu
         public static async Task<bool> SendPasswordResetEmailAsync(string email)
         {
             try
@@ -265,6 +272,24 @@ namespace NT106
                 Console.WriteLine($"Lỗi khi gửi email đặt lại mật khẩu: {ex.Message}");
                 throw;
             }
+        }
+
+        // Thay đổi ảnh đại diện
+        public static void ChangeAvatar(string filePath)
+        {
+            cloudinary.UploadImage(filePath, Uid);
+            Avatar = Image.FromFile(filePath);
+        }
+
+        // Thay đổi tên trong game
+        public static async void ChangeInGameName(string newName)
+        {
+            await UserClass.firebaseClient
+                    .Child("Users")
+                    .Child(UserClass.Uid)
+                    .PatchAsync(new { InGameName = newName});
+
+            UserClass.InGameName = newName;
         }
     }
 }

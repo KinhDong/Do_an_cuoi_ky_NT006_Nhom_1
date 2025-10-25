@@ -15,6 +15,8 @@ namespace NT106
         public ForgetPassword()
         {
             InitializeComponent();
+
+            this.FormClosing += AllForm.HandleFormClosing;
         }
 
         private async void btn_Confirm_Click(object sender, EventArgs e)
