@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\VisualStudio\\Đồ Án NT106\\NT106\\NT106.csproj": {}
+    "D:\\Daihoc\\Nam2\\nt106\\Do_an\\Do_an_cuoi_ky_NT006_Nhom_1\\NT106\\NT106.csproj": {}
   },
   "projects": {
-    "D:\\VisualStudio\\Đồ Án NT106\\NT106\\NT106.csproj": {
+    "D:\\Daihoc\\Nam2\\nt106\\Do_an\\Do_an_cuoi_ky_NT006_Nhom_1\\NT106\\NT106.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\VisualStudio\\Đồ Án NT106\\NT106\\NT106.csproj",
+        "projectUniqueName": "D:\\Daihoc\\Nam2\\nt106\\Do_an\\Do_an_cuoi_ky_NT006_Nhom_1\\NT106\\NT106.csproj",
         "projectName": "NT106",
-        "projectPath": "D:\\VisualStudio\\Đồ Án NT106\\NT106\\NT106.csproj",
-        "packagesPath": "C:\\Users\\HUNG PHAT\\.nuget\\packages\\",
-        "outputPath": "D:\\VisualStudio\\Đồ Án NT106\\NT106\\obj\\",
+        "projectPath": "D:\\Daihoc\\Nam2\\nt106\\Do_an\\Do_an_cuoi_ky_NT006_Nhom_1\\NT106\\NT106.csproj",
+        "packagesPath": "C:\\Users\\dohoa\\.nuget\\packages\\",
+        "outputPath": "D:\\Daihoc\\Nam2\\nt106\\Do_an\\Do_an_cuoi_ky_NT006_Nhom_1\\NT106\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\HUNG PHAT\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\dohoa\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
