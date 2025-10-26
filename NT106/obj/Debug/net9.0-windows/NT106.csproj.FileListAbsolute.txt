@@ -73,9 +73,6 @@ D:\Project\LapTrinhMAng\NT106_2\NT106\bin\Debug\net9.0-windows\NT106.deps.json
 D:\Project\LapTrinhMAng\NT106_2\NT106\bin\Debug\net9.0-windows\NT106.runtimeconfig.json
 D:\Project\LapTrinhMAng\NT106_2\NT106\bin\Debug\net9.0-windows\NT106.dll
 D:\Project\LapTrinhMAng\NT106_2\NT106\bin\Debug\net9.0-windows\NT106.pdb
-D:\Project\LapTrinhMAng\NT106_2\NT106\bin\Debug\net9.0-windows\Firebase.Auth.dll
-D:\Project\LapTrinhMAng\NT106_2\NT106\bin\Debug\net9.0-windows\Firebase.dll
-D:\Project\LapTrinhMAng\NT106_2\NT106\bin\Debug\net9.0-windows\LiteDB.dll
 D:\Project\LapTrinhMAng\NT106_2\NT106\bin\Debug\net9.0-windows\Newtonsoft.Json.dll
 D:\Project\LapTrinhMAng\NT106_2\NT106\bin\Debug\net9.0-windows\System.Reactive.dll
 D:\Project\LapTrinhMAng\NT106_2\NT106\obj\Debug\net9.0-windows\NT106.csproj.AssemblyReference.cache

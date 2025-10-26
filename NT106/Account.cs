@@ -1,6 +1,4 @@
 ﻿using CloudinaryDotNet;
-using Firebase.Database;
-using Firebase.Database.Query;
 using System.Net;
 
 namespace NT106

@@ -16,6 +16,9 @@ namespace NT106
         public SignupBJ()
         {
             InitializeComponent();
+
+            // Đăng xuất khi đóng form (Nhấn 'X')
+            this.FormClosing += AllForm.HandleFormClosing;
         }
 
         private async void btn_CreateAccount_Click(object sender, EventArgs e)
@@ -52,6 +55,18 @@ namespace NT106
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Error);
             }
+        }
+
+        private void btn_Back_Click(object sender, EventArgs e)
+        {
+            SigninBJ f = new SigninBJ();
+
+            // Form mới xuất hiện đúng vị trí form cũ
+            f.StartPosition = FormStartPosition.Manual;
+            f.Location = this.Location;
+            f.Show();
+
+            this.Hide();
         }
     }
 }

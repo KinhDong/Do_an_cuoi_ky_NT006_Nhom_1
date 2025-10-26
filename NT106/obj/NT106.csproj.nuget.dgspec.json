@@ -54,14 +54,6 @@
               "target": "Package",
               "version": "[1.27.8, )"
             },
-            "FirebaseAuthentication.net": {
-              "target": "Package",
-              "version": "[4.1.0, )"
-            },
-            "FirebaseDatabase.net": {
-              "target": "Package",
-              "version": "[5.0.0, )"
-            },
             "System.Reactive": {
               "target": "Package",
               "version": "[6.1.0, )"

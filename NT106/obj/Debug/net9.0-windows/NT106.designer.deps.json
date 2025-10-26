@@ -19,38 +19,6 @@
           }
         }
       },
-      "FirebaseAuthentication.net/4.1.0": {
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.3"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Firebase.Auth.dll": {
-            "assemblyVersion": "4.1.0.0",
-            "fileVersion": "4.1.0.0"
-          }
-        }
-      },
-      "FirebaseDatabase.net/5.0.0": {
-        "dependencies": {
-          "LiteDB": "5.0.17",
-          "Newtonsoft.Json": "13.0.3",
-          "System.Reactive": "6.1.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Firebase.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
-      "LiteDB/5.0.17": {
-        "runtime": {
-          "lib/netstandard2.0/LiteDB.dll": {
-            "assemblyVersion": "5.0.17.0",
-            "fileVersion": "5.0.17.0"
-          }
-        }
-      },
       "Microsoft.NETCore.Platforms/1.1.1": {},
       "Microsoft.NETCore.Targets/1.1.3": {},
       "Newtonsoft.Json/13.0.3": {
@@ -727,27 +695,6 @@
       "sha512": "sha512-K2PPU5SLn0SJ+62OOC5Wr3pCuk1ezLnKmgY/6A53bM6Ysvr27utKMZ8NTvJOG3eU1G8vykNQyhOKO4/shXDl1Q==",
       "path": "cloudinarydotnet/1.27.8",
       "hashPath": "cloudinarydotnet.1.27.8.nupkg.sha512"
-    },
-    "FirebaseAuthentication.net/4.1.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-pShi5v9cvT5bUWZDm261lO4uxJHvzOvpj46YHrL3uCB1WBeyCIcpoVakAQ2xHTu1dpmV86/BzSNRpqIGNp860g==",
-      "path": "firebaseauthentication.net/4.1.0",
-      "hashPath": "firebaseauthentication.net.4.1.0.nupkg.sha512"
-    },
-    "FirebaseDatabase.net/5.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-tU2JF31msyK30cN1fqcRfeyRikobOfx9FKmgHVINHSN0NnP+DqG89KkFdd5ebefDLthG4Ac9yLnXjOpeEX+52g==",
-      "path": "firebasedatabase.net/5.0.0",
-      "hashPath": "firebasedatabase.net.5.0.0.nupkg.sha512"
-    },
-    "LiteDB/5.0.17": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-cKPvkdlzIts3ZKu/BzoIc/Y71e4VFKlij4LyioPFATZMot+wB7EAm1FFbZSJez6coJmQUoIg/3yHE1MMU+zOdg==",
-      "path": "litedb/5.0.17",
-      "hashPath": "litedb.5.0.17.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.1": {
       "type": "package",

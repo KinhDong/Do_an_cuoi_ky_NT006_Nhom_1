@@ -20,53 +20,6 @@
           }
         }
       },
-      "FirebaseAuthentication.net/4.1.0": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.2"
-        },
-        "compile": {
-          "lib/netstandard2.0/Firebase.Auth.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Firebase.Auth.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "FirebaseDatabase.net/5.0.0": {
-        "type": "package",
-        "dependencies": {
-          "LiteDB": "5.0.17",
-          "Newtonsoft.Json": "13.0.3",
-          "System.Reactive": "6.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/Firebase.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Firebase.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "LiteDB/5.0.17": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/LiteDB.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/LiteDB.dll": {
-            "related": ".xml"
-          }
-        }
-      },
       "Microsoft.NETCore.Platforms/1.1.1": {
         "type": "package",
         "compile": {
@@ -936,55 +889,6 @@
         "lib/netstandard1.3/CloudinaryDotNet.xml",
         "lib/netstandard2.0/CloudinaryDotNet.dll",
         "lib/netstandard2.0/CloudinaryDotNet.xml"
-      ]
-    },
-    "FirebaseAuthentication.net/4.1.0": {
-      "sha512": "pShi5v9cvT5bUWZDm261lO4uxJHvzOvpj46YHrL3uCB1WBeyCIcpoVakAQ2xHTu1dpmV86/BzSNRpqIGNp860g==",
-      "type": "package",
-      "path": "firebaseauthentication.net/4.1.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.txt",
-        "README.md",
-        "firebase.png",
-        "firebaseauthentication.net.4.1.0.nupkg.sha512",
-        "firebaseauthentication.net.nuspec",
-        "lib/netstandard2.0/Firebase.Auth.dll",
-        "lib/netstandard2.0/Firebase.Auth.xml"
-      ]
-    },
-    "FirebaseDatabase.net/5.0.0": {
-      "sha512": "tU2JF31msyK30cN1fqcRfeyRikobOfx9FKmgHVINHSN0NnP+DqG89KkFdd5ebefDLthG4Ac9yLnXjOpeEX+52g==",
-      "type": "package",
-      "path": "firebasedatabase.net/5.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "firebasedatabase.net.5.0.0.nupkg.sha512",
-        "firebasedatabase.net.nuspec",
-        "lib/netstandard2.0/Firebase.dll",
-        "lib/netstandard2.0/Firebase.xml"
-      ]
-    },
-    "LiteDB/5.0.17": {
-      "sha512": "cKPvkdlzIts3ZKu/BzoIc/Y71e4VFKlij4LyioPFATZMot+wB7EAm1FFbZSJez6coJmQUoIg/3yHE1MMU+zOdg==",
-      "type": "package",
-      "path": "litedb/5.0.17",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "AppVeyorSettings.json",
-        "LICENSE",
-        "icon_64x64.png",
-        "lib/net45/LiteDB.dll",
-        "lib/net45/LiteDB.xml",
-        "lib/netstandard1.3/LiteDB.dll",
-        "lib/netstandard1.3/LiteDB.xml",
-        "lib/netstandard2.0/LiteDB.dll",
-        "lib/netstandard2.0/LiteDB.xml",
-        "litedb.5.0.17.nupkg.sha512",
-        "litedb.nuspec"
       ]
     },
     "Microsoft.NETCore.Platforms/1.1.1": {
@@ -3191,8 +3095,6 @@
   "projectFileDependencyGroups": {
     "net9.0-windows7.0": [
       "CloudinaryDotNet >= 1.27.8",
-      "FirebaseAuthentication.net >= 4.1.0",
-      "FirebaseDatabase.net >= 5.0.0",
       "System.Reactive >= 6.1.0"
     ]
   },
@@ -3249,14 +3151,6 @@
           "CloudinaryDotNet": {
             "target": "Package",
             "version": "[1.27.8, )"
-          },
-          "FirebaseAuthentication.net": {
-            "target": "Package",
-            "version": "[4.1.0, )"
-          },
-          "FirebaseDatabase.net": {
-            "target": "Package",
-            "version": "[5.0.0, )"
           },
           "System.Reactive": {
             "target": "Package",

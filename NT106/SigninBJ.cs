@@ -1,8 +1,4 @@
-﻿using Firebase.Auth;
-using Firebase.Auth.Providers;
-using Firebase.Database;
-using Firebase.Database.Query;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;

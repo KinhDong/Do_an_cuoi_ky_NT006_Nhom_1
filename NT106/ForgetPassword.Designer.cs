@@ -31,46 +31,54 @@
             btn_Confirm = new Button();
             label1 = new Label();
             tb_AccountName = new TextBox();
+            btn_Back = new Button();
             SuspendLayout();
             // 
             // btn_Confirm
             // 
-            btn_Confirm.Location = new Point(110, 103);
-            btn_Confirm.Margin = new Padding(2);
+            btn_Confirm.Location = new Point(235, 170);
             btn_Confirm.Name = "btn_Confirm";
-            btn_Confirm.Size = new Size(78, 20);
+            btn_Confirm.Size = new Size(111, 33);
             btn_Confirm.TabIndex = 0;
             btn_Confirm.Text = "Xác nhận";
             btn_Confirm.UseVisualStyleBackColor = true;
-            btn_Confirm.Click += this.btn_Confirm_Click;
+            btn_Confirm.Click += btn_Confirm_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(94, 34);
-            label1.Margin = new Padding(2, 0, 2, 0);
+            label1.Location = new Point(134, 57);
             label1.Name = "label1";
-            label1.Size = new Size(108, 15);
+            label1.Size = new Size(163, 25);
             label1.TabIndex = 1;
             label1.Text = "Nhập tên tài khoản";
             // 
             // tb_AccountName
             // 
-            tb_AccountName.Location = new Point(94, 61);
-            tb_AccountName.Margin = new Padding(2);
+            tb_AccountName.Location = new Point(134, 102);
             tb_AccountName.Name = "tb_AccountName";
-            tb_AccountName.Size = new Size(115, 23);
+            tb_AccountName.Size = new Size(163, 31);
             tb_AccountName.TabIndex = 2;
+            // 
+            // btn_Back
+            // 
+            btn_Back.Location = new Point(82, 169);
+            btn_Back.Name = "btn_Back";
+            btn_Back.Size = new Size(112, 34);
+            btn_Back.TabIndex = 3;
+            btn_Back.Text = "Quay lại";
+            btn_Back.UseVisualStyleBackColor = true;
+            btn_Back.Click += btn_Back_Click;
             // 
             // ForgetPassword
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(289, 161);
+            ClientSize = new Size(413, 268);
+            Controls.Add(btn_Back);
             Controls.Add(tb_AccountName);
             Controls.Add(label1);
             Controls.Add(btn_Confirm);
-            Margin = new Padding(2);
             Name = "ForgetPassword";
             Text = "Quên mật khẩu? Gà";
             ResumeLayout(false);
@@ -82,5 +90,6 @@
         private Button btn_Confirm;
         private Label label1;
         private TextBox tb_AccountName;
+        private Button btn_Back;
     }
 }

@@ -58,6 +58,7 @@
             btn_ChangeAvatar.TabIndex = 1;
             btn_ChangeAvatar.Text = "Thay đổi ảnh đại diện";
             btn_ChangeAvatar.UseVisualStyleBackColor = true;
+            btn_ChangeAvatar.Click += btn_ChangeAvatar_Click;
             // 
             // label1
             // 
@@ -108,6 +109,7 @@
             btn_SignOut.TabIndex = 6;
             btn_SignOut.Text = "Đăng xuất";
             btn_SignOut.UseVisualStyleBackColor = true;
+            btn_SignOut.Click += btn_SignOut_Click;
             // 
             // btn_ChangeIngameName
             // 
@@ -118,6 +120,7 @@
             btn_ChangeIngameName.Size = new Size(39, 31);
             btn_ChangeIngameName.TabIndex = 7;
             btn_ChangeIngameName.UseVisualStyleBackColor = true;
+            btn_ChangeIngameName.Click += btn_ChangeIngameName_Click;
             // 
             // btn_Back
             // 

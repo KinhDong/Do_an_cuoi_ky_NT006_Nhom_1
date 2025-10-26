@@ -1,17 +1,10 @@
-﻿using Firebase.Auth;
-using Firebase.Auth.Providers;
-using Firebase.Database;
-using Firebase.Database.Query;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Reactive.Linq;
-using System.Security.Cryptography;
+using System.Drawing;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace NT106
 {
@@ -19,277 +12,237 @@ namespace NT106
     {
         public static string Uid { get; private set; }
         public static string UserName { get; set; }
-        public static string Email { get; set; }
         public static string InGameName { get; set; }
         public static long Money { get; set; }
         public static Image Avatar { get; set; }
+        public static string IdToken { get; private set; }
 
-        // === CẤU HÌNH FIREBASE ===
-        private const string DatabaseUrl = "https://nt106-cf479-default-rtdb.firebaseio.com";
         private const string ApiKey = "AIzaSyD9_ECO_L-ex-4Iy_FkkstF8c6J2qaaW9Q";
-
-        private static FirebaseClient firebaseClient = new FirebaseClient(DatabaseUrl);
-        private static readonly string AuthDomain = "nt106-cf479.firebaseapp.com";
-
+        private const string DatabaseUrl = "https://nt106-cf479-default-rtdb.firebaseio.com/";
+        private static readonly HttpClient http = new HttpClient();
         private static readonly CloudinaryHelper cloudinary = new CloudinaryHelper();
 
-        private static readonly FirebaseAuthConfig authConfig = new FirebaseAuthConfig
-        {
-            ApiKey = ApiKey,
-            AuthDomain = AuthDomain,
-            Providers = new FirebaseAuthProvider[]
-            {
-                new EmailProvider() // Cho phép đăng nhập bằng Email/Password
-            }
-        };
-        private static readonly FirebaseAuthClient authClient = new FirebaseAuthClient(authConfig);
-        
-        // Đăng kí bằng Email + Username + Password and Confirm Password
+
+        // Đăng ký
         public static async Task<bool> RegisterAsync(string username, string email, string password, string confirm)
         {
-            try
+            if (password != confirm) throw new Exception("Mật khẩu xác nhận không khớp!");
+
+            // Kiểm tra username đã tồn tại chưa
+            var check = await http.GetAsync($"{DatabaseUrl}Usernames/{username}.json");
+            if (check.IsSuccessStatusCode && check.Content.ReadAsStringAsync().Result.Contains("@"))
+                throw new Exception("Tên tài khoản đã tồn tại!");
+
+            // Tạo tài khoản Auth
+            var payload = new
             {
-                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email) ||
-                    string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirm))
-                    throw new Exception("Vui lòng điền đầy đủ thông tin!");
+                email,
+                password,
+                returnSecureToken = true
+            };
 
-                if (password != confirm)
-                    throw new Exception("Mật khẩu xác nhận không khớp!");
+            var res = await http.PostAsync(
+                $"https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={ApiKey}",
+                new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json"));
 
-                // Kiểm tra username đã tồn tại chưa
-                var checkUsername = await firebaseClient
-                    .Child("Usernames")
-                    .Child(username)
-                    .OnceSingleAsync<string>();
+            if (!res.IsSuccessStatusCode)
+                throw new Exception("Không thể đăng ký! Email có thể đã được sử dụng.");
 
-                if (!string.IsNullOrEmpty(checkUsername))
-                    throw new Exception("Tên tài khoản đã tồn tại!");
+            var json = JsonConvert.DeserializeObject<dynamic>(await res.Content.ReadAsStringAsync());
+            string newUid = json.localId;
+            string newIdToken = json.idToken;
 
-                // Tạo người dùng Firebase
-                var credential = await authClient.CreateUserWithEmailAndPasswordAsync(email, password);
-                var user = credential.User;
+            // Lưu username -> email (public)
+            await http.PutAsync($"{DatabaseUrl}Usernames/{username}.json?auth={newIdToken}",
+                new StringContent(JsonConvert.SerializeObject(email)));
 
-                // Lưu thông tin username -> email
-                await firebaseClient
-                    .Child("Usernames")
-                    .Child(username)
-                    .PutAsync($"\"{email}\"");
-
-                // Lưu thông tin người dùng vào Realtime Database
-                await firebaseClient
-                    .Child("Users")
-                    .Child(user.Uid)
-                    .PutAsync(new
-                    {
-                        Username = username,
-                        Email = email,
-                        InGameName = username,
-                        Money = 1000,
-                        isLoggedIn = false
-                    });
-
-                // Tải lên ảnh đại diện mặc định
-                cloudinary.CopyImage(user.Uid);
-
-                // Gửi email xác minh qua REST API
-                string idToken = await user.GetIdTokenAsync();
-                using (var client = new HttpClient())
-                {
-                    var content = new
-                    {
-                        requestType = "VERIFY_EMAIL",
-                        idToken = idToken
-                    };
-
-                    var response = await client.PostAsync(
-                        $"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={ApiKey}",
-                        new StringContent(System.Text.Json.JsonSerializer.Serialize(content), Encoding.UTF8, "application/json")
-                    );
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        throw new Exception("Không thể gửi email xác minh. Vui lòng thử lại sau.");
-                    }
-                }
-
-                Console.WriteLine($"Đã gửi email xác minh đến: {email}");
-
-                return true;
-            }
-            catch (FirebaseAuthException ex)
+            // Gửi email xác minh
+            var verifyPayload = new
             {
-                Console.WriteLine($"Lỗi FirebaseAuth: {ex.Reason}");
-                throw new Exception("Không thể đăng ký tài khoản! Email có thể đã được sử dụng.");
-            }
-            catch (Exception ex)
+                requestType = "VERIFY_EMAIL",
+                idToken = newIdToken
+            };
+
+            var verifyResponse = await http.PostAsync(
+                $"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={ApiKey}",
+                new StringContent(JsonConvert.SerializeObject(verifyPayload), Encoding.UTF8, "application/json"));
+
+            if (!verifyResponse.IsSuccessStatusCode)
             {
-                Console.WriteLine($"Lỗi đăng ký: {ex.Message}");
-                throw;
+                Console.WriteLine($"[Firebase Verify Email Error]: {await verifyResponse.Content.ReadAsStringAsync()}");
+                throw new Exception("Không thể gửi email xác minh.");
             }
+
+            // THÔNG BÁO: "Đăng ký thành công! Vui lòng kiểm tra email để xác minh tài khoản."
+            return true;
         }
 
-        // ====== Đăng nhập bằng username + password ======
+        // Đăng nhập 
         public static async Task<bool> LoginAsync(string username, string password)
         {
-            try
+            // Lấy email
+            var emailRes = await http.GetStringAsync($"{DatabaseUrl}Usernames/{username}.json");
+            if (string.IsNullOrWhiteSpace(emailRes) || !emailRes.Contains("@"))
+                throw new Exception("Không tìm thấy tài khoản!");
+
+            string email = JsonConvert.DeserializeObject<string>(emailRes);
+
+            // Đăng nhập
+            var payload = new
             {
-                // Lấy email từ username mapping
-                string email = await firebaseClient
-                    .Child("Usernames")
-                    .Child(username)
-                    .OnceSingleAsync<string>();
+                email,
+                password,
+                returnSecureToken = true
+            };
+            var res = await http.PostAsync(
+                $"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={ApiKey}",
+                new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json"));
 
-                if (string.IsNullOrEmpty(email))
-                    throw new Exception("Không tìm thấy tài khoản!");
+            if (!res.IsSuccessStatusCode)
+                throw new Exception("Sai tài khoản hoặc mật khẩu!");
 
-                // Đăng nhập qua Firebase Authentication
-                var credential = await authClient.SignInWithEmailAndPasswordAsync(email, password);
-                var user = credential.User;
-                string uid = user.Uid;
+            var json = JsonConvert.DeserializeObject<dynamic>(await res.Content.ReadAsStringAsync());
+            IdToken = json.idToken;
+            Uid = json.localId;
 
-                if (!user.Info.IsEmailVerified)
-                    throw new Exception("Vui lòng xác minh email trước khi đăng nhập!");
+            // Kiểm tra xác minh email qua accounts:lookup
+            var lookupPayload = new { idToken = (string)json.idToken };
+            var lookupRes = await http.PostAsync(
+                $"https://identitytoolkit.googleapis.com/v1/accounts:lookup?key={ApiKey}",
+                new StringContent(JsonConvert.SerializeObject(lookupPayload), Encoding.UTF8, "application/json"));
 
-                // Lấy thông tin user từ Realtime Database
-                var userData = await firebaseClient
-                    .Child("Users")
-                    .Child(uid)
-                    .OnceSingleAsync<dynamic>();
+            if (!lookupRes.IsSuccessStatusCode)
+                throw new Exception("Không thể kiểm tra trạng thái xác minh email!");
 
-                // Không cho đăng nhập khi đang đăng nhập ở nơi khác
-                bool isLoggedIn = userData.isLoggedIn;
-                if (isLoggedIn)
-                    throw new Exception("Tài khoản này đang đăng nhập ở thiết bị khác!");
+            var lookupJson = JsonConvert.DeserializeObject<dynamic>(await lookupRes.Content.ReadAsStringAsync());
+            bool verified = lookupJson.users[0].emailVerified ?? false;
 
-                // Đánh dấu đang đăng nhập
-                await firebaseClient
-                    .Child("Users")
-                    .Child(uid)
-                    .PatchAsync(new { isLoggedIn = true }); // Đánh dấu đang đăng nhập
+            if (!verified)
+                throw new Exception("Vui lòng xác minh email trước khi đăng nhập!");
 
-                // Lưu thông tin vào UserClass
-                Uid = uid;
+            // Kiểm tra và tạo user data nếu chưa tồn tại
+            var userCheck = await http.GetAsync($"{DatabaseUrl}Users/{Uid}.json?auth={IdToken}");
+            string userDataStr = await userCheck.Content.ReadAsStringAsync();
+
+            if (userDataStr == "null") // User data chưa tồn tại
+            {
+                // Tạo user data mới
+                var userInfo = new
+                {
+                    Username = username,
+                    InGameName = username,
+                    Money = 1000,
+                    isLoggedIn = true
+                };
+
+                var createUserRes = await http.PutAsync(
+                    $"{DatabaseUrl}Users/{Uid}.json?auth={IdToken}",
+                    new StringContent(JsonConvert.SerializeObject(userInfo), Encoding.UTF8, "application/json"));
+
+                if (!createUserRes.IsSuccessStatusCode)
+                    throw new Exception("Không thể tạo dữ liệu người dùng!");
+
+                // Copy ảnh đại diện mặc định
+                cloudinary.CopyImage(Uid);
+
+                // Gán giá trị mặc định
                 UserName = username;
-                Email = email;
+                InGameName = username;
+                Money = 1000;
+                Avatar = await cloudinary.GetImageAsync($"avatar/{Uid}");
+            }
+
+            else
+            {
+                // User data đã tồn tại
+                var userData = JsonConvert.DeserializeObject<dynamic>(userDataStr);
+
+                if (userData.isLoggedIn == true)
+                    throw new Exception("Tài khoản đang được đăng nhập ở nơi khác!");
+
+                // Cập nhật trạng thái đăng nhập
+                await http.PatchAsync(
+                    $"{DatabaseUrl}Users/{Uid}.json?auth={IdToken}",
+                    new StringContent("{\"isLoggedIn\":true}", Encoding.UTF8, "application/json"));
+
+                UserName = username;
                 InGameName = userData.InGameName;
                 Money = userData.Money;
                 Avatar = await cloudinary.GetImageAsync($"avatar/{Uid}");
+            }
 
-                return true;
-            }
-            catch (FirebaseAuthException)
-            {
-                throw new Exception("Sai mật khẩu hoặc tài khoản không tồn tại!");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi đăng nhập: {ex.Message}");
-                return false;
-            }
+            return true;
         }
 
-
-        // ====== Đăng xuất ======
+        // Đăng xuất 
         public static async Task LogoutAsync()
         {
             if (string.IsNullOrEmpty(Uid)) return;
 
-            try
-            {
-                // Cập nhật trạng thái trong database
-                await firebaseClient
-                    .Child("Users")
-                    .Child(Uid)
-                    .PatchAsync(new { isLoggedIn = false });
+            await http.PatchAsync($"{DatabaseUrl}Users/{Uid}.json?auth={IdToken}",
+                new StringContent("{\"isLoggedIn\":false}", Encoding.UTF8, "application/json"));
 
-                // Xóa trạng thái đăng nhập Firebase
-                authClient.SignOut();
-
-                // Xóa thông tin local
-                Uid = UserName = Email = InGameName = null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Lỗi đăng xuất: {ex.Message}");
-            }
+            Uid = UserName = InGameName = null;
+            IdToken = null;
         }
 
-        //====== Lấy Email từ username ======
+        // Lấy email từ username
         public static async Task<string> GetEmailFromUsernameAsync(string username)
         {
-            try
-            {
-
-                string email = await firebaseClient
-                    .Child("Usernames")
-                    .Child(username)
-                    .OnceSingleAsync<string>();
-                if (string.IsNullOrEmpty(email))
-                    throw new Exception("Không tìm thấy tài khoản!");
-                return email;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Lỗi khi lấy email từ username: {ex.Message}");
-                throw;
-            }
+            string emailRes = await http.GetStringAsync($"{DatabaseUrl}Usernames/{username}.json");
+            return JsonConvert.DeserializeObject<string>(emailRes);
         }
 
-        // Quên và lấy lại mật khẩu
+        // Gửi reset password
         public static async Task<bool> SendPasswordResetEmailAsync(string email)
         {
-            try
+            if (string.IsNullOrWhiteSpace(email))
+                throw new ArgumentException("Email không được để trống!");
+
+            var payload = new
             {
-                //Endpoint API của Firebase để gửi email đặt lại mật khẩu
-                string url = $"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={ApiKey}";
-                var data = new
-                {
-                    requestType = "PASSWORD_RESET",
-                    email = email
-                };
+                requestType = "PASSWORD_RESET",
+                email = email
+            };
 
-                // Chuyển đổi dữ liệu thành JSON
-                string json = JsonConvert.SerializeObject(data);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var content = new StringContent(
+                JsonConvert.SerializeObject(payload),
+                Encoding.UTF8,
+                "application/json"
+            );
 
-                // Gửi yêu cầu POST đến Firebase
-                using (HttpClient client = new HttpClient())
-                {
-                    // Gửi yêu cầu
-                    HttpResponseMessage response = await client.PostAsync(url, content);
-                    string result = await response.Content.ReadAsStringAsync();
+            var res = await http.PostAsync(
+                $"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={ApiKey}",
+                content
+            );
 
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Console.WriteLine($"Lỗi từ Firebase: {result}");
-                        throw new Exception("Không thể gửi email đặt lại mật khẩu!");
-                    }
-                    return true;
-                }
-            }
-            catch (Exception ex)
+            string responseBody = await res.Content.ReadAsStringAsync();
+
+            if (!res.IsSuccessStatusCode)
             {
-                Console.WriteLine($"Lỗi khi gửi email đặt lại mật khẩu: {ex.Message}");
-                throw;
+                Console.WriteLine($"[Firebase Reset Password Error]: {responseBody}");
+                throw new Exception("Không thể gửi email khôi phục mật khẩu! Vui lòng kiểm tra lại email.");
             }
+
+            return true;
         }
 
-        // Thay đổi ảnh đại diện
+
+        // Đổi avatar
         public static void ChangeAvatar(string filePath)
         {
             cloudinary.UploadImage(filePath, Uid);
             Avatar = Image.FromFile(filePath);
         }
 
-        // Thay đổi tên trong game
-        public static async void ChangeInGameName(string newName)
+        // Đổi tên trong game
+        public static async Task ChangeInGameName(string newName)
         {
-            await UserClass.firebaseClient
-                    .Child("Users")
-                    .Child(UserClass.Uid)
-                    .PatchAsync(new { InGameName = newName});
-
-            UserClass.InGameName = newName;
+            await http.PatchAsync(
+                $"{DatabaseUrl}Users/{Uid}.json?auth={IdToken}",
+                new StringContent("{\"InGameName\":\"" + newName + "\"}", Encoding.UTF8, "application/json")
+            );
+            InGameName = newName;
         }
     }
 }

@@ -49,5 +49,17 @@ namespace NT106
                 MessageBox.Show("Lỗi" + ex.Message);
             }
         }
+
+        private void btn_Back_Click(object sender, EventArgs e)
+        {
+            SigninBJ f = new SigninBJ();
+
+            // Form mới xuất hiện đúng vị trí form cũ
+            f.StartPosition = FormStartPosition.Manual;
+            f.Location = this.Location;
+            f.Show();
+
+            this.Hide();
+        }
     }
 }
