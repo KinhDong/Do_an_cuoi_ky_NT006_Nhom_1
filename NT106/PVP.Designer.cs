@@ -35,7 +35,6 @@
             pictureBox5 = new PictureBox();
             pictureBox6 = new PictureBox();
             pictureBox7 = new PictureBox();
-            pictureBox8 = new PictureBox();
             pictureBox9 = new PictureBox();
             label1 = new Label();
             textBox1 = new TextBox();
@@ -50,7 +49,6 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox9).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox10).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox11).BeginInit();
@@ -83,7 +81,7 @@
             // 
             pictureBox4.BackColor = Color.White;
             pictureBox4.Image = (Image)resources.GetObject("pictureBox4.Image");
-            pictureBox4.Location = new Point(32, 399);
+            pictureBox4.Location = new Point(95, 521);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(91, 77);
             pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -94,7 +92,7 @@
             // 
             pictureBox5.BackColor = Color.White;
             pictureBox5.Image = (Image)resources.GetObject("pictureBox5.Image");
-            pictureBox5.Location = new Point(1106, 399);
+            pictureBox5.Location = new Point(1051, 521);
             pictureBox5.Name = "pictureBox5";
             pictureBox5.Size = new Size(91, 77);
             pictureBox5.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -105,7 +103,7 @@
             // 
             pictureBox6.BackColor = Color.White;
             pictureBox6.Image = (Image)resources.GetObject("pictureBox6.Image");
-            pictureBox6.Location = new Point(188, 99);
+            pictureBox6.Location = new Point(95, 117);
             pictureBox6.Name = "pictureBox6";
             pictureBox6.Size = new Size(91, 77);
             pictureBox6.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -116,29 +114,18 @@
             // 
             pictureBox7.BackColor = Color.White;
             pictureBox7.Image = (Image)resources.GetObject("pictureBox7.Image");
-            pictureBox7.Location = new Point(967, 99);
+            pictureBox7.Location = new Point(1014, 95);
             pictureBox7.Name = "pictureBox7";
             pictureBox7.Size = new Size(91, 77);
             pictureBox7.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox7.TabIndex = 6;
             pictureBox7.TabStop = false;
             // 
-            // pictureBox8
-            // 
-            pictureBox8.BackColor = Color.White;
-            pictureBox8.Image = (Image)resources.GetObject("pictureBox8.Image");
-            pictureBox8.Location = new Point(828, 571);
-            pictureBox8.Name = "pictureBox8";
-            pictureBox8.Size = new Size(91, 77);
-            pictureBox8.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox8.TabIndex = 7;
-            pictureBox8.TabStop = false;
-            // 
             // pictureBox9
             // 
             pictureBox9.BackColor = Color.White;
             pictureBox9.Image = (Image)resources.GetObject("pictureBox9.Image");
-            pictureBox9.Location = new Point(320, 571);
+            pictureBox9.Location = new Point(577, 571);
             pictureBox9.Name = "pictureBox9";
             pictureBox9.Size = new Size(91, 77);
             pictureBox9.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -218,7 +205,7 @@
             button1.TabIndex = 16;
             button1.UseVisualStyleBackColor = false;
             // 
-            // Choivoing
+            // PVP
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -231,14 +218,13 @@
             Controls.Add(textBox1);
             Controls.Add(label1);
             Controls.Add(pictureBox9);
-            Controls.Add(pictureBox8);
             Controls.Add(pictureBox7);
             Controls.Add(pictureBox6);
             Controls.Add(pictureBox5);
             Controls.Add(pictureBox4);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
-            Name = "Choivoing";
+            Name = "PVP";
             Text = "Choivoing";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
@@ -246,7 +232,6 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox9).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox10).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox11).EndInit();
@@ -264,7 +249,6 @@
         private PictureBox pictureBox5;
         private PictureBox pictureBox6;
         private PictureBox pictureBox7;
-        private PictureBox pictureBox8;
         private PictureBox pictureBox9;
         private Label label1;
         private TextBox textBox1;

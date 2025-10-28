@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using NT106;
+using NT106.Models;
 
 namespace NT106
 {

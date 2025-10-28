@@ -34,7 +34,6 @@
             checkBox3 = new CheckBox();
             checkBox4 = new CheckBox();
             checkBox5 = new CheckBox();
-            checkBox6 = new CheckBox();
             checkBox8 = new CheckBox();
             checkBox9 = new CheckBox();
             checkBox10 = new CheckBox();
@@ -83,7 +82,7 @@
             // 
             checkBox4.AutoSize = true;
             checkBox4.ForeColor = Color.FromArgb(192, 0, 0);
-            checkBox4.Location = new Point(252, 140);
+            checkBox4.Location = new Point(366, 140);
             checkBox4.Name = "checkBox4";
             checkBox4.Size = new Size(49, 29);
             checkBox4.TabIndex = 3;
@@ -94,23 +93,12 @@
             // 
             checkBox5.AutoSize = true;
             checkBox5.ForeColor = Color.FromArgb(192, 0, 0);
-            checkBox5.Location = new Point(502, 140);
+            checkBox5.Location = new Point(616, 140);
             checkBox5.Name = "checkBox5";
             checkBox5.Size = new Size(49, 29);
             checkBox5.TabIndex = 4;
             checkBox5.Text = "6";
             checkBox5.UseVisualStyleBackColor = true;
-            // 
-            // checkBox6
-            // 
-            checkBox6.AutoSize = true;
-            checkBox6.ForeColor = Color.FromArgb(192, 0, 0);
-            checkBox6.Location = new Point(717, 140);
-            checkBox6.Name = "checkBox6";
-            checkBox6.Size = new Size(49, 29);
-            checkBox6.TabIndex = 5;
-            checkBox6.Text = "7";
-            checkBox6.UseVisualStyleBackColor = true;
             // 
             // checkBox8
             // 
@@ -153,7 +141,7 @@
             // 
             btn_CreateRoom.BackColor = Color.Lime;
             btn_CreateRoom.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btn_CreateRoom.Location = new Point(282, 569);
+            btn_CreateRoom.Location = new Point(652, 566);
             btn_CreateRoom.Name = "btn_CreateRoom";
             btn_CreateRoom.Size = new Size(112, 34);
             btn_CreateRoom.TabIndex = 12;
@@ -164,7 +152,7 @@
             // 
             btn_Back.BackColor = Color.Lime;
             btn_Back.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btn_Back.Location = new Point(616, 566);
+            btn_Back.Location = new Point(268, 566);
             btn_Back.Name = "btn_Back";
             btn_Back.Size = new Size(112, 34);
             btn_Back.TabIndex = 13;
@@ -178,7 +166,6 @@
             groupBox1.Controls.Add(checkBox4);
             groupBox1.Controls.Add(checkBox5);
             groupBox1.Controls.Add(checkBox2);
-            groupBox1.Controls.Add(checkBox6);
             groupBox1.Controls.Add(checkBox3);
             groupBox1.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             groupBox1.ForeColor = Color.DarkRed;
@@ -231,7 +218,6 @@
         private CheckBox checkBox3;
         private CheckBox checkBox4;
         private CheckBox checkBox5;
-        private CheckBox checkBox6;
         private CheckBox checkBox8;
         private CheckBox checkBox9;
         private CheckBox checkBox10;
