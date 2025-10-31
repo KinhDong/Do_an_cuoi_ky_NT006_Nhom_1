@@ -1,6 +1,6 @@
 ﻿namespace NT106
 {
-    partial class PVP
+    partial class PlayAsPlayer
     {
         /// <summary>
         /// Required designer variable.
@@ -28,23 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PVP));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayAsPlayer));
             pictureBox1 = new PictureBox();
-            pictureBox2 = new PictureBox();
+            pictureBox_Bookmaker = new PictureBox();
             pictureBox4 = new PictureBox();
             pictureBox5 = new PictureBox();
             pictureBox6 = new PictureBox();
             pictureBox7 = new PictureBox();
             pictureBox9 = new PictureBox();
             label1 = new Label();
-            textBox1 = new TextBox();
+            tb_RoomCode = new TextBox();
             pictureBox10 = new PictureBox();
             pictureBox11 = new PictureBox();
             pictureBox13 = new PictureBox();
             pictureBox14 = new PictureBox();
-            button1 = new Button();
+            btn_Setting = new Button();
+            btn_LeaveRoom = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_Bookmaker).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
@@ -66,16 +67,16 @@
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
-            // pictureBox2
+            // pictureBox_Bookmaker
             // 
-            pictureBox2.BackColor = Color.White;
-            pictureBox2.Image = (Image)resources.GetObject("pictureBox2.Image");
-            pictureBox2.Location = new Point(577, 67);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(91, 77);
-            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox2.TabIndex = 1;
-            pictureBox2.TabStop = false;
+            pictureBox_Bookmaker.BackColor = Color.White;
+            pictureBox_Bookmaker.Image = (Image)resources.GetObject("pictureBox_Bookmaker.Image");
+            pictureBox_Bookmaker.Location = new Point(577, 67);
+            pictureBox_Bookmaker.Name = "pictureBox_Bookmaker";
+            pictureBox_Bookmaker.Size = new Size(91, 77);
+            pictureBox_Bookmaker.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox_Bookmaker.TabIndex = 1;
+            pictureBox_Bookmaker.TabStop = false;
             // 
             // pictureBox4
             // 
@@ -144,15 +145,15 @@
             label1.TabIndex = 9;
             label1.Text = "Mã phòng: ";
             // 
-            // textBox1
+            // tb_RoomCode
             // 
-            textBox1.BackColor = SystemColors.MenuText;
-            textBox1.BorderStyle = BorderStyle.None;
-            textBox1.ForeColor = SystemColors.HighlightText;
-            textBox1.Location = new Point(129, 19);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(150, 24);
-            textBox1.TabIndex = 10;
+            tb_RoomCode.BackColor = SystemColors.MenuText;
+            tb_RoomCode.BorderStyle = BorderStyle.None;
+            tb_RoomCode.ForeColor = SystemColors.HighlightText;
+            tb_RoomCode.Location = new Point(129, 19);
+            tb_RoomCode.Name = "tb_RoomCode";
+            tb_RoomCode.Size = new Size(150, 24);
+            tb_RoomCode.TabIndex = 10;
             // 
             // pictureBox10
             // 
@@ -194,40 +195,51 @@
             pictureBox14.TabIndex = 15;
             pictureBox14.TabStop = false;
             // 
-            // button1
+            // btn_Setting
             // 
-            button1.BackColor = SystemColors.ActiveCaptionText;
-            button1.BackgroundImage = Properties.Resources.Setting_Icon;
-            button1.BackgroundImageLayout = ImageLayout.Stretch;
-            button1.Location = new Point(1153, 19);
-            button1.Name = "button1";
-            button1.Size = new Size(63, 57);
-            button1.TabIndex = 16;
-            button1.UseVisualStyleBackColor = false;
+            btn_Setting.BackColor = SystemColors.ActiveCaptionText;
+            btn_Setting.BackgroundImage = Properties.Resources.Setting_Icon;
+            btn_Setting.BackgroundImageLayout = ImageLayout.Stretch;
+            btn_Setting.Location = new Point(1153, 19);
+            btn_Setting.Name = "btn_Setting";
+            btn_Setting.Size = new Size(63, 57);
+            btn_Setting.TabIndex = 16;
+            btn_Setting.UseVisualStyleBackColor = false;
             // 
-            // PVP
+            // btn_LeaveRoom
+            // 
+            btn_LeaveRoom.BackColor = SystemColors.ActiveCaption;
+            btn_LeaveRoom.Location = new Point(14, 662);
+            btn_LeaveRoom.Name = "btn_LeaveRoom";
+            btn_LeaveRoom.Size = new Size(112, 34);
+            btn_LeaveRoom.TabIndex = 17;
+            btn_LeaveRoom.Text = "Rời phòng";
+            btn_LeaveRoom.UseVisualStyleBackColor = false;
+            // 
+            // PlayAsPlayer
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1243, 708);
-            Controls.Add(button1);
+            Controls.Add(btn_LeaveRoom);
+            Controls.Add(btn_Setting);
             Controls.Add(pictureBox14);
             Controls.Add(pictureBox13);
             Controls.Add(pictureBox11);
             Controls.Add(pictureBox10);
-            Controls.Add(textBox1);
+            Controls.Add(tb_RoomCode);
             Controls.Add(label1);
             Controls.Add(pictureBox9);
             Controls.Add(pictureBox7);
             Controls.Add(pictureBox6);
             Controls.Add(pictureBox5);
             Controls.Add(pictureBox4);
-            Controls.Add(pictureBox2);
+            Controls.Add(pictureBox_Bookmaker);
             Controls.Add(pictureBox1);
-            Name = "PVP";
+            Name = "PlayAsPlayer";
             Text = "Choivoing";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_Bookmaker).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
@@ -244,18 +256,19 @@
         #endregion
 
         private PictureBox pictureBox1;
-        private PictureBox pictureBox2;
+        private PictureBox pictureBox_Bookmaker;
         private PictureBox pictureBox4;
         private PictureBox pictureBox5;
         private PictureBox pictureBox6;
         private PictureBox pictureBox7;
         private PictureBox pictureBox9;
         private Label label1;
-        private TextBox textBox1;
+        private TextBox tb_RoomCode;
         private PictureBox pictureBox10;
         private PictureBox pictureBox11;
         private PictureBox pictureBox13;
         private PictureBox pictureBox14;
-        private Button button1;
+        private Button btn_Setting;
+        private Button btn_LeaveRoom;
     }
 }

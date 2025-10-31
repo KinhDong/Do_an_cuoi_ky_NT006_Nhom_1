@@ -1,34 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Compile Update="Account.cs">
+    <Compile Update="Forms\Account.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="CreateRoom.cs">
+    <Compile Update="Forms\CreateRoom.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="ForgetPassword.cs">
+    <Compile Update="Forms\ForgetPassword.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="HowToPlay.cs">
+    <Compile Update="Forms\HowToPlay.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Room.cs">
+    <Compile Update="Forms\PLayAsBookmaker.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="PVP.cs">
+    <Compile Update="Forms\Room.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Menu.cs">
+    <Compile Update="Forms\PlayAsPlayer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Setting.cs">
+    <Compile Update="Forms\Menu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="SigninBJ.cs">
+    <Compile Update="Forms\Setting.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="SignupBJ.cs">
+    <Compile Update="Forms\SigninBJ.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\SignupBJ.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>

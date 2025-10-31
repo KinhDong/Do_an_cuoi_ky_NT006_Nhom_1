@@ -28,56 +28,56 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
-            button4 = new Button();
+            btn_PVP = new Button();
+            btn_PVE = new Button();
+            btn_HowToPlay = new Button();
+            btn_Exit = new Button();
             btn_Account = new Button();
             btn_Setting = new Button();
-            textBox1 = new TextBox();
+            tb_Money = new TextBox();
             pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
-            // button1
+            // btn_PVP
             // 
-            button1.Location = new Point(359, 137);
-            button1.Margin = new Padding(4, 5, 4, 5);
-            button1.Name = "button1";
-            button1.Size = new Size(321, 87);
-            button1.TabIndex = 0;
-            button1.Text = "Chơi với người ";
-            button1.UseVisualStyleBackColor = true;
+            btn_PVP.Location = new Point(359, 137);
+            btn_PVP.Margin = new Padding(4, 5, 4, 5);
+            btn_PVP.Name = "btn_PVP";
+            btn_PVP.Size = new Size(321, 87);
+            btn_PVP.TabIndex = 0;
+            btn_PVP.Text = "Chơi với người ";
+            btn_PVP.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btn_PVE
             // 
-            button2.Location = new Point(359, 234);
-            button2.Margin = new Padding(4, 5, 4, 5);
-            button2.Name = "button2";
-            button2.Size = new Size(321, 88);
-            button2.TabIndex = 1;
-            button2.Text = "Chơi với máy";
-            button2.UseVisualStyleBackColor = true;
+            btn_PVE.Location = new Point(359, 234);
+            btn_PVE.Margin = new Padding(4, 5, 4, 5);
+            btn_PVE.Name = "btn_PVE";
+            btn_PVE.Size = new Size(321, 88);
+            btn_PVE.TabIndex = 1;
+            btn_PVE.Text = "Chơi với máy";
+            btn_PVE.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btn_HowToPlay
             // 
-            button3.Location = new Point(359, 330);
-            button3.Margin = new Padding(4, 5, 4, 5);
-            button3.Name = "button3";
-            button3.Size = new Size(321, 88);
-            button3.TabIndex = 2;
-            button3.Text = "Luật chơi ";
-            button3.UseVisualStyleBackColor = true;
+            btn_HowToPlay.Location = new Point(359, 330);
+            btn_HowToPlay.Margin = new Padding(4, 5, 4, 5);
+            btn_HowToPlay.Name = "btn_HowToPlay";
+            btn_HowToPlay.Size = new Size(321, 88);
+            btn_HowToPlay.TabIndex = 2;
+            btn_HowToPlay.Text = "Luật chơi ";
+            btn_HowToPlay.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // btn_Exit
             // 
-            button4.Location = new Point(359, 428);
-            button4.Margin = new Padding(4, 5, 4, 5);
-            button4.Name = "button4";
-            button4.Size = new Size(321, 88);
-            button4.TabIndex = 3;
-            button4.Text = "Thoát";
-            button4.UseVisualStyleBackColor = true;
+            btn_Exit.Location = new Point(359, 428);
+            btn_Exit.Margin = new Padding(4, 5, 4, 5);
+            btn_Exit.Name = "btn_Exit";
+            btn_Exit.Size = new Size(321, 88);
+            btn_Exit.TabIndex = 3;
+            btn_Exit.Text = "Thoát";
+            btn_Exit.UseVisualStyleBackColor = true;
             // 
             // btn_Account
             // 
@@ -102,13 +102,14 @@
             btn_Setting.TabIndex = 5;
             btn_Setting.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // tb_Money
             // 
-            textBox1.Location = new Point(80, 20);
-            textBox1.Margin = new Padding(4, 5, 4, 5);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(214, 31);
-            textBox1.TabIndex = 7;
+            tb_Money.Location = new Point(80, 20);
+            tb_Money.Margin = new Padding(4, 5, 4, 5);
+            tb_Money.Name = "tb_Money";
+            tb_Money.ReadOnly = true;
+            tb_Money.Size = new Size(214, 31);
+            tb_Money.TabIndex = 7;
             // 
             // pictureBox1
             // 
@@ -128,13 +129,13 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1024, 640);
             Controls.Add(pictureBox1);
-            Controls.Add(textBox1);
+            Controls.Add(tb_Money);
             Controls.Add(btn_Setting);
             Controls.Add(btn_Account);
-            Controls.Add(button4);
-            Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(btn_Exit);
+            Controls.Add(btn_HowToPlay);
+            Controls.Add(btn_PVE);
+            Controls.Add(btn_PVP);
             Margin = new Padding(4, 5, 4, 5);
             Name = "Menu";
             Text = "Menu";
@@ -146,13 +147,13 @@
 
         #endregion
 
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        private Button button4;
+        private Button btn_PVP;
+        private Button btn_PVE;
+        private Button btn_HowToPlay;
+        private Button btn_Exit;
         private Button btn_Account;
         private Button btn_Setting;
-        private TextBox textBox1;
+        private TextBox tb_Money;
         private PictureBox pictureBox1;
     }
 }

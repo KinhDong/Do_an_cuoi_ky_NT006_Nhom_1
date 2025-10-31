@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace NT106
+namespace NT106.Forms
 {
-    public partial class Room : Form
+    public partial class PLayAsBookmaker : Form
     {
-        public Room()
+        public PLayAsBookmaker()
         {
             InitializeComponent();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

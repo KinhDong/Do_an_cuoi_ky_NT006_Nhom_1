@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NT106.Forms;
+using NT106.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,21 +24,18 @@ namespace NT106
 
         private void Menu_Load(object sender, EventArgs e)
         {
-            
-
+            tb_Money.Text = UserClass.Money.ToString();
         }
 
         private void btn_Account_Click(object sender, EventArgs e)
         {
             // Mở form tài khoản
-            Account signinForm = new Account();
-            signinForm.StartPosition = FormStartPosition.Manual;
-            signinForm.Location = this.Location;
+            Account f = new Account();
+            f.StartPosition = FormStartPosition.Manual;
+            f.Location = this.Location;
 
-            signinForm.Show();
+            f.Show();
             this.Hide();
         }
-
-        
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NT106
+namespace NT106.Forms
 {
     public static class AllForm
     {
