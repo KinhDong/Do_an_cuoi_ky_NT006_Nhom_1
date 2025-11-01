@@ -37,5 +37,12 @@ namespace NT106
             f.Show();
             this.Hide();
         }
+
+        private void btn_PVP_Click(object sender, EventArgs e)
+        {
+            this.Hide(); // ẩn form chính
+            CreateRoom createRoomForm = new CreateRoom();
+            createRoomForm.ShowDialog(); // chờ người dùng tạo phòng xong
+        }
     }
 }
