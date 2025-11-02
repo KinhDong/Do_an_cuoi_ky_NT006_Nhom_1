@@ -67,8 +67,9 @@
             // tb_RoomCode
             // 
             tb_RoomCode.Location = new Point(90, 10);
-            tb_RoomCode.Margin = new Padding(2, 2, 2, 2);
+            tb_RoomCode.Margin = new Padding(2);
             tb_RoomCode.Name = "tb_RoomCode";
+            tb_RoomCode.ReadOnly = true;
             tb_RoomCode.Size = new Size(121, 27);
             tb_RoomCode.TabIndex = 1;
             // 
@@ -85,7 +86,7 @@
             // pictureBox1
             // 
             pictureBox1.Location = new Point(442, 394);
-            pictureBox1.Margin = new Padding(2, 2, 2, 2);
+            pictureBox1.Margin = new Padding(2);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(77, 67);
             pictureBox1.TabIndex = 3;
@@ -94,7 +95,7 @@
             // pictureBox2
             // 
             pictureBox2.Location = new Point(792, 78);
-            pictureBox2.Margin = new Padding(2, 2, 2, 2);
+            pictureBox2.Margin = new Padding(2);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(77, 67);
             pictureBox2.TabIndex = 4;
@@ -103,7 +104,7 @@
             // pictureBox3
             // 
             pictureBox3.Location = new Point(442, 51);
-            pictureBox3.Margin = new Padding(2, 2, 2, 2);
+            pictureBox3.Margin = new Padding(2);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(77, 67);
             pictureBox3.TabIndex = 5;
@@ -112,7 +113,7 @@
             // pictureBox4
             // 
             pictureBox4.Location = new Point(98, 78);
-            pictureBox4.Margin = new Padding(2, 2, 2, 2);
+            pictureBox4.Margin = new Padding(2);
             pictureBox4.Name = "pictureBox4";
             pictureBox4.Size = new Size(77, 67);
             pictureBox4.TabIndex = 6;
@@ -121,7 +122,7 @@
             // pictureBox5
             // 
             pictureBox5.Location = new Point(98, 371);
-            pictureBox5.Margin = new Padding(2, 2, 2, 2);
+            pictureBox5.Margin = new Padding(2);
             pictureBox5.Name = "pictureBox5";
             pictureBox5.Size = new Size(77, 67);
             pictureBox5.TabIndex = 7;
@@ -130,7 +131,7 @@
             // pictureBox6
             // 
             pictureBox6.Location = new Point(792, 371);
-            pictureBox6.Margin = new Padding(2, 2, 2, 2);
+            pictureBox6.Margin = new Padding(2);
             pictureBox6.Name = "pictureBox6";
             pictureBox6.Size = new Size(77, 67);
             pictureBox6.TabIndex = 8;
@@ -139,7 +140,7 @@
             // tb_BookermakerMoney
             // 
             tb_BookermakerMoney.Location = new Point(458, 365);
-            tb_BookermakerMoney.Margin = new Padding(2, 2, 2, 2);
+            tb_BookermakerMoney.Margin = new Padding(2);
             tb_BookermakerMoney.Name = "tb_BookermakerMoney";
             tb_BookermakerMoney.ReadOnly = true;
             tb_BookermakerMoney.Size = new Size(78, 27);
@@ -150,7 +151,7 @@
             pictureBox7.BackgroundImage = Properties.Resources.money_Icon;
             pictureBox7.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox7.Location = new Point(413, 365);
-            pictureBox7.Margin = new Padding(2, 2, 2, 2);
+            pictureBox7.Margin = new Padding(2);
             pictureBox7.Name = "pictureBox7";
             pictureBox7.Size = new Size(40, 22);
             pictureBox7.TabIndex = 10;
@@ -161,7 +162,7 @@
             pictureBox8.BackgroundImage = Properties.Resources.money_Icon;
             pictureBox8.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox8.Location = new Point(766, 342);
-            pictureBox8.Margin = new Padding(2, 2, 2, 2);
+            pictureBox8.Margin = new Padding(2);
             pictureBox8.Name = "pictureBox8";
             pictureBox8.Size = new Size(40, 22);
             pictureBox8.TabIndex = 12;
@@ -170,7 +171,7 @@
             // textBox1
             // 
             textBox1.Location = new Point(811, 342);
-            textBox1.Margin = new Padding(2, 2, 2, 2);
+            textBox1.Margin = new Padding(2);
             textBox1.Name = "textBox1";
             textBox1.ReadOnly = true;
             textBox1.Size = new Size(78, 27);
@@ -181,7 +182,7 @@
             pictureBox9.BackgroundImage = Properties.Resources.money_Icon;
             pictureBox9.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox9.Location = new Point(766, 48);
-            pictureBox9.Margin = new Padding(2, 2, 2, 2);
+            pictureBox9.Margin = new Padding(2);
             pictureBox9.Name = "pictureBox9";
             pictureBox9.Size = new Size(40, 22);
             pictureBox9.TabIndex = 14;
@@ -190,7 +191,7 @@
             // textBox2
             // 
             textBox2.Location = new Point(811, 48);
-            textBox2.Margin = new Padding(2, 2, 2, 2);
+            textBox2.Margin = new Padding(2);
             textBox2.Name = "textBox2";
             textBox2.ReadOnly = true;
             textBox2.Size = new Size(78, 27);
@@ -201,7 +202,7 @@
             pictureBox10.BackgroundImage = Properties.Resources.money_Icon;
             pictureBox10.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox10.Location = new Point(413, 22);
-            pictureBox10.Margin = new Padding(2, 2, 2, 2);
+            pictureBox10.Margin = new Padding(2);
             pictureBox10.Name = "pictureBox10";
             pictureBox10.Size = new Size(40, 22);
             pictureBox10.TabIndex = 16;
@@ -210,7 +211,7 @@
             // textBox3
             // 
             textBox3.Location = new Point(458, 22);
-            textBox3.Margin = new Padding(2, 2, 2, 2);
+            textBox3.Margin = new Padding(2);
             textBox3.Name = "textBox3";
             textBox3.ReadOnly = true;
             textBox3.Size = new Size(78, 27);
@@ -221,7 +222,7 @@
             pictureBox11.BackgroundImage = Properties.Resources.money_Icon;
             pictureBox11.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox11.Location = new Point(78, 342);
-            pictureBox11.Margin = new Padding(2, 2, 2, 2);
+            pictureBox11.Margin = new Padding(2);
             pictureBox11.Name = "pictureBox11";
             pictureBox11.Size = new Size(40, 22);
             pictureBox11.TabIndex = 18;
@@ -230,7 +231,7 @@
             // textBox4
             // 
             textBox4.Location = new Point(123, 342);
-            textBox4.Margin = new Padding(2, 2, 2, 2);
+            textBox4.Margin = new Padding(2);
             textBox4.Name = "textBox4";
             textBox4.ReadOnly = true;
             textBox4.Size = new Size(78, 27);
@@ -241,7 +242,7 @@
             pictureBox12.BackgroundImage = Properties.Resources.money_Icon;
             pictureBox12.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox12.Location = new Point(78, 51);
-            pictureBox12.Margin = new Padding(2, 2, 2, 2);
+            pictureBox12.Margin = new Padding(2);
             pictureBox12.Name = "pictureBox12";
             pictureBox12.Size = new Size(40, 22);
             pictureBox12.TabIndex = 20;
@@ -250,7 +251,7 @@
             // textBox5
             // 
             textBox5.Location = new Point(123, 51);
-            textBox5.Margin = new Padding(2, 2, 2, 2);
+            textBox5.Margin = new Padding(2);
             textBox5.Name = "textBox5";
             textBox5.ReadOnly = true;
             textBox5.Size = new Size(78, 27);
@@ -260,7 +261,7 @@
             // 
             btn_LeaveRoom.BackColor = SystemColors.ActiveCaption;
             btn_LeaveRoom.Location = new Point(29, 518);
-            btn_LeaveRoom.Margin = new Padding(2, 2, 2, 2);
+            btn_LeaveRoom.Margin = new Padding(2);
             btn_LeaveRoom.Name = "btn_LeaveRoom";
             btn_LeaveRoom.Size = new Size(90, 27);
             btn_LeaveRoom.TabIndex = 21;
@@ -273,7 +274,7 @@
             btn_Setting.BackgroundImage = Properties.Resources.Setting_Icon;
             btn_Setting.BackgroundImageLayout = ImageLayout.Stretch;
             btn_Setting.Location = new Point(923, 12);
-            btn_Setting.Margin = new Padding(2, 2, 2, 2);
+            btn_Setting.Margin = new Padding(2);
             btn_Setting.Name = "btn_Setting";
             btn_Setting.Size = new Size(62, 54);
             btn_Setting.TabIndex = 22;
@@ -307,7 +308,7 @@
             Controls.Add(pictureBox1);
             Controls.Add(label1);
             Controls.Add(tb_RoomCode);
-            Margin = new Padding(2, 2, 2, 2);
+            Margin = new Padding(2);
             Name = "PLayAsBookmaker";
             Text = "PLayAsBookmaker";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

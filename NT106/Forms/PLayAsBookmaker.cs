@@ -14,6 +14,7 @@ namespace NT106.Forms
 {
     public partial class PLayAsBookmaker : Form
     {
+        private RoomClass room;
         public PLayAsBookmaker(RoomClass room)
         {
             InitializeComponent();
@@ -47,10 +48,10 @@ namespace NT106.Forms
 
                     // Quay lại form Menu
                     this.Hide();
-                    Menu menu = new Menu();
-                    menu.StartPosition = FormStartPosition.Manual;
-                    menu.Location = this.Location;
-                    menu.Show();
+                    Room roomMenu = new Room();
+                    roomMenu.StartPosition = FormStartPosition.Manual;
+                    roomMenu.Location = this.Location;
+                    roomMenu.Show();
                     this.Close();
                 }
                 else
