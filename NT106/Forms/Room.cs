@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NT106.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,8 @@ namespace NT106
         public Room()
         {
             InitializeComponent();
+
+            this.FormClosing += AllForm.HandleFormClosing;
         }
 
         private void btn_CreateNewRoom_Click(object sender, EventArgs e)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NT106.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,11 @@ namespace NT106.Forms
 {
     public partial class PLayAsBookmaker : Form
     {
-        public PLayAsBookmaker()
+        public PLayAsBookmaker(RoomClass room)
         {
             InitializeComponent();
+
+            this.FormClosing += AllForm.HandleFormClosing;
         }
     }
 }

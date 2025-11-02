@@ -48,6 +48,7 @@
             btn_PVP.TabIndex = 0;
             btn_PVP.Text = "Chơi với người ";
             btn_PVP.UseVisualStyleBackColor = true;
+            btn_PVP.Click += btn_PVP_Click;
             // 
             // btn_PVE
             // 

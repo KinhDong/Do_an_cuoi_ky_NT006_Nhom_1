@@ -19,7 +19,7 @@ namespace NT106.Models
         public static string IdToken { get; private set; }
 
         private const string ApiKey = "AIzaSyD9_ECO_L-ex-4Iy_FkkstF8c6J2qaaW9Q";
-        private const string DatabaseUrl = "https://nt106-cf479-default-rtdb.firebaseio.com/";
+        public const string DatabaseUrl = "https://nt106-cf479-default-rtdb.firebaseio.com/";
 
 
         private static readonly HttpClient http = new HttpClient();

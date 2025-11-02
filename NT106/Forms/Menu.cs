@@ -37,5 +37,15 @@ namespace NT106
             f.Show();
             this.Hide();
         }
+
+        private void btn_PVP_Click(object sender, EventArgs e)
+        {
+            Room f = new Room();
+            f.StartPosition = FormStartPosition.Manual;
+            f.Location = this.Location;
+
+            f.Show();
+            this.Hide();
+        }
     }
 }
