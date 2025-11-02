@@ -1,5 +1,4 @@
-﻿using NT106.Forms;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,7 +12,10 @@ namespace NT106
 {
     public partial class PlayAsPlayer : Form
     {
-        public PlayAsPlayer()
+        private RoomClass room; // phòng hiện tại
+        private static readonly HttpClient http = new HttpClient();
+
+        public PlayAsPlayer(RoomClass room)
         {
             InitializeComponent();
 
