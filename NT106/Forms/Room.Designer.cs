@@ -38,9 +38,10 @@
             // btn_Back
             // 
             btn_Back.BackColor = SystemColors.ActiveCaption;
-            btn_Back.Location = new Point(341, 302);
+            btn_Back.Location = new Point(273, 242);
+            btn_Back.Margin = new Padding(2);
             btn_Back.Name = "btn_Back";
-            btn_Back.Size = new Size(112, 34);
+            btn_Back.Size = new Size(90, 27);
             btn_Back.TabIndex = 6;
             btn_Back.Text = "Quay lại";
             btn_Back.UseVisualStyleBackColor = false;
@@ -49,9 +50,10 @@
             // btn_CreateNewRoom
             // 
             btn_CreateNewRoom.BackColor = SystemColors.ActiveCaption;
-            btn_CreateNewRoom.Location = new Point(148, 159);
+            btn_CreateNewRoom.Location = new Point(118, 127);
+            btn_CreateNewRoom.Margin = new Padding(2);
             btn_CreateNewRoom.Name = "btn_CreateNewRoom";
-            btn_CreateNewRoom.Size = new Size(166, 34);
+            btn_CreateNewRoom.Size = new Size(133, 27);
             btn_CreateNewRoom.TabIndex = 7;
             btn_CreateNewRoom.Text = "Tạo phòng riêng";
             btn_CreateNewRoom.UseVisualStyleBackColor = false;
@@ -60,45 +62,51 @@
             // btn_JoinRoom
             // 
             btn_JoinRoom.BackColor = SystemColors.ActiveCaption;
-            btn_JoinRoom.Location = new Point(469, 159);
+            btn_JoinRoom.Location = new Point(375, 127);
+            btn_JoinRoom.Margin = new Padding(2);
             btn_JoinRoom.Name = "btn_JoinRoom";
-            btn_JoinRoom.Size = new Size(160, 34);
+            btn_JoinRoom.Size = new Size(128, 27);
             btn_JoinRoom.TabIndex = 8;
             btn_JoinRoom.Text = "Tham gia qua mã";
             btn_JoinRoom.UseVisualStyleBackColor = false;
+            btn_JoinRoom.Click += btn_JoinRoom_Click;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.BackColor = Color.Transparent;
             label2.ForeColor = SystemColors.ButtonFace;
-            label2.Location = new Point(370, 164);
+            label2.Location = new Point(296, 131);
+            label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
-            label2.Size = new Size(50, 25);
+            label2.Size = new Size(41, 20);
             label2.TabIndex = 9;
             label2.Text = "hoặc";
             // 
             // tb_RoomCode
             // 
-            tb_RoomCode.Location = new Point(469, 228);
+            tb_RoomCode.Location = new Point(375, 182);
+            tb_RoomCode.Margin = new Padding(2);
             tb_RoomCode.Name = "tb_RoomCode";
-            tb_RoomCode.Size = new Size(160, 31);
+            tb_RoomCode.Size = new Size(129, 27);
             tb_RoomCode.TabIndex = 10;
             // 
             // Room
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = Properties.Resources.Room_Background;
             BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(758, 484);
+            ClientSize = new Size(606, 387);
             Controls.Add(tb_RoomCode);
             Controls.Add(label2);
             Controls.Add(btn_JoinRoom);
             Controls.Add(btn_CreateNewRoom);
             Controls.Add(btn_Back);
+            Margin = new Padding(2);
             Name = "Room";
             Text = "Phòng";
+            //Load += Room_Load;
             ResumeLayout(false);
             PerformLayout();
         }
