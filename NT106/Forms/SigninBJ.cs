@@ -68,5 +68,10 @@ namespace NT106
 
             this.Hide();
         }
+
+        private void SigninBJ_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
