@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json; 
 using NT106.Models;    
+using System.Text;     
+using System.Collections.Generic; 
 
 namespace NT106
 {
@@ -46,6 +48,8 @@ namespace NT106
         private async void btn_JoinRoom_Click(object sender, EventArgs e)
         {
             string roomCode = tb_RoomCode.Text.Trim();
+            string userId = UserClass.Uid; // Lấy ID người dùng hiện tại
+            string idToken = UserClass.IdToken; // Lấy token
 
             if (string.IsNullOrWhiteSpace(roomCode))
             {
@@ -53,45 +57,96 @@ namespace NT106
                 return;
             }
 
-            btn_JoinRoom.Enabled = false;
-            btn_JoinRoom.Text = "Đang kiểm tra...";
+            // Kiểm tra token 
+            if (string.IsNullOrWhiteSpace(idToken) || string.IsNullOrWhiteSpace(userId))
+            {
+                MessageBox.Show("Lỗi xác thực người dùng. Vui lòng đăng nhập lại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             try
             {
+                // Lấy dữ liệu phòng
                 RoomClass roomData = await GetRoomDataAsync(roomCode);
 
-                if (roomData != null)
+                if (roomData == null)
                 {
-                    // Truyền toàn bộ đối tượng RoomClass cho PlayAsPlayer
-                    PlayAsPlayer f = new PlayAsPlayer(roomData);
-                    f.StartPosition = FormStartPosition.Manual;
-                    f.Location = this.Location;
+                    MessageBox.Show("Không tìm thấy phòng.", "Không tìm thấy", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
-                    f.Show();
-                    this.Hide();
-                }
-                else
+                // Kiểm tra xem phòng đã đầy chưa
+                if (roomData.NumOfPlayers >= roomData.MaxPlayerCount)
                 {
-                    MessageBox.Show("Không tìm thấy phòng. Vui lòng kiểm tra lại mã phòng.", "Không tìm thấy", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Kiểm tra xem mình đã ở trong phòng chưa
+                    if (roomData.Players == null || !roomData.Players.ContainsKey(userId))
+                    {
+                        MessageBox.Show("Phòng đã đầy.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    // Nếu đã ở trong phòng, cho phép vào lại
                 }
+
+                // Ghi dữ liệu người chơi mới lên Firebase 
+                if (roomData.Players == null || !roomData.Players.ContainsKey(userId))
+                {
+                    // Tạo đối tượng người chơi mới
+                    var newPlayerData = new
+                    {
+                        PlayerInGameName = UserClass.InGameName, 
+                        JoinedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
+                        PlayerMoney = UserClass.Money, 
+                        isHost = false // Người tham gia không phải host
+                    };
+
+                    // Ghi dữ liệu người chơi
+                    string playerUrl = $"{FirebaseBaseUrl}Rooms/{roomCode}/Players/{userId}.json?auth={idToken}";
+                    var playerContent = new StringContent(JsonConvert.SerializeObject(newPlayerData), Encoding.UTF8, "application/json");
+                    var playerResponse = await client.PutAsync(playerUrl, playerContent);
+
+                    if (!playerResponse.IsSuccessStatusCode)
+                    {
+                        throw new Exception("Không thể ghi dữ liệu người chơi lên server.");
+                    }
+
+                    // Cập nhật số lượng người chơi
+                    long newPlayerCount = roomData.NumOfPlayers + 1;
+                    string numPlayersUrl = $"{FirebaseBaseUrl}Rooms/{roomCode}/NumOfPlayers.json?auth={idToken}";
+                    // Ghi đè số lượng mới (dưới dạng JSON value)
+                    var numContent = new StringContent(newPlayerCount.ToString(), Encoding.UTF8, "application/json");
+                    var numResponse = await client.PutAsync(numPlayersUrl, numContent);
+
+                    if (!numResponse.IsSuccessStatusCode)
+                    {
+                        throw new Exception("Không thể cập nhật số lượng người chơi.");
+                    }
+
+                    // Cập nhật đối tượng roomData 
+                    roomData.NumOfPlayers = newPlayerCount;
+                    if (roomData.Players == null) roomData.Players = new Dictionary<string, object>();
+                    roomData.Players[userId] = newPlayerData;
+                }
+
+                // Chuyển sang form PlayAsPlayer
+                PlayAsPlayer f = new PlayAsPlayer(roomData);
+                f.StartPosition = FormStartPosition.Manual;
+                f.Location = this.Location;
+
+                f.Show();
+                this.Hide();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi khi kết nối: " + ex.Message, "Lỗi mạng", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                btn_JoinRoom.Enabled = true;
-                btn_JoinRoom.Text = "Tham gia qua mã";
+                MessageBox.Show("Đã xảy ra lỗi khi tham gia phòng: " + ex.Message, "Lỗi mạng", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private async Task<RoomClass> GetRoomDataAsync(string roomCode)
         {
-            // Lấy IdToken từ UserClass, giả sử nó đã được lưu sau khi đăng nhập
-            string idToken = UserClass.IdToken; 
+            // Lấy IdToken từ UserClass
+            string idToken = UserClass.IdToken;
 
-            // Thêm token vào URL 
+            // Thêm token vào URL
             string requestUrl = $"{FirebaseBaseUrl}Rooms/{roomCode}.json?auth={idToken}";
 
             try
@@ -107,7 +162,6 @@ namespace NT106
                         return null; // Phòng không tồn tại
                     }
 
-                    // Chuyển đổi JSON thành đối tượng RoomClass
                     RoomClass room = JsonConvert.DeserializeObject<RoomClass>(jsonContent);
                     return room;
                 }
@@ -120,14 +174,13 @@ namespace NT106
             }
             catch (HttpRequestException ex)
             {
-                // Ném lỗi ra ngoài để btn_JoinRoom_Click xử lý
                 throw new Exception("Lỗi kết nối mạng: " + ex.Message, ex);
             }
         }
 
         private void Room_Load(object sender, EventArgs e)
         {
-            
+
         }
     }
 }
