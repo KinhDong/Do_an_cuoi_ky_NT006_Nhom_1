@@ -63,5 +63,10 @@ namespace NT106
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-    }   
+
+        private void PlayAsPlayer_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

@@ -256,6 +256,7 @@
             Margin = new Padding(2);
             Name = "PlayAsPlayer";
             Text = "Choivoing";
+            Load += PlayAsPlayer_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Bookmaker).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();

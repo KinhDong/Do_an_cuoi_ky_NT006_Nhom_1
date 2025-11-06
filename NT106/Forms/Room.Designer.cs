@@ -65,7 +65,7 @@
             btn_JoinRoom.Location = new Point(375, 127);
             btn_JoinRoom.Margin = new Padding(2);
             btn_JoinRoom.Name = "btn_JoinRoom";
-            btn_JoinRoom.Size = new Size(128, 27);
+            btn_JoinRoom.Size = new Size(154, 27);
             btn_JoinRoom.TabIndex = 8;
             btn_JoinRoom.Text = "Tham gia qua mã";
             btn_JoinRoom.UseVisualStyleBackColor = false;
@@ -88,7 +88,7 @@
             tb_RoomCode.Location = new Point(375, 182);
             tb_RoomCode.Margin = new Padding(2);
             tb_RoomCode.Name = "tb_RoomCode";
-            tb_RoomCode.Size = new Size(129, 27);
+            tb_RoomCode.Size = new Size(154, 27);
             tb_RoomCode.TabIndex = 10;
             // 
             // Room
@@ -106,7 +106,6 @@
             Margin = new Padding(2);
             Name = "Room";
             Text = "Phòng";
-            //Load += Room_Load;
             ResumeLayout(false);
             PerformLayout();
         }
