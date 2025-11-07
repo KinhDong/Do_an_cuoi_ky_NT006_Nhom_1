@@ -1,38 +1,30 @@
-﻿using System;
+﻿using Newtonsoft.Json; 
+using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json; 
-using System.Net.Http;
 
 namespace NT106.Models
 {
     public class RoomClass
     {
-
-        [JsonProperty("RoomId")] // Dùng [JsonProperty] để đảm bảo map đúng
         public string RoomId { get; set; }
-
-        [JsonProperty("HostUid")]
         public string HostUid { get; set; }
-
-        [JsonProperty("Status")]
         public string Status { get; set; }
-
-        [JsonProperty("BetAmount")]
-        public long BetAmount { get; set; } // Phải có kiểu dữ liệu (long hoặc int)
-
-        [JsonProperty("MaxPlayerCount")]
-        public long MaxPlayerCount { get; set; } // Phải có kiểu dữ liệu
-
-        [JsonProperty("NumOfPlayers")]
-        public long NumOfPlayers { get; set; } // Phải có kiểu dữ liệu
-
-        [JsonProperty("Players")]
-        public Dictionary<string, object> Players { get; set; }
+        public int BetAmount { get; set; }
+        public int MaxPlayers { get; set; }
+        public int CurrentPlayers { get; set; }
+        public List<PlayerClass> Players { get; set; } = new();
 
         private static readonly HttpClient http = new HttpClient();
+
+        private CancellationTokenSource cts;
 
         // Tạo phòng mới
         public static async Task<RoomClass> CreateAsync(int maxPlayerCount, int betAmount)
@@ -57,25 +49,28 @@ namespace NT106.Models
                 string hostUid = UserClass.Uid;
                 string hostName = UserClass.UserName ?? "Host";
 
+                // Tạo 1 Player mới
+                var player = new PlayerClass
+                {
+                    Uid = hostUid,
+                    InGameName = UserClass.InGameName,
+                    IsHost = true,
+                    Money = UserClass.Money,
+                    JoinedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+                };
+
                 // Dữ liệu phòng mới 
                 var roomData = new
                 {
                     HostUid = UserClass.Uid,
-                    NumOfPlayers = 1,
                     RoomId = roomId,
-                    MaxPlayerCount = maxPlayerCount,
+                    MaxPlayers = maxPlayerCount,
+                    CurrentPlayers = 1,
                     BetAmount = betAmount,
                     Status = "Waiting",
                     Players = new Dictionary<string, object>
                     {
-                        [UserClass.Uid] = new
-                        //Player1 = new
-                        {
-                            PlayerInGameName = UserClass.InGameName,
-                            JoinedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
-                            PlayerMoney = UserClass.Money,
-                            isHost = true
-                        }
+                        [UserClass.Uid] = player
                     }
                 };
 
@@ -87,24 +82,205 @@ namespace NT106.Models
                 if (!res.IsSuccessStatusCode)
                     throw new Exception($"Không thể tạo phòng! Lỗi: {res.StatusCode}");
 
-                // Trả về đối tượng RoomClass để dùng trong chương trình
-                // !! LƯU Ý: Phần code này có thể cần xem lại
-                // vì nó không trả về đầy đủ dữ liệu
+                // Thêm ảnh đại diện
+                player.Avatar = UserClass.Avatar;
+
+                // Trả về room để thao tác trên winform
                 return new RoomClass
                 {
-                    RoomId = roomId,
                     HostUid = UserClass.Uid,
+                    RoomId = roomId,
+                    MaxPlayers = maxPlayerCount,
+                    CurrentPlayers = 1,
+                    BetAmount = betAmount,
                     Status = "Waiting",
-                    // Các thuộc tính mới (BetAmount, Players...) chưa được gán ở đây
-                    // Điều này không sao nếu bạn chỉ dùng đối tượng này
-                    // để chuyển form ngay sau khi tạo phòng.
+                    Players = new List<PlayerClass> { player }
                 };
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[RoomClass.CreateAsync Error]: {ex.Message}");
+                MessageBox.Show($"Lỗi tạo phòng: {ex.Message}");
                 return null;
             }
+        }
+
+        //Tham gia phòng
+        public static async Task<RoomClass> JoinAsync(string roomId)
+        {
+            var roomJson = await http.GetStringAsync($"{UserClass.DatabaseUrl}Rooms/{roomId}.json?auth={UserClass.IdToken}");
+            if (roomJson == "null")
+            {
+                MessageBox.Show("Phòng không tồn tại!");
+                return null;
+            }
+                
+            var roomData = JsonConvert.DeserializeObject<RoomClass>(roomJson);
+            int current = roomData.CurrentPlayers;
+            int max = roomData.MaxPlayers;
+
+            // Kiểm tra phòng còn chỗ không
+            if (current >= max)
+            {
+                MessageBox.Show("Phòng đã đầy!");
+                return null;
+            }                
+
+            string playerUid = UserClass.Uid;
+            string inGameName = UserClass.UserName ?? "Guest";
+
+            var player = new PlayerClass
+            {
+                Uid = playerUid,
+                InGameName = inGameName,
+                IsHost = false,
+                Money = UserClass.Money,
+                JoinedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+            };
+
+            var json = JsonConvert.SerializeObject(player);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var res = await http.PutAsync($"{UserClass.DatabaseUrl}Rooms/{roomId}/Players/{playerUid}.json?auth={UserClass.IdToken}", content);
+            if (!res.IsSuccessStatusCode)
+            {
+                MessageBox.Show("Không thể thêm người chơi");
+                return null;
+            }                
+
+            // Cập nhật số người chơi
+            current++;
+            var updateCount = new StringContent(current.ToString(), Encoding.UTF8, "application/json");
+            await http.PutAsync($"{UserClass.DatabaseUrl}Rooms/{roomId}/CurrentPlayers.json?auth={UserClass.IdToken}", updateCount);
+
+            // Tạo đối tượng RoomClass cho client
+            roomData.RoomId = roomId;
+            roomData.Players ??= new List<PlayerClass>();
+            roomData.Players.Add(player);
+
+            return roomData;
+        }
+
+        // Rời phòng
+        public async Task<bool> LeaveAsync()
+        {
+            try
+            {
+                string uid = UserClass.Uid;
+                string url = $"{UserClass.DatabaseUrl}Rooms/{RoomId}.json?auth={UserClass.IdToken}";
+
+                // Nếu là host → xoá luôn phòng
+                if (uid == HostUid)
+                {
+                    var delRoom = await http.DeleteAsync(url);
+                    return delRoom.IsSuccessStatusCode;
+                }
+                else
+                {
+                    // Xoá player khỏi phòng
+                    var delPlayer = await http.DeleteAsync($"{UserClass.DatabaseUrl}Rooms/{RoomId}/Players/{uid}.json?auth={UserClass.IdToken}");
+                    if (!delPlayer.IsSuccessStatusCode)
+                        return false;
+
+                    // Giảm currentPlayers
+                    var roomJson = await http.GetStringAsync(url);
+                    if (roomJson != "null")
+                    {
+                        dynamic data = JsonConvert.DeserializeObject(roomJson);
+                        int current = data.currentPlayers;
+                        current = Math.Max(0, current - 1);
+
+                        var updateCount = new StringContent(current.ToString(), Encoding.UTF8, "application/json");
+                        await http.PutAsync($"{UserClass.DatabaseUrl}Rooms/{RoomId}/CurrentPlayers.json?auth={UserClass.IdToken}", updateCount);
+                    }
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"[Lỗi rời phòng]: {ex.Message}");
+                return false;
+            }
+        }
+
+        // Xoá phòng
+        public async Task DeleteAsync()
+        {
+            await http.DeleteAsync($"{UserClass.DatabaseUrl}Rooms/{RoomId}.json?auth={UserClass.IdToken}");
+        }
+
+        // Lắng nghe thay đổi
+        public async Task ListenRoomChangesAsync(Action<RoomClass> onRoomUpdated, Action onRoomDeleted = null)
+        {
+            try
+            {
+                cts = new CancellationTokenSource();
+
+                string url = $"{UserClass.DatabaseUrl}Rooms/{RoomId}.json?auth={UserClass.IdToken}";
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
+
+                var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
+                var stream = await response.Content.ReadAsStreamAsync(cts.Token);
+                using var reader = new StreamReader(stream);
+
+                string eventType = null;
+
+                while (!reader.EndOfStream && !cts.Token.IsCancellationRequested)
+                {
+                    var line = await reader.ReadLineAsync();
+
+                    if (string.IsNullOrWhiteSpace(line))
+                        continue;
+
+                    if (line.StartsWith("event: "))
+                    {
+                        eventType = line.Substring(7);
+                    }
+                    else if (line.StartsWith("data: "))
+                    {
+                        var json = line.Substring(6).Trim();
+
+                        // Nếu Firebase gửi data: null => phòng bị xóa
+                        if (json == "null")
+                        {
+                            onRoomDeleted?.Invoke(); // gọi callback cho UI
+                            break; // thoát khỏi vòng lặp
+                        }
+
+                        try
+                        {
+                            var updatedRoom = JsonConvert.DeserializeObject<RoomClass>(json);
+                            if (updatedRoom != null)
+                            {
+                                RoomId = updatedRoom.RoomId ?? RoomId;
+                                HostUid = updatedRoom.HostUid ?? HostUid;
+                                Status = updatedRoom.Status ?? Status;
+                                Players = updatedRoom.Players ?? Players;
+
+                                onRoomUpdated?.Invoke(updatedRoom);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Lỗi Json: {ex.Message}");
+                        }
+                    }
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                MessageBox.Show("Lắng nghe đã bị dừng (hoặc hủy)");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi: {ex.Message}");
+            }
+        }
+
+
+        // Ngừng lắng nghe
+        public void StopListening()
+        {
+            cts?.Cancel();
         }
     }
 }

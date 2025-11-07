@@ -1,13 +1,4 @@
 ﻿using NT106.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using static System.Net.WebRequestMethods;
 
 namespace NT106.Forms
@@ -22,51 +13,29 @@ namespace NT106.Forms
             this.room = room;
         }
 
-        private static readonly HttpClient http = new HttpClient();
-        private const string DatabaseUrl = "https://nt106-cf479-default-rtdb.firebaseio.com/";
         private async void btn_LeaveRoom_Click(object sender, EventArgs e)
         {
             var confirm = MessageBox.Show(
                 "Bạn có chắc muốn rời phòng không?\nPhòng sẽ bị xóa và tất cả người chơi sẽ bị thoát.",
                 "Xác nhận",
                 MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning);
+                MessageBoxIcon.Warning
+            );
 
             if (confirm == DialogResult.No)
                 return;
 
-            try
-            {
-                btn_LeaveRoom.Enabled = false;
+            await room.DeleteAsync();
 
-                // Gọi hàm xóa node phòng trên Firebase
-                var res = await http.DeleteAsync($"{DatabaseUrl}Rooms/{room.RoomId}.json?auth={UserClass.IdToken}");
+            // Trở về Form Room
+            Room f = new Room();
+            f.StartPosition = FormStartPosition.Manual;
+            f.Location = this.Location;
 
-                if (res.IsSuccessStatusCode)
-                {
-                    MessageBox.Show("Phòng đã được giải tán!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Quay lại form Menu
-                    this.Hide();
-                    Room roomMenu = new Room();
-                    roomMenu.StartPosition = FormStartPosition.Manual;
-                    roomMenu.Location = this.Location;
-                    roomMenu.Show();
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show($"Không thể xóa phòng. Lỗi: {res.StatusCode}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi khi rời phòng: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                btn_LeaveRoom.Enabled = true;
-            }
+            f.Show();
+            this.Hide();
         }
+
+        
     }
 }

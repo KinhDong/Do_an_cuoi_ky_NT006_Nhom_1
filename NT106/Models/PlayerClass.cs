@@ -10,9 +10,9 @@ namespace NT106.Models
     {
         public string Uid { get; set; }
         public string InGameName { get; set; }
-        public string Money { get; set; }
+        public long Money { get; set; }
         public Image Avatar { get; set; }
-        public bool IsHost { get; set; }
-
+        public bool IsHost { get; set; }        
+        public string JoinedAt { get; set; }
     }
 }
