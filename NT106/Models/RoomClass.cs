@@ -20,7 +20,7 @@ namespace NT106.Models
         public int BetAmount { get; set; }
         public int MaxPlayers { get; set; }
         public int CurrentPlayers { get; set; }
-        public List<PlayerClass> Players { get; set; } = new();
+        public Dictionary<string, PlayerClass> Players { get; set; }
 
         private static readonly HttpClient http = new HttpClient();
 
@@ -94,7 +94,10 @@ namespace NT106.Models
                     CurrentPlayers = 1,
                     BetAmount = betAmount,
                     Status = "Waiting",
-                    Players = new List<PlayerClass> { player }
+                    Players = new Dictionary<string, PlayerClass>
+                    {
+                        {hostUid, player}
+                    }
                 };
             }
             catch (Exception ex)
@@ -153,8 +156,8 @@ namespace NT106.Models
 
             // Tạo đối tượng RoomClass cho client
             roomData.RoomId = roomId;
-            roomData.Players ??= new List<PlayerClass>();
-            roomData.Players.Add(player);
+            roomData.Players = roomData.Players ?? new Dictionary<string, PlayerClass>();
+            roomData.Players.Add(player.Uid, player);
 
             return roomData;
         }
@@ -166,34 +169,26 @@ namespace NT106.Models
             {
                 string uid = UserClass.Uid;
                 string url = $"{UserClass.DatabaseUrl}Rooms/{RoomId}.json?auth={UserClass.IdToken}";
+                
+                // Xoá player khỏi phòng
+                var delPlayer = await http.DeleteAsync($"{UserClass.DatabaseUrl}Rooms/{RoomId}/Players/{uid}.json?auth={UserClass.IdToken}");
+                if (!delPlayer.IsSuccessStatusCode)
+                    return false;
 
-                // Nếu là host → xoá luôn phòng
-                if (uid == HostUid)
+                // Giảm currentPlayers
+                var roomJson = await http.GetStringAsync(url);
+                if (roomJson != "null")
                 {
-                    var delRoom = await http.DeleteAsync(url);
-                    return delRoom.IsSuccessStatusCode;
-                }
-                else
-                {
-                    // Xoá player khỏi phòng
-                    var delPlayer = await http.DeleteAsync($"{UserClass.DatabaseUrl}Rooms/{RoomId}/Players/{uid}.json?auth={UserClass.IdToken}");
-                    if (!delPlayer.IsSuccessStatusCode)
-                        return false;
+                    dynamic data = JsonConvert.DeserializeObject(roomJson);
+                    int current = data.CurrentPlayers;
+                    current--;
 
-                    // Giảm currentPlayers
-                    var roomJson = await http.GetStringAsync(url);
-                    if (roomJson != "null")
-                    {
-                        dynamic data = JsonConvert.DeserializeObject(roomJson);
-                        int current = data.currentPlayers;
-                        current = Math.Max(0, current - 1);
-
-                        var updateCount = new StringContent(current.ToString(), Encoding.UTF8, "application/json");
-                        await http.PutAsync($"{UserClass.DatabaseUrl}Rooms/{RoomId}/CurrentPlayers.json?auth={UserClass.IdToken}", updateCount);
-                    }
-                    return true;
+                    var updateCount = new StringContent(current.ToString(), Encoding.UTF8, "application/json");
+                    await http.PutAsync($"{UserClass.DatabaseUrl}Rooms/{RoomId}/CurrentPlayers.json?auth={UserClass.IdToken}", updateCount);
                 }
+                return true;                
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show($"[Lỗi rời phòng]: {ex.Message}");

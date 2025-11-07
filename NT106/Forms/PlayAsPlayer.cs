@@ -16,9 +16,9 @@ namespace NT106
             tb_RoomCode.Text = room.RoomId;
         }
 
-        private async void PlayAsPlayer_Load(object sender, EventArgs e)
+        private void PlayAsPlayer_Load(object sender, EventArgs e)
         {
-            await room.ListenRoomChangesAsync(OnRoomUpdated, OnRoomDeleted);
+            // await room.ListenRoomChangesAsync(OnRoomUpdated, OnRoomDeleted);
         }
 
         // 
