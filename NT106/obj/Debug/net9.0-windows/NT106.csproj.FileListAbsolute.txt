@@ -1,0 +1,103 @@
+D:\Project\LapTrinhMAng\NT106\NT106\bin\Debug\net9.0-windows\NT106.exe
+D:\Project\LapTrinhMAng\NT106\NT106\bin\Debug\net9.0-windows\NT106.deps.json
+D:\Project\LapTrinhMAng\NT106\NT106\bin\Debug\net9.0-windows\NT106.runtimeconfig.json
+D:\Project\LapTrinhMAng\NT106\NT106\bin\Debug\net9.0-windows\NT106.dll
+D:\Project\LapTrinhMAng\NT106\NT106\bin\Debug\net9.0-windows\NT106.pdb
+D:\Project\LapTrinhMAng\NT106\NT106\bin\Debug\net9.0-windows\Firebase.Auth.dll
+D:\Project\LapTrinhMAng\NT106\NT106\bin\Debug\net9.0-windows\Firebase.dll
+D:\Project\LapTrinhMAng\NT106\NT106\bin\Debug\net9.0-windows\LiteDB.dll
+D:\Project\LapTrinhMAng\NT106\NT106\bin\Debug\net9.0-windows\Newtonsoft.Json.dll
+D:\Project\LapTrinhMAng\NT106\NT106\bin\Debug\net9.0-windows\System.Reactive.dll
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.csproj.AssemblyReference.cache
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.Account.resources
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.CreateRoom.resources
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.ForgetPassword.resources
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.HowToPlay.resources
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.Menu.resources
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.Properties.Resources.resources
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.PVP.resources
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.ResetPassword.resources
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.Room.resources
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.Setting.resources
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.SigninBJ.resources
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.SignupBJ.resources
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.csproj.GenerateResource.cache
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.GeneratedMSBuildEditorConfig.editorconfig
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.AssemblyInfoInputs.cache
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.AssemblyInfo.cs
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.csproj.CoreCompileInputs.cache
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.sourcelink.json
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.csproj.Up2Date
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.dll
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\refint\NT106.dll
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.pdb
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\NT106.genruntimeconfig.cache
+D:\Project\LapTrinhMAng\NT106\NT106\obj\Debug\net9.0-windows\ref\NT106.dll
+D:\VisualStudio\Đồ Án NT106\NT106\bin\Debug\net9.0-windows\NT106.exe
+D:\VisualStudio\Đồ Án NT106\NT106\bin\Debug\net9.0-windows\NT106.deps.json
+D:\VisualStudio\Đồ Án NT106\NT106\bin\Debug\net9.0-windows\NT106.runtimeconfig.json
+D:\VisualStudio\Đồ Án NT106\NT106\bin\Debug\net9.0-windows\NT106.dll
+D:\VisualStudio\Đồ Án NT106\NT106\bin\Debug\net9.0-windows\NT106.pdb
+D:\VisualStudio\Đồ Án NT106\NT106\bin\Debug\net9.0-windows\Firebase.Auth.dll
+D:\VisualStudio\Đồ Án NT106\NT106\bin\Debug\net9.0-windows\Firebase.dll
+D:\VisualStudio\Đồ Án NT106\NT106\bin\Debug\net9.0-windows\LiteDB.dll
+D:\VisualStudio\Đồ Án NT106\NT106\bin\Debug\net9.0-windows\Newtonsoft.Json.dll
+D:\VisualStudio\Đồ Án NT106\NT106\bin\Debug\net9.0-windows\System.Reactive.dll
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.csproj.AssemblyReference.cache
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.Account.resources
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.CreateRoom.resources
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.ForgetPassword.resources
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.HowToPlay.resources
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.Menu.resources
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.Properties.Resources.resources
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.PVP.resources
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.ResetPassword.resources
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.Room.resources
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.Setting.resources
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.SigninBJ.resources
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.SignupBJ.resources
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.csproj.GenerateResource.cache
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.GeneratedMSBuildEditorConfig.editorconfig
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.AssemblyInfoInputs.cache
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.AssemblyInfo.cs
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.csproj.CoreCompileInputs.cache
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.sourcelink.json
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.csproj.Up2Date
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.dll
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\refint\NT106.dll
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.pdb
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\NT106.genruntimeconfig.cache
+D:\VisualStudio\Đồ Án NT106\NT106\obj\Debug\net9.0-windows\ref\NT106.dll
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.csproj.AssemblyReference.cache
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.Account.resources
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.CreateRoom.resources
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.ForgetPassword.resources
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.HowToPlay.resources
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.Menu.resources
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.Forms.PLayAsBookmaker.resources
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.PlayAsPlayer.resources
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.Room.resources
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.Setting.resources
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.SigninBJ.resources
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.SignupBJ.resources
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.Properties.Resources.resources
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.csproj.GenerateResource.cache
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.GeneratedMSBuildEditorConfig.editorconfig
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.AssemblyInfoInputs.cache
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.AssemblyInfo.cs
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.csproj.CoreCompileInputs.cache
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.sourcelink.json
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\bin\Debug\net9.0-windows\NT106.exe
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\bin\Debug\net9.0-windows\NT106.deps.json
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\bin\Debug\net9.0-windows\NT106.runtimeconfig.json
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\bin\Debug\net9.0-windows\NT106.dll
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\bin\Debug\net9.0-windows\NT106.pdb
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\bin\Debug\net9.0-windows\CloudinaryDotNet.dll
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\bin\Debug\net9.0-windows\Newtonsoft.Json.dll
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\bin\Debug\net9.0-windows\System.Reactive.dll
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.csproj.Up2Date
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.dll
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\refint\NT106.dll
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.pdb
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\NT106.genruntimeconfig.cache
+D:\Daihoc\Nam2\nt106\Do_an\Do_an_cuoi_ky_NT006_Nhom_1\NT106\obj\Debug\net9.0-windows\ref\NT106.dll

@@ -35,7 +35,15 @@ namespace NT106.Forms
             f.Show();
             this.Hide();
         }
+        private void PLayAsBookmaker_Load(object sender, EventArgs e)
+        {
+            // Hiển thị ban đầu (nếu có dữ liệu)
+            DisplayRoom(room);
 
+            // Bắt đầu lắng nghe thay đổi realtime
+            //_ = là chạy ngầm không cần chờ kết quả trả về
+            Task.Run(() => room.ListenRoomChangesAsync(OnRoomUpdated, OnRoomDeleted));
+        }
         //Ẩn tất cả slot trước khi bắt đầu
         private void HideAllSlots()
         {
@@ -67,16 +75,6 @@ namespace NT106.Forms
 
             lbname.Text = player.InGameName;
             tbmoney.Text = player.Money.ToString("N0");
-        }
-        //Gọi kho form load để hiển thị dữ liệu ban đầu
-        private async void PLayAsBookmaker_Load(object sender, EventArgs e)
-        {
-            HideAllSlots();
-            // Hiển thị ban đầu (nếu có dữ liệu)
-            DisplayRoom(room);
-
-            // Bắt đầu lắng nghe thay đổi realtime
-            await room.ListenRoomChangesAsync(OnRoomUpdated, OnRoomDeleted);
         }
 
         private void OnRoomUpdated(RoomClass updatedRoom)
@@ -110,27 +108,47 @@ namespace NT106.Forms
         //hiển thị các player trong phòng
         private void DisplayRoom(RoomClass room)
         {
-            if (room?.Players == null || room.Players.Count ==0)
+            HideAllSlots();
+            if (room?.Players == null || room.Players.Count == 0)
                 return;
 
             //nhà cái
-            var host = room.Players.Values.FirstOrDefault(p => p.Uid == room.HostUid);
-            if(host != null)
+            PlayerClass host = null;
+
+            // chúng ta lấy trực tiếp bằng Key, vì ta biết HostUid là Key.
+            if (room.Players.ContainsKey(room.HostUid))
             {
-                ShowSlot(pichost,lb_namehost, tb_BookermakerMoney, pn_host, host);
+                // Lấy host
+                host = room.Players[room.HostUid];
+
+                // Đồng bộ Uid cho host,
+                // vì đối tượng từ Firebase không có Uid
+                host.Uid = room.HostUid;
+            }
+
+            //nhà cái
+            if (host != null)
+            {
+                ShowSlot(pichost, lb_namehost, tb_BookermakerMoney, pn_host, host);
             }
 
             //người chơi
-            var otherPlayers = room.Players.Values.Where(p => p.Uid != room.HostUid).ToList();
+            var otherPlayers = room.Players
+         .Where(kvp => kvp.Key != room.HostUid) // Tìm bằng Key
+         .Select(kvp => {
+             kvp.Value.Uid = kvp.Key; // Đồng bộ Uid cho otherPlayers
+             return kvp.Value;
+         })
+         .ToList();
             if (otherPlayers.Count > 0 && otherPlayers[0] != null)
                 ShowSlot(picP1, lb_nameP1, P1_money, pnP1, otherPlayers[0]);
-            if(otherPlayers.Count > 1 && otherPlayers[1] != null)
+            if (otherPlayers.Count > 1 && otherPlayers[1] != null)
                 ShowSlot(picP2, lb_nameP2, P2_money, pnP2, otherPlayers[1]);
-            if(otherPlayers.Count > 2 && otherPlayers[2] != null)
+            if (otherPlayers.Count > 2 && otherPlayers[2] != null)
                 ShowSlot(picP3, lb_nameP3, P3_money, pnP3, otherPlayers[2]);
-            if(otherPlayers.Count > 3 && otherPlayers[3] != null)
+            if (otherPlayers.Count > 3 && otherPlayers[3] != null)
                 ShowSlot(picP4, lb_nameP4, P4_money, pnP4, otherPlayers[3]);
-            if(otherPlayers.Count > 4 && otherPlayers[4] != null)
+            if (otherPlayers.Count > 4 && otherPlayers[4] != null)
                 ShowSlot(picP5, lb_nameP5, P5_money, pnP5, otherPlayers[4]);
 
             lblRoomStatus.Text = $"{room.CurrentPlayers}/{room.MaxPlayers} - {room.Status}";

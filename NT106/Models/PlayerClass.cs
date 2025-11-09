@@ -1,4 +1,6 @@
 ﻿using System;
+using Newtonsoft.Json;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +13,7 @@ namespace NT106.Models
         public string Uid { get; set; }
         public string InGameName { get; set; }
         public long Money { get; set; }
+        [JsonIgnore]
         public Image Avatar { get; set; }
         public bool IsHost { get; set; }        
         public string JoinedAt { get; set; }

@@ -73,7 +73,7 @@ namespace NT106.Services
             {
                 File = new FileDescription(sourceUrl),
                 PublicId = publicId,
-                Folder = "Avatar" // Thư mục mới 
+                Folder = "avatar" // Thư mục mới 
             };
 
             _cloudinary.Upload(uploadParams);

@@ -213,15 +213,15 @@ namespace NT106.Models
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/event-stream"));
 
-                var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token);
-                var stream = await response.Content.ReadAsStreamAsync(cts.Token);
+                var response = await http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cts.Token).ConfigureAwait(false);
+                var stream = await response.Content.ReadAsStreamAsync(cts.Token).ConfigureAwait(false);
                 using var reader = new StreamReader(stream);
 
                 string eventType = null;
 
                 while (!reader.EndOfStream && !cts.Token.IsCancellationRequested)
                 {
-                    var line = await reader.ReadLineAsync();
+                    var line = await reader.ReadLineAsync().ConfigureAwait(false);
 
                     if (string.IsNullOrWhiteSpace(line))
                         continue;

@@ -89,15 +89,28 @@ namespace NT106
         }
 
         // Hiển thị avatar player trong PictureBox (cần thì thêm các thông tin khác)
-        private void ShowPlayer(PictureBox pic, PlayerClass player)
+        private async void ShowPlayer(PictureBox pic, PlayerClass player)
         {
             if (player == null) return;
 
             pic.Visible = true;
+            if (pic != null)
+            {
+                pic.Visible = true; // Đảm bảo nó đang bật
+                pic.Image = null; // Xóa ảnh cũ đi (để chờ ảnh mới)
+            }
             try
             {
                 //Hiện tại chỉ có ảnh nên cập nhật ảnh 
                 pic.Image = player.Avatar;
+                    
+                // Dùng await để chờ tải ảnh về
+                Image playerAvatar = await UserClass.GetAvatarFromUid(player.Uid);
+
+                if (pic != null)
+                {
+                    pic.Image = playerAvatar; // Gán ảnh vừa tải về
+                }
             }
             catch { }
         }

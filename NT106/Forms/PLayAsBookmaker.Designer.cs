@@ -455,6 +455,7 @@
             Margin = new Padding(2);
             Name = "PLayAsBookmaker";
             Text = "PLayAsBookmaker";
+            Load += PLayAsBookmaker_Load;
             ((System.ComponentModel.ISupportInitialize)pichost).EndInit();
             ((System.ComponentModel.ISupportInitialize)picP2).EndInit();
             ((System.ComponentModel.ISupportInitialize)picP3).EndInit();

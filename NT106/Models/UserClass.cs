@@ -27,6 +27,21 @@ namespace NT106.Models
 
         private static readonly CloudinaryHelper cloudinary = new CloudinaryHelper();
 
+        // Lấy avatar từ uid
+        public static async Task<Image> GetAvatarFromUid(string uid)
+        {
+            try
+            {
+                // "avatar/" là tên thư mục, uid là tên file
+                // Nó sẽ gọi hàm GetImageAsync trong CloudinaryHelper
+                return await cloudinary.GetImageAsync($"avatar/{uid}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi tải avatar cho {uid}: {ex.Message}");
+                return null;
+            }
+        }
 
         // Đăng ký
         public static async Task<bool> RegisterAsync(string username, string email, string password, string confirm)
