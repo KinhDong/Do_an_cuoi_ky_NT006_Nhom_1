@@ -39,14 +39,15 @@ namespace NT106.Forms
         //Ẩn tất cả slot trước khi bắt đầu
         private void HideAllSlots()
         {
-            for (int i = 1; i <= 6; i++)
-            {
-                var slotPanel = this.Controls.Find($"panel_Slot{i}", true).FirstOrDefault() as Panel;
-                if (slotPanel != null)
-                {
-                    slotPanel.Visible = false;
-                }
-            }
+            // Ẩn host
+            pn_host.Visible = false;
+
+            // Ẩn các panel player
+            pnP1.Visible = false;
+            pnP2.Visible = false;
+            pnP3.Visible = false;
+            pnP4.Visible = false;
+            pnP5.Visible = false;
         }
 
         private void ShowSlot(PictureBox pic, Label lbname, TextBox tbmoney, Panel pnl, PlayerClass player)
@@ -70,6 +71,7 @@ namespace NT106.Forms
         //Gọi kho form load để hiển thị dữ liệu ban đầu
         private async void PLayAsBookmaker_Load(object sender, EventArgs e)
         {
+            HideAllSlots();
             // Hiển thị ban đầu (nếu có dữ liệu)
             DisplayRoom(room);
 
@@ -108,7 +110,6 @@ namespace NT106.Forms
         //hiển thị các player trong phòng
         private void DisplayRoom(RoomClass room)
         {
-            HideAllSlots();
             if (room?.Players == null || room.Players.Count ==0)
                 return;
 
@@ -121,16 +122,16 @@ namespace NT106.Forms
 
             //người chơi
             var otherPlayers = room.Players.Values.Where(p => p.Uid != room.HostUid).ToList();
-            if (otherPlayers.Count > 0)
-                ShowSlot(picP1, lb_nameP1, P1_money, pnP1, otherPlayers.ElementAtOrDefault(0));
-            if(otherPlayers.Count > 1)
-                ShowSlot(picP2, lb_nameP2, P2_money, pnP2, otherPlayers.ElementAtOrDefault(1));
-            if(otherPlayers.Count > 2)
-                ShowSlot(picP3, lb_nameP3, P3_money, pnP3, otherPlayers.ElementAtOrDefault(2));
-            if(otherPlayers.Count > 3)
-                ShowSlot(picP4, lb_nameP4, P4_money, pnP4, otherPlayers.ElementAtOrDefault(3));
-            if(otherPlayers.Count > 4)
-                ShowSlot(picP5, lb_nameP5, P5_money, pnP5, otherPlayers.ElementAtOrDefault(4));
+            if (otherPlayers.Count > 0 && otherPlayers[0] != null)
+                ShowSlot(picP1, lb_nameP1, P1_money, pnP1, otherPlayers[0]);
+            if(otherPlayers.Count > 1 && otherPlayers[1] != null)
+                ShowSlot(picP2, lb_nameP2, P2_money, pnP2, otherPlayers[1]);
+            if(otherPlayers.Count > 2 && otherPlayers[2] != null)
+                ShowSlot(picP3, lb_nameP3, P3_money, pnP3, otherPlayers[2]);
+            if(otherPlayers.Count > 3 && otherPlayers[3] != null)
+                ShowSlot(picP4, lb_nameP4, P4_money, pnP4, otherPlayers[3]);
+            if(otherPlayers.Count > 4 && otherPlayers[4] != null)
+                ShowSlot(picP5, lb_nameP5, P5_money, pnP5, otherPlayers[4]);
 
             lblRoomStatus.Text = $"{room.CurrentPlayers}/{room.MaxPlayers} - {room.Status}";
         }
