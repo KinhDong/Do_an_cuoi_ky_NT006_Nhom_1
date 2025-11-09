@@ -16,18 +16,22 @@ namespace NT106
             tb_RoomCode.Text = room.RoomId;
         }
 
-        private void PlayAsPlayer_Load(object sender, EventArgs e)
+        // Gọi khi form load để hiển thị dữ liệu ban đầu
+        private async void PlayAsPlayer_Load(object sender, EventArgs e)
         {
-            // await room.ListenRoomChangesAsync(OnRoomUpdated, OnRoomDeleted);
+            DisplayRoom(room);
+            await room.ListenRoomChangesAsync(OnRoomUpdated, OnRoomDeleted);
         }
 
-        // 
+        //Call back khi phòng được cập nhật
         private void OnRoomUpdated(RoomClass updatedRoom)
         {
-            Invoke((Action)(() =>
+            if (InvokeRequired)
             {
-                // Thêm cập nhật danh sách Players
-            }));
+                Invoke(new Action(() => OnRoomUpdated(updatedRoom)));
+                return;
+            }
+            DisplayRoom(updatedRoom);
         }
 
         // Phòng bị xóa 
@@ -70,6 +74,59 @@ namespace NT106
             room.StopListening();
 
             AllForm.HandleFormClosing(sender, e);
+        }
+
+        // Ẩn tất cả slot trước khi hiển thị lại
+        private void HideAllSlots()
+        {
+            for (int i = 1; i <= 6; i++)
+            {
+                //vì chỉ có ảnh nên sẽ ẩn ảnh, khi nào cần nhiều thông tin (money, name...) thì sẽ ẩn cả panel
+                var pic = this.Controls.Find($"picP{i}", true).FirstOrDefault() as PictureBox;
+                if (pic != null)
+                    pic.Visible = false;
+            }
+        }
+
+        // Hiển thị avatar player trong PictureBox (cần thì thêm các thông tin khác)
+        private void ShowPlayer(PictureBox pic, PlayerClass player)
+        {
+            if (player == null) return;
+
+            pic.Visible = true;
+            try
+            {
+                //Hiện tại chỉ có ảnh nên cập nhật ảnh 
+                pic.Image = player.Avatar;
+            }
+            catch { }
+        }
+
+        // Hiển thị tất cả player
+        private void DisplayRoom(RoomClass room)
+        {
+            HideAllSlots();
+            if (room?.Players == null || room.Players.Count == 0) return;
+
+            var host = room.Players.Values.FirstOrDefault(p => p.Uid == room.HostUid);
+            var me = room.Players.Values.FirstOrDefault(p => p.Uid == UserClass.Uid);
+            var others = room.Players.Values.Where(p => p.Uid != room.HostUid && p.Uid != UserClass.Uid).ToList();
+
+            // Slot của mình luôn là P1
+            var picMe = (PictureBox)this.Controls.Find("picP1", true).FirstOrDefault();
+            ShowPlayer(picMe, me);
+
+            // Host luôn đối diện, Slot4
+            var picHost = (PictureBox)this.Controls.Find("picP4", true).FirstOrDefault();
+            ShowPlayer(picHost, host);
+
+            // Các player khác xếp slot 2,3,5,6
+            int[] playerSlots = { 2, 3, 5, 6 };
+            for (int i = 0; i < others.Count && i < playerSlots.Length; i++)
+            {
+                var pic = (PictureBox)this.Controls.Find($"picP{playerSlots[i]}", true).FirstOrDefault();
+                ShowPlayer(pic, others[i]);
+            }
         }
     }
 }
