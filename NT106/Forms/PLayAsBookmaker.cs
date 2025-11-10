@@ -35,8 +35,20 @@ namespace NT106.Forms
             f.Show();
             this.Hide();
         }
-        private void PLayAsBookmaker_Load(object sender, EventArgs e)
+        private async void PLayAsBookmaker_Load(object sender, EventArgs e)
         {
+            // 1. CỐ ĐỊNH HOST: Hiển thị thông tin từ UserClass
+            pn_host.Visible = true;
+            lb_namehost.Text = UserClass.InGameName;
+            tb_BookermakerMoney.Text = UserClass.Money.ToString("N0");
+            try
+            {
+                pichost.Image = await UserClass.GetAvatarFromUid(UserClass.Uid);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi tải avatar host: {ex.Message}");
+            }
             // Hiển thị ban đầu (nếu có dữ liệu)
             DisplayRoom(room);
 
@@ -47,9 +59,6 @@ namespace NT106.Forms
         //Ẩn tất cả slot trước khi bắt đầu
         private void HideAllSlots()
         {
-            // Ẩn host
-            pn_host.Visible = false;
-
             // Ẩn các panel player
             pnP1.Visible = false;
             pnP2.Visible = false;
@@ -58,15 +67,17 @@ namespace NT106.Forms
             pnP5.Visible = false;
         }
 
-        private void ShowSlot(PictureBox pic, Label lbname, TextBox tbmoney, Panel pnl, PlayerClass player)
+        private async void ShowSlot(PictureBox pic, Label lbname, TextBox tbmoney, Panel pnl, PlayerClass player)
         {
             if (player == null)
                 return;
             pnl.Visible = true;
 
+            //xóa ảnh cũ 
+            pic.Image = null;
             try
             {
-                pic.Image = player.Avatar;
+                pic.Image = await UserClass.GetAvatarFromUid(player.Uid);
             }
             catch (Exception ex)
             {
@@ -112,26 +123,6 @@ namespace NT106.Forms
             if (room?.Players == null || room.Players.Count == 0)
                 return;
 
-            //nhà cái
-            PlayerClass host = null;
-
-            // chúng ta lấy trực tiếp bằng Key, vì ta biết HostUid là Key.
-            if (room.Players.ContainsKey(room.HostUid))
-            {
-                // Lấy host
-                host = room.Players[room.HostUid];
-
-                // Đồng bộ Uid cho host,
-                // vì đối tượng từ Firebase không có Uid
-                host.Uid = room.HostUid;
-            }
-
-            //nhà cái
-            if (host != null)
-            {
-                ShowSlot(pichost, lb_namehost, tb_BookermakerMoney, pn_host, host);
-            }
-
             //người chơi
             var otherPlayers = room.Players
          .Where(kvp => kvp.Key != room.HostUid) // Tìm bằng Key
@@ -152,6 +143,12 @@ namespace NT106.Forms
                 ShowSlot(picP5, lb_nameP5, P5_money, pnP5, otherPlayers[4]);
 
             lblRoomStatus.Text = $"{room.CurrentPlayers}/{room.MaxPlayers} - {room.Status}";
+
+            //cập nhật tiền bookermaker theo realtime
+            if (room.Players.ContainsKey(UserClass.Uid))
+            {
+                tb_BookermakerMoney.Text = room.Players[UserClass.Uid].Money.ToString("N0");
+            }
         }
 
         //đóng form: dừng lắng nghe
