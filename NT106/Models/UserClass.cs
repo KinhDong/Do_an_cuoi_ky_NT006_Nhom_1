@@ -191,6 +191,7 @@ namespace NT106.Models
 
             catch(Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 return false;
             }
         }

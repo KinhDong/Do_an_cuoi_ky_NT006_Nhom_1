@@ -36,11 +36,6 @@ namespace NT106
 
                 this.Hide();
             }
-
-            else
-            {
-                MessageBox.Show("Đăng nhập thất bại");
-            }
         }
 
         private void btn_CreateAccount_Click(object sender, EventArgs e)
