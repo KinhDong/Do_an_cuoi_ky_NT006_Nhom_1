@@ -17,10 +17,10 @@ namespace NT106
         }
 
         // Gọi khi form load để hiển thị dữ liệu ban đầu
-        private async void PlayAsPlayer_Load(object sender, EventArgs e)
+        private void PlayAsPlayer_Load(object sender, EventArgs e)
         {
             DisplayRoom(room);
-            await room.ListenRoomChangesAsync(OnRoomUpdated, OnRoomDeleted);
+            Task.Run(() => room.ListenRoomChangesAsync(OnRoomUpdated, OnRoomDeleted));
         }
 
         //Call back khi phòng được cập nhật
@@ -54,6 +54,7 @@ namespace NT106
 
         private async void btn_LeaveRoom_Click(object sender, EventArgs e)
         {
+            room.StopListening();
             bool success = await room.LeaveAsync();
 
             if (!success)
@@ -91,28 +92,28 @@ namespace NT106
         // Hiển thị avatar player trong PictureBox (cần thì thêm các thông tin khác)
         private async void ShowPlayer(PictureBox pic, PlayerClass player)
         {
-            if (player == null) return;
+            if (pic == null) return;
 
-            pic.Visible = true;
-            if (pic != null)
+            //Ẩn PictureBox nếu không có người chơi (hoặc người chơi rời đi)
+            if (player == null)
             {
-                pic.Visible = true; // Đảm bảo nó đang bật
-                pic.Image = null; // Xóa ảnh cũ đi (để chờ ảnh mới)
+                pic.Visible = false;
+                return;
             }
+
+            //Bật PictureBox và xóa ảnh cũ
+            pic.Visible = true;
+            pic.Image = null;
+
             try
             {
-                //Hiện tại chỉ có ảnh nên cập nhật ảnh 
-                pic.Image = player.Avatar;
-                    
-                // Dùng await để chờ tải ảnh về
-                Image playerAvatar = await UserClass.GetAvatarFromUid(player.Uid);
-
-                if (pic != null)
-                {
-                    pic.Image = playerAvatar; // Gán ảnh vừa tải về
-                }
+                pic.Image = await UserClass.GetAvatarFromUid(player.Uid);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // Thêm player.InGameName để biết lỗi của ai
+                Console.WriteLine($"Lỗi tải avatar cho {player.InGameName}: {ex.Message}");
+            }
         }
 
         // Hiển thị tất cả player
@@ -121,6 +122,13 @@ namespace NT106
             HideAllSlots();
             if (room?.Players == null || room.Players.Count == 0) return;
 
+            foreach (var kvp in room.Players)
+            {
+                if (kvp.Value != null && kvp.Value.Uid == null)
+                {
+                    kvp.Value.Uid = kvp.Key;
+                }
+            }
             var host = room.Players.Values.FirstOrDefault(p => p.Uid == room.HostUid);
             var me = room.Players.Values.FirstOrDefault(p => p.Uid == UserClass.Uid);
             var others = room.Players.Values.Where(p => p.Uid != room.HostUid && p.Uid != UserClass.Uid).ToList();
