@@ -1,0 +1,19 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+.cs.uid
+
+# Import files
+.jpg.import
+.png.import
+.svg.import
+
+
+# Build results
+bin/
+obj/
+*.exe
+
+# IDE files
+.vs/
+*.csproj.user
