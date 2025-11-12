@@ -1,0 +1,171 @@
+[gd_scene load_steps=13 format=3 uid="uid://bplac5andm5i2"]
+
+[ext_resource type="Script" uid="uid://dkl3hi6k8w6x1" path="res://Scenes/ForgotPassword/ForgotScreen.cs" id="1_ovury"]
+[ext_resource type="Texture2D" uid="uid://bmm5ielxxtsac" path="res://Assets/Log_Background.jpg" id="1_sfmxk"]
+[ext_resource type="Texture2D" uid="uid://wyxx84wrkay4" path="res://Assets/Blackjack_Logo.png" id="2_c4ghp"]
+[ext_resource type="Texture2D" uid="uid://0dye7k7ypm52" path="res://Assets/GoBack_Icon.png" id="3_6tuts"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ovury"]
+texture = ExtResource("1_sfmxk")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6tuts"]
+bg_color = Color(0.3647059, 0.6, 0.8666667, 0.3137255)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kdyr3"]
+bg_color = Color(0.15127009, 0.6801947, 0.55673033, 1)
+border_color = Color(0.73333335, 0.73333335, 0.8, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kdyr3"]
+texture = ExtResource("3_6tuts")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_osg8v"]
+texture = ExtResource("2_c4ghp")
+
+[sub_resource type="Animation" id="Animation_pp3c6"]
+resource_name = "ForgotPassword_Appear"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("pn_Screen/pn_ForgotPassword:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("pn_Screen/pn_ForgotPassword:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [280.0, 231.0]
+}
+
+[sub_resource type="Animation" id="Animation_u82xy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("pn_Screen/pn_ForgotPassword:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("pn_Screen/pn_ForgotPassword:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [231.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vqfqi"]
+_data = {
+&"ForgotPassword_Appear": SubResource("Animation_pp3c6"),
+&"RESET": SubResource("Animation_u82xy")
+}
+
+[node name="ForgotScreen" type="Node2D"]
+script = ExtResource("1_ovury")
+
+[node name="pn_Screen" type="Panel" parent="."]
+offset_top = 2.0
+offset_right = 1200.0
+offset_bottom = 800.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_ovury")
+
+[node name="pn_ForgotPassword" type="Panel" parent="pn_Screen"]
+layout_mode = 0
+offset_left = 350.0
+offset_top = 231.0
+offset_right = 903.0
+offset_bottom = 771.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_6tuts")
+
+[node name="Label" type="Label" parent="pn_Screen/pn_ForgotPassword"]
+layout_mode = 0
+offset_left = 101.0
+offset_top = 3.0
+offset_right = 467.0
+offset_bottom = 116.0
+theme_override_font_sizes/font_size = 44
+text = "QUÊN MẬT KHẨU"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="btn_ResetPassword" type="Button" parent="pn_Screen/pn_ForgotPassword"]
+layout_mode = 0
+offset_left = 137.0
+offset_top = 213.0
+offset_right = 419.0
+offset_bottom = 325.0
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_kdyr3")
+text = "Gửi email xác minh và 
+đổi mật khẩu
+"
+
+[node name="le_Username" type="LineEdit" parent="pn_Screen/pn_ForgotPassword"]
+layout_mode = 0
+offset_left = 241.0
+offset_top = 119.0
+offset_right = 505.0
+offset_bottom = 159.9985
+
+[node name="lb_Passwird" type="Label" parent="pn_Screen/pn_ForgotPassword"]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 118.0
+offset_right = 253.35596
+offset_bottom = 194.2829
+theme_override_font_sizes/font_size = 25
+text = "Tên tài khoản"
+
+[node name="btn_Back" type="Button" parent="pn_Screen/pn_ForgotPassword"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 28.0
+offset_right = 72.0
+offset_bottom = 75.664
+theme_override_styles/normal = SubResource("StyleBoxTexture_kdyr3")
+
+[node name="pn_Logo" type="Panel" parent="pn_Screen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -243.0
+offset_right = 243.0
+offset_bottom = 198.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_osg8v")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_vqfqi")
+}

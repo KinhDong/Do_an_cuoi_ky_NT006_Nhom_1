@@ -1,15 +1,16 @@
-# Visual Studio
-.vs/
-*.suo
-*.user
-*.sln.docstates
+# Godot 4+ specific ignores
+.godot/
+/android/
+.cs.uid
+
+# Import files
+*.import/
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-[Bb]in/
-[Oo]bj/
+bin/
+obj/
+*.exe
+
+# IDE files
+.vs/
+*.csproj.user

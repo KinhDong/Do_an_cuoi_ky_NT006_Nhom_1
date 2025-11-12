@@ -1,0 +1,247 @@
+[gd_scene load_steps=14 format=3 uid="uid://choj0x8vnrbg3"]
+
+[ext_resource type="Texture2D" uid="uid://bmm5ielxxtsac" path="res://Assets/Log_Background.jpg" id="1_8ucqs"]
+[ext_resource type="Script" uid="uid://b321jlvdghm0o" path="res://Scenes/Register/RegisterScreen.cs" id="1_rxrp3"]
+[ext_resource type="Texture2D" uid="uid://0dye7k7ypm52" path="res://Assets/GoBack_Icon.png" id="3_6cx5c"]
+[ext_resource type="Texture2D" uid="uid://wyxx84wrkay4" path="res://Assets/Blackjack_Logo.png" id="4_if1n7"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rxrp3"]
+texture = ExtResource("1_8ucqs")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6cx5c"]
+bg_color = Color(0.6, 0.50980395, 0.9490196, 0.3372549)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="SystemFont" id="SystemFont_wjyoc"]
+font_weight = 600
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_if1n7"]
+bg_color = Color(0.15127009, 0.6801947, 0.55673033, 1)
+border_color = Color(0.73333335, 0.73333335, 0.8, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_if1n7"]
+texture = ExtResource("3_6cx5c")
+
+[sub_resource type="Animation" id="Animation_rxrp3"]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("pn_Register:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.46666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("pn_Register:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [250.0, 200.0]
+}
+
+[sub_resource type="Animation" id="Animation_8ucqs"]
+resource_name = "Register_Appear"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("pn_Register:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("pn_Register:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [250.0, 200.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6cx5c"]
+_data = {
+&"RESET": SubResource("Animation_rxrp3"),
+&"Register_Appear": SubResource("Animation_8ucqs")
+}
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wjyoc"]
+texture = ExtResource("4_if1n7")
+
+[node name="RegisterScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rxrp3")
+
+[node name="pn_Screen" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_rxrp3")
+
+[node name="pn_Register" type="Panel" parent="pn_Screen"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -277.0
+offset_top = -148.5
+offset_right = 282.0
+offset_bottom = 423.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6cx5c")
+
+[node name="lb_Username" type="Label" parent="pn_Screen/pn_Register"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -186.5
+offset_right = 186.5
+offset_bottom = 152.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 0.97, 0.9607843)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_wjyoc")
+theme_override_font_sizes/font_size = 44
+text = "ĐĂNG KÝ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Passwird" type="Label" parent="pn_Screen/pn_Register"]
+layout_mode = 0
+offset_left = 56.5
+offset_top = 131.0
+offset_right = 260.85596
+offset_bottom = 207.2829
+theme_override_font_sizes/font_size = 25
+text = "Tên tài khoản"
+
+[node name="le_Username" type="LineEdit" parent="pn_Screen/pn_Register"]
+layout_mode = 0
+offset_left = 251.5
+offset_top = 132.0
+offset_right = 515.5
+offset_bottom = 172.9985
+
+[node name="le_Email" type="Label" parent="pn_Screen/pn_Register"]
+layout_mode = 0
+offset_left = 58.5
+offset_top = 203.0
+offset_right = 262.85596
+offset_bottom = 279.2829
+theme_override_font_sizes/font_size = 25
+text = "Email"
+
+[node name="le_Password" type="LineEdit" parent="pn_Screen/pn_Register"]
+layout_mode = 0
+offset_left = 253.5
+offset_top = 282.5
+offset_right = 517.5
+offset_bottom = 323.4985
+secret = true
+
+[node name="btn_Register" type="Button" parent="pn_Screen/pn_Register"]
+layout_mode = 0
+offset_left = 195.5
+offset_top = 470.5
+offset_right = 371.5
+offset_bottom = 530.38257
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_if1n7")
+text = "Đăng kí
+"
+
+[node name="lb_Email" type="Label" parent="pn_Screen/pn_Register"]
+layout_mode = 0
+offset_left = 55.5
+offset_top = 279.5
+offset_right = 259.85596
+offset_bottom = 355.7829
+theme_override_font_sizes/font_size = 25
+text = "Mật khẩu"
+
+[node name="le_Password2" type="LineEdit" parent="pn_Screen/pn_Register"]
+layout_mode = 0
+offset_left = 252.5
+offset_top = 206.5
+offset_right = 516.5
+offset_bottom = 247.4985
+
+[node name="lb_Email2" type="Label" parent="pn_Screen/pn_Register"]
+layout_mode = 0
+offset_left = 56.5
+offset_top = 357.5
+offset_right = 260.85596
+offset_bottom = 433.7829
+theme_override_font_sizes/font_size = 25
+text = "Mật khẩu"
+
+[node name="le_ConfirmPassword" type="LineEdit" parent="pn_Screen/pn_Register"]
+layout_mode = 0
+offset_left = 255.5
+offset_top = 359.5
+offset_right = 519.5
+offset_bottom = 400.4985
+secret = true
+
+[node name="btn_Back" type="Button" parent="pn_Screen/pn_Register"]
+layout_mode = 0
+offset_left = 24.5
+offset_top = 17.5
+offset_right = 70.5
+offset_bottom = 65.164
+theme_override_styles/normal = SubResource("StyleBoxTexture_if1n7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="pn_Screen"]
+libraries = {
+&"": SubResource("AnimationLibrary_6cx5c")
+}
+
+[node name="pn_Logo" type="Panel" parent="pn_Screen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -243.0
+offset_right = 243.0
+offset_bottom = 198.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_wjyoc")
