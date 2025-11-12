@@ -4,7 +4,10 @@
 .cs.uid
 
 # Import files
-*.import/
+.jpg.import
+.png.import
+.svg.import
+
 
 # Build results
 bin/
