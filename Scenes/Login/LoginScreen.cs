@@ -9,6 +9,7 @@ public partial class LoginScreen : Control
 	private LineEdit PasswordLineEdit;
 	private Button LoginButton;
 	private Button RegisterButton;
+	private LinkButton ForgotPasswordButton;
 	private Label ErrorLabel;
 	private Texture2D EyeOpenTexture;
 	private Texture2D EyeClosedTexture;
@@ -28,6 +29,9 @@ public partial class LoginScreen : Control
 
 		RegisterButton = GetNode<Button>("pn_Screen/pn_Login/btn_Register");
 		RegisterButton.Pressed += OnRegisterButtonPressed;
+
+		ForgotPasswordButton = GetNode<LinkButton>("pn_Screen/pn_Login/lbtn_ForgotPassword");
+		ForgotPasswordButton.Pressed += OnForgotPasswordButtonPressed;
 
 		ErrorLabel = GetNode<Label>("pn_Screen/pn_Login/lb_Error");
 
@@ -64,6 +68,7 @@ public partial class LoginScreen : Control
 		
 		else
 		{
+			// Hiện label báo lỗi tương ứng
 			ErrorLabel.Text = result.Item2;
 		}
 	}
@@ -73,6 +78,12 @@ public partial class LoginScreen : Control
 	{
 		// Chuyển sang màn hình Đăng kí
 		GetTree().ChangeSceneToFile(@"Scenes\Register\RegisterScreen.tscn");
+	}
+
+	// Nhấn nút quên mật khẩu
+	private void OnForgotPasswordButtonPressed()
+	{
+		GetTree().ChangeSceneToFile(@"Scenes\ForgotPassword\ForgotScreen.tscn");
 	}
 
 	// Chuyển đổi trạng thái ẩn mật khẩu

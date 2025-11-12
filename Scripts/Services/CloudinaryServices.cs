@@ -2,29 +2,26 @@ using Godot;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using System.Threading.Tasks;
-using System.Net.Http;
 using System.IO;
+using System;
 
 namespace NT106.Scripts.Services
 {
-    public class CloudinaryServices
+    public static class CloudinaryService
     {
-        private readonly Cloudinary _cloudinary;
 
-        public CloudinaryServices()
-        {
-            var account = new CloudinaryDotNet.Account(
-                "dwy5bb7gl", // Cloud name
-                "784683322925125", // Cloud API Key
-                "EJyM1WzLBImknGan3OsAsmw7-Ns" // Cloud API Secret
-            );
+        private readonly static System.Net.Http.HttpClient http = new();
 
-            _cloudinary = new Cloudinary(account);
-        }
+        static Account account = new Account(
+            "dwy5bb7gl", // Cloud name
+            "784683322925125", // Cloud API Key
+            "EJyM1WzLBImknGan3OsAsmw7-Ns" // Cloud API Secret
+        );
 
+        private readonly static Cloudinary _cloudinary = new(account);        
 
         /// Xóa ảnh cũ dựa trên userId
-        private void DeleteOldImageBeforeUpload(string Uid)
+        private static void DeleteOldImageBeforeUpload(string Uid)
         {
             try
             {
@@ -40,7 +37,7 @@ namespace NT106.Scripts.Services
         }
 
         // Up ảnh mới
-        public string UploadImage(string filePath, string Uid)
+        public static string UploadImage(string filePath, string Uid)
         {
             // Xóa ảnh cũ
             DeleteOldImageBeforeUpload(Uid);
@@ -62,7 +59,7 @@ namespace NT106.Scripts.Services
         }
 
         // Copy ảnh
-        public void CopyImage(string publicId)
+        public static void CopyImage(string publicId)
         {
             string sourceUrl = "https://res.cloudinary.com/dwy5bb7gl/image/upload/v1761364135/AccountIcon_vv8dje.jpg"; // Avatar mặc định có sẵn trên Cloudinary
 
@@ -77,28 +74,57 @@ namespace NT106.Scripts.Services
         }
 
         // Lấy ảnh
-        public async Task<ImageTexture> GetImageAsync(string publicId)
+        public static async Task<Texture2D> GetImageAsync(string publicId)
         {
-            var getResourceParams = new GetResourceParams(publicId);
-            var result = await _cloudinary.GetResourceAsync(getResourceParams);
-
-            // Lấy URL ảnh
-            string imageUrl = result.Url;
-
-            // Tải ảnh từ URL
-            using var httpClient = new System.Net.Http.HttpClient();
-            using var response = await httpClient.GetAsync(imageUrl);
-            using var stream = await response.Content.ReadAsStreamAsync();
-
-            // Chuyển sang ImageTexture
-            using (var ms = new MemoryStream())
+            try
             {
-                await stream.CopyToAsync(ms);
-                byte[] data = ms.ToArray();
+                // Sử dụng code Cloudinary của bạn
+                var getResourceParams = new GetResourceParams(publicId);
+                var result = await _cloudinary.GetResourceAsync(getResourceParams);
 
-                Image image = new Image();
+                // Lấy URL ảnh
+                string imageUrl = result.Url;
+
+                // Tải ảnh từ URL
+                using System.Net.Http.HttpClient httpClient = new();
+                using var response = await httpClient.GetAsync(imageUrl);
+                using var stream = await response.Content.ReadAsStreamAsync();
+
+                // Chuyển đổi stream thành Texture2D
+                return await ConvertStreamToTexture(stream);
+            }
+            catch (Exception ex)
+            {
+                GD.PrintErr($"Lỗi tải ảnh từ Cloudinary: {ex.Message}");
+                return null;
+            }
+        }
+        
+        private static async Task<Texture2D> ConvertStreamToTexture(Stream stream)
+        {
+            try
+            {
+                using var memoryStream = new MemoryStream();
+                await stream.CopyToAsync(memoryStream);
+                var imageData = memoryStream.ToArray();
+
+                var image = new Image();
                 
-                return ImageTexture.CreateFromImage(image);                
+                // Thử các định dạng ảnh phổ biến
+                if (image.LoadPngFromBuffer(imageData) == Godot.Error.Ok ||
+                    image.LoadJpgFromBuffer(imageData) == Godot.Error.Ok ||
+                    image.LoadWebpFromBuffer(imageData) == Godot.Error.Ok)
+                {
+                    return ImageTexture.CreateFromImage(image);
+                }
+                
+                GD.PrintErr("Không thể decode ảnh từ stream");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                GD.PrintErr($"Lỗi chuyển đổi stream: {ex.Message}");
+                return null;
             }
         }
     }

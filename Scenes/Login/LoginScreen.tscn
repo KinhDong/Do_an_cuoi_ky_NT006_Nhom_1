@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://r6eto3equjfx"]
 
-[ext_resource type="Script" uid="uid://dlv72ygdarh" path="res://Scenes/Login/LoginScreen.cs" id="1_v78pv"]
-[ext_resource type="Texture2D" uid="uid://bmm5ielxxtsac" path="res://Assets/Log_Background.jpg" id="2_gbvbl"]
-[ext_resource type="Texture2D" uid="uid://wyxx84wrkay4" path="res://Assets/Blackjack_Logo.png" id="3_gbvbl"]
+[ext_resource type="Script" uid="uid://decopsml5p3q4" path="res://Scenes/Login/LoginScreen.cs" id="1_v78pv"]
+[ext_resource type="Texture2D" uid="uid://dxvrsohlj640u" path="res://Assets/Log_Background.jpg" id="2_gbvbl"]
+[ext_resource type="Texture2D" uid="uid://d3dmthr56osya" path="res://Assets/Blackjack_Logo.png" id="3_gbvbl"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vktwn"]
 texture = ExtResource("2_gbvbl")
@@ -122,9 +122,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -278.0
+offset_left = -276.0
 offset_top = -684.5
-offset_right = 281.0
+offset_right = 283.0
 offset_bottom = -112.5
 grow_horizontal = 2
 grow_vertical = 0
@@ -220,10 +220,10 @@ text = "Đăng kí"
 
 [node name="lb_Error" type="Label" parent="pn_Screen/pn_Login"]
 layout_mode = 0
-offset_left = 55.5
-offset_top = 272.5
-offset_right = 313.5
-offset_bottom = 319.35965
+offset_left = 59.0
+offset_top = 307.5
+offset_right = 317.0
+offset_bottom = 354.35965
 theme_override_colors/font_color = Color(1, 0.09411765, 0.05490196, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 18
