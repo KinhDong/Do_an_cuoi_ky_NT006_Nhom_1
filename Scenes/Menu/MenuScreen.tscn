@@ -1,27 +1,33 @@
-[gd_scene load_steps=9 format=3 uid="uid://b8lr7yqdp75ev"]
+[gd_scene load_steps=10 format=3 uid="uid://b8lr7yqdp75ev"]
 
-[ext_resource type="Script" uid="uid://c6a2mj0gtcq2s" path="res://Scenes/Menu/MenuScreen.cs" id="1_5xyd2"]
-[ext_resource type="Texture2D" uid="uid://b0jqlqa7b4e34" path="res://Assets/Menu_Background.jpg" id="1_tr0oe"]
-[ext_resource type="Texture2D" uid="uid://d3dmthr56osya" path="res://Assets/Blackjack_Logo.png" id="3_66ftb"]
-[ext_resource type="Texture2D" uid="uid://d3axkvylbge6m" path="res://Assets/Setting_Icon.png" id="4_p310n"]
+[ext_resource type="Script" uid="uid://vcmsp82lfp0c" path="res://Scenes/Menu/MenuScreen.cs" id="1_5xyd2"]
+[ext_resource type="Texture2D" uid="uid://cvvg1acwtcxsh" path="res://Assets/Menu_Background.jpg" id="1_tr0oe"]
+[ext_resource type="Texture2D" uid="uid://wyxx84wrkay4" path="res://Assets/Blackjack_Logo.png" id="3_66ftb"]
+[ext_resource type="Texture2D" uid="uid://c538lmlrsijbd" path="res://Assets/Setting_Icon.png" id="4_p310n"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x4ls7"]
 texture = ExtResource("1_tr0oe")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p310n"]
+bg_color = Color(0, 0, 0, 0.40784314)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.69803923, 0.13333334, 0.13333334, 1)
+border_blend = true
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_66ftb"]
 texture = ExtResource("3_66ftb")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5xyd2"]
-bg_color = Color(0.7411765, 0.02745098, 0, 0.81960785)
+bg_color = Color(0, 0, 0, 1)
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
-border_color = Color(0.8, 0.8, 0.6745098, 1)
-corner_radius_top_left = 16
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-corner_radius_bottom_left = 16
+border_color = Color(0.69803923, 0.13333334, 0.13333334, 1)
+border_blend = true
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_00dl2"]
 texture = ExtResource("4_p310n")
@@ -38,28 +44,53 @@ script = ExtResource("1_5xyd2")
 [node name="pn_Background" type="Panel" parent="."]
 layout_mode = 0
 offset_left = 1.0
-offset_right = 1197.0
-offset_bottom = 796.0
+offset_right = 1200.0
+offset_bottom = 800.0
 theme_override_styles/panel = SubResource("StyleBoxTexture_x4ls7")
+
+[node name="ButtonFrame" type="Panel" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.5
+offset_top = -136.0
+offset_right = 199.5
+offset_bottom = 318.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p310n")
 
 [node name="Panel" type="Panel" parent="pn_Background"]
 layout_mode = 1
-anchors_preset = 5
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-offset_left = -220.0
-offset_top = 113.0
-offset_right = 266.0
-offset_bottom = 311.0
+anchor_bottom = 0.5
+offset_left = -240.5
+offset_top = -304.0
+offset_right = 245.5
+offset_bottom = -106.0
 grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_66ftb")
 
 [node name="btn_Play" type="Button" parent="pn_Background"]
-layout_mode = 0
-offset_left = 485.0
-offset_top = 368.0
-offset_right = 761.0
-offset_bottom = 450.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -168.5
+offset_top = -80.0
+offset_right = 167.5
+offset_bottom = -29.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0.8745098, 0.8745098, 0.9411765, 1)
 theme_override_font_sizes/font_size = 26
 theme_override_styles/normal = SubResource("StyleBoxFlat_5xyd2")
@@ -68,10 +99,10 @@ text = "CHƠI
 
 [node name="btn_HowToPlay" type="Button" parent="pn_Background"]
 layout_mode = 0
-offset_left = 485.0
-offset_top = 508.0
-offset_right = 761.0
-offset_bottom = 590.0
+offset_left = 431.0
+offset_top = 472.0
+offset_right = 759.0
+offset_bottom = 518.0
 theme_override_font_sizes/font_size = 26
 theme_override_styles/normal = SubResource("StyleBoxFlat_5xyd2")
 text = "HƯỚNG DẪN
@@ -79,10 +110,10 @@ text = "HƯỚNG DẪN
 
 [node name="btn_ExitGame" type="Button" parent="pn_Background"]
 layout_mode = 0
-offset_left = 484.0
-offset_top = 650.0
-offset_right = 760.0
-offset_bottom = 732.0
+offset_left = 431.0
+offset_top = 632.0
+offset_right = 759.0
+offset_bottom = 678.0
 theme_override_font_sizes/font_size = 26
 theme_override_styles/normal = SubResource("StyleBoxFlat_5xyd2")
 text = "THOÁT

@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://r6eto3equjfx"]
 
-[ext_resource type="Script" uid="uid://decopsml5p3q4" path="res://Scenes/Login/LoginScreen.cs" id="1_v78pv"]
-[ext_resource type="Texture2D" uid="uid://dxvrsohlj640u" path="res://Assets/Log_Background.jpg" id="2_gbvbl"]
-[ext_resource type="Texture2D" uid="uid://d3dmthr56osya" path="res://Assets/Blackjack_Logo.png" id="3_gbvbl"]
+[ext_resource type="Script" uid="uid://cxmucvstiotvt" path="res://Scenes/Login/LoginScreen.cs" id="1_v78pv"]
+[ext_resource type="Texture2D" uid="uid://cd3hj8xg3aedh" path="res://Assets/New_Login_Background.jpg" id="2_gbvbl"]
+[ext_resource type="Texture2D" uid="uid://wyxx84wrkay4" path="res://Assets/Blackjack_Logo.png" id="3_gbvbl"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vktwn"]
 texture = ExtResource("2_gbvbl")
@@ -110,24 +110,23 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_vktwn")
 
 [node name="pn_Login" type="Panel" parent="pn_Screen"]
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -276.0
-offset_top = -684.5
-offset_right = 283.0
-offset_bottom = -112.5
+anchor_bottom = 0.5
+offset_left = -279.5
+offset_top = -287.5
+offset_right = 279.5
+offset_bottom = 284.5
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vktwn")
 
 [node name="btn_Login" type="Button" parent="pn_Screen/pn_Login"]
@@ -172,6 +171,7 @@ offset_left = 251.5
 offset_top = 132.0
 offset_right = 515.5
 offset_bottom = 172.9985
+placeholder_text = "Nhập tên tài khoản"
 
 [node name="Label3" type="Label" parent="pn_Screen/pn_Login"]
 layout_mode = 0
@@ -188,6 +188,7 @@ offset_left = 253.5
 offset_top = 206.0
 offset_right = 517.5
 offset_bottom = 246.9985
+placeholder_text = "Nhập mật khẩu"
 secret = true
 
 [node name="lbtn_ForgotPassword" type="LinkButton" parent="pn_Screen/pn_Login"]

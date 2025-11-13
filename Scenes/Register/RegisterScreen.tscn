@@ -1,12 +1,12 @@
 [gd_scene load_steps=14 format=3 uid="uid://choj0x8vnrbg3"]
 
-[ext_resource type="Texture2D" uid="uid://bmm5ielxxtsac" path="res://Assets/Log_Background.jpg" id="1_8ucqs"]
-[ext_resource type="Script" uid="uid://b321jlvdghm0o" path="res://Scenes/Register/RegisterScreen.cs" id="1_rxrp3"]
+[ext_resource type="Script" uid="uid://dij2ttweq72yg" path="res://Scenes/Register/RegisterScreen.cs" id="1_rxrp3"]
+[ext_resource type="Texture2D" uid="uid://cd3hj8xg3aedh" path="res://Assets/New_Login_Background.jpg" id="2_if1n7"]
 [ext_resource type="Texture2D" uid="uid://0dye7k7ypm52" path="res://Assets/GoBack_Icon.png" id="3_6cx5c"]
 [ext_resource type="Texture2D" uid="uid://wyxx84wrkay4" path="res://Assets/Blackjack_Logo.png" id="4_if1n7"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rxrp3"]
-texture = ExtResource("1_8ucqs")
+texture = ExtResource("2_if1n7")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6cx5c"]
 bg_color = Color(0.6, 0.50980395, 0.9490196, 0.3372549)
@@ -107,7 +107,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_rxrp3")
@@ -120,10 +119,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -277.0
-offset_top = -148.5
-offset_right = 282.0
-offset_bottom = 423.5
+offset_left = -280.0
+offset_top = -150.0
+offset_right = 279.0
+offset_bottom = 422.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_6cx5c")
@@ -160,6 +159,7 @@ offset_left = 251.5
 offset_top = 132.0
 offset_right = 515.5
 offset_bottom = 172.9985
+placeholder_text = "Nhập tên tài khoản"
 
 [node name="le_Email" type="Label" parent="pn_Screen/pn_Register"]
 layout_mode = 0
@@ -176,6 +176,7 @@ offset_left = 253.5
 offset_top = 282.5
 offset_right = 517.5
 offset_bottom = 323.4985
+placeholder_text = "Nhập mật khẩu"
 secret = true
 
 [node name="btn_Register" type="Button" parent="pn_Screen/pn_Register"]
@@ -204,6 +205,7 @@ offset_left = 252.5
 offset_top = 206.5
 offset_right = 516.5
 offset_bottom = 247.4985
+placeholder_text = "Nhập email "
 
 [node name="lb_Email2" type="Label" parent="pn_Screen/pn_Register"]
 layout_mode = 0
@@ -220,6 +222,7 @@ offset_left = 255.5
 offset_top = 359.5
 offset_right = 519.5
 offset_bottom = 400.4985
+placeholder_text = "Nhập lại mật khẩu"
 secret = true
 
 [node name="btn_Back" type="Button" parent="pn_Screen/pn_Register"]
