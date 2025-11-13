@@ -46,10 +46,10 @@ public partial class RegisterScreen : Control
 
 		if(username == String.Empty || email == String.Empty ||
 		password == String.Empty || confirm == String.Empty)
-        {
-            OS.Alert("Vui lòng nhập đầy đủ thông tin", "Lỗi");
+		{
+			OS.Alert("Vui lòng nhập đầy đủ thông tin", "Lỗi");
 			return;
-        }
+		}
 
 		// KIỂM TRA ĐỊNH DẠNG EMAIL 
 		if (!IsValidEmail(email))
