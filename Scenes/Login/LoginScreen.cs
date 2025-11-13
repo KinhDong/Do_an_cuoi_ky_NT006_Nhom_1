@@ -11,8 +11,6 @@ public partial class LoginScreen : Control
 	private Button RegisterButton;
 	private LinkButton ForgotPasswordButton;
 	private Label ErrorLabel;
-	private Texture2D EyeOpenTexture;
-	private Texture2D EyeClosedTexture;
 	private TextureButton HidePasswordButton;
 
 	// Mở màn hình
@@ -35,11 +33,7 @@ public partial class LoginScreen : Control
 
 		ErrorLabel = GetNode<Label>("pn_Screen/pn_Login/lb_Error");
 
-		EyeOpenTexture = ResourceLoader.Load<Texture2D>(@"Assets\OpenEye_Icon.png");
-		EyeClosedTexture = ResourceLoader.Load<Texture2D>(@"Assets\CloseEye_Icon.png");
-
 		HidePasswordButton = GetNode<TextureButton>("pn_Screen/pn_Login/ttbtn_HidePassword");
-		HidePasswordButton.TextureNormal = EyeClosedTexture;
 		HidePasswordButton.Pressed += OnHidePasswordButtonPressed;
 
 		anim.Play("Login_Appear");
@@ -89,16 +83,14 @@ public partial class LoginScreen : Control
 	// Chuyển đổi trạng thái ẩn mật khẩu
 	private void OnHidePasswordButtonPressed()
 	{
-		if (PasswordLineEdit.Secret)
+		if (HidePasswordButton.ButtonPressed)
 		{
-			HidePasswordButton.TextureNormal = EyeOpenTexture;
-			PasswordLineEdit.Secret = false;
+			PasswordLineEdit.Secret = true;
 		}
 
 		else
 		{
-			HidePasswordButton.TextureNormal = EyeClosedTexture;
-			PasswordLineEdit.Secret = true;
+			PasswordLineEdit.Secret = false;
 		}
 	}
 }

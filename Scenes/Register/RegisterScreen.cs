@@ -25,8 +25,11 @@ public partial class RegisterScreen : Control
 		BackButton.Pressed += OnBackButtonPressed;
 
 		usernameInput = GetNode<LineEdit>("pn_Screen/pn_Register/le_Username");
+
 		emailInput = GetNode<LineEdit>("pn_Screen/pn_Register/le_Password2"); 
+
 		passwordInput = GetNode<LineEdit>("pn_Screen/pn_Register/le_Password");
+		
 		confirmInput = GetNode<LineEdit>("pn_Screen/pn_Register/le_ConfirmPassword");
 
 		anim.Play("Register_Appear");
@@ -40,6 +43,13 @@ public partial class RegisterScreen : Control
 		string email = emailInput.Text.Trim();
 		string password = passwordInput.Text.Trim();
 		string confirm = confirmInput.Text.Trim();
+
+		if(username == String.Empty || email == String.Empty ||
+		password == String.Empty || confirm == String.Empty)
+        {
+            OS.Alert("Vui lòng nhập đầy đủ thông tin", "Lỗi");
+			return;
+        }
 
 		// KIỂM TRA ĐỊNH DẠNG EMAIL 
 		if (!IsValidEmail(email))
@@ -62,8 +72,7 @@ public partial class RegisterScreen : Control
 		if (success)
 		{
 			// Đăng ký thành công
-			OS.Alert("Đăng ký thành công! Vui lòng kiểm tra email để xác minh tài khoản trước khi đăng nhập.", 
-					 "Xác minh email");
+			OS.Alert("Đăng ký thành công!");
 
 			GetTree().ChangeSceneToFile(@"Scenes\Login\LoginScreen.tscn");
 		}
