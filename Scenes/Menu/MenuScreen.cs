@@ -13,6 +13,7 @@ public partial class MenuScreen : Control
 	public override void _Ready()
 	{
 		PlayButton = GetNode<Button>("pn_Background/btn_Play");
+		PlayButton.Pressed += OpenModeSeclectionScreen;
 
 		HowToPlayButton = GetNode<Button>("pn_Background/btn_HowToPlay");
 
@@ -24,6 +25,12 @@ public partial class MenuScreen : Control
 		ProfileButton = GetNode<TextureButton>("pn_Background/tttbtn_Profile");
 		// ProfileButton.TextureNormal = UserClass.Avatar;
 	}
+
+	//Mở màn hình chọn chế độ chơi
+	private void OpenModeSeclectionScreen()
+    {
+		GetTree().ChangeSceneToFile("res://Scenes/GameModeSelection/ModeChoosing.tscn");
+    }
 
 	private async void OnExitGameButtonPressed()
 	{

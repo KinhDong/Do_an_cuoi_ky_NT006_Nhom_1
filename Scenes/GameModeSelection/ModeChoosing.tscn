@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=3 uid="uid://ca6qq7li4x6qa"]
+
+[ext_resource type="Script" uid="uid://dxmqn6rmhckeu" path="res://Scenes/GameModeSelection/ModeChoosing.cs" id="1_ek4n8"]
+[ext_resource type="Texture2D" uid="uid://dj5kpo734v0so" path="res://Assets/ImageForPVPMode.jpg" id="1_l5hqa"]
+[ext_resource type="Texture2D" uid="uid://drj3yyosrn5md" path="res://Assets/ImageForPVEMode.jpg" id="1_x3jvv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_145h3"]
+bg_color = Color(0, 0, 0, 0.38039216)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_blend = true
+
+[node name="ModeChoosing" type="Node2D"]
+script = ExtResource("1_ek4n8")
+
+[node name="ModeBackground" type="Panel" parent="."]
+offset_right = 1200.0
+offset_bottom = 800.0
+
+[node name="PVPBackground" type="TextureRect" parent="ModeBackground"]
+layout_mode = 0
+offset_right = 600.0
+offset_bottom = 800.0
+texture = ExtResource("1_l5hqa")
+expand_mode = 1
+
+[node name="PVEBackground" type="TextureRect" parent="ModeBackground"]
+layout_mode = 0
+offset_left = 600.0
+offset_right = 1200.0
+offset_bottom = 800.0
+texture = ExtResource("1_x3jvv")
+expand_mode = 1
+
+[node name="btnPVE" type="Button" parent="ModeBackground"]
+layout_mode = 1
+offset_left = 600.0
+offset_right = 1200.0
+offset_bottom = 800.0
+theme_override_font_sizes/font_size = 80
+theme_override_styles/normal = SubResource("StyleBoxFlat_145h3")
+text = "PVE
+"
+
+[node name="btnPVP" type="Button" parent="ModeBackground"]
+layout_mode = 1
+offset_right = 600.0
+offset_bottom = 800.0
+theme_override_font_sizes/font_size = 80
+theme_override_styles/normal = SubResource("StyleBoxFlat_145h3")
+text = "PVP
+"
+
+[node name="btnReturn" type="Button" parent="ModeBackground"]
+layout_mode = 0
+offset_left = 1136.0
+offset_top = 16.0
+offset_right = 1184.0
+offset_bottom = 72.0
+text = "X"

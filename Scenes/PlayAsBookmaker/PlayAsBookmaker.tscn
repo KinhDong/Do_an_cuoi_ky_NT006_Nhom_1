@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxoif8m5omorg"]
+
+[ext_resource type="Script" uid="uid://bl68j4r3pksrw" path="res://Scenes/PlayAsBookmaker/PlayAsBookmaker.cs" id="1_jwnyh"]
+
+[node name="PlayAsBookmaker" type="Node2D"]
+script = ExtResource("1_jwnyh")
+
+[node name="PlayAsBookMakerScreen" type="Panel" parent="."]
+offset_right = 1128.0
+offset_bottom = 456.0
+
+[node name="btnExitRoom" type="Button" parent="PlayAsBookMakerScreen"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 409.0
+offset_right = 168.0
+offset_bottom = 440.0
+text = "RỜI PHÒNG"
+
+[node name="txtRoomID" type="LineEdit" parent="PlayAsBookMakerScreen"]
+layout_mode = 0
+offset_right = 152.0
+offset_bottom = 32.0
