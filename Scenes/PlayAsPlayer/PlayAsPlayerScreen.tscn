@@ -1,0 +1,489 @@
+[gd_scene load_steps=7 format=3 uid="uid://bew6ci501nue0"]
+
+[ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="1_so6yb"]
+[ext_resource type="Texture2D" uid="uid://b2fxjfp8f5kcr" path="res://Assets/Coin_Icon.png" id="2_as1e0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fxv46"]
+bg_color = Color(0.41, 0.16400002, 0, 1)
+
+[sub_resource type="Theme" id="Theme_bldg0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tfju4"]
+bg_color = Color(0.15, 0.15, 0.15, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_efp1y"]
+bg_color = Color(0.28937218, 0.6656634, 0.6924187, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[node name="PlayAsPlayerScreen" type="Node2D"]
+
+[node name="pn_Background" type="Panel" parent="."]
+offset_left = 3.0
+offset_top = 2.0
+offset_right = 1199.0
+offset_bottom = 801.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fxv46")
+metadata/_edit_use_anchors_ = true
+
+[node name="ttr_Table" type="TextureRect" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -520.0
+offset_top = -306.5
+offset_right = 520.0
+offset_bottom = 306.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_so6yb")
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="pn_Background"]
+layout_mode = 0
+offset_left = 37.228027
+offset_top = 27.815071
+offset_right = 77.22803
+offset_bottom = 50.81507
+theme_override_font_sizes/font_size = 20
+text = "Mã phòng:"
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7188729
+anchor_top = 0.0027345794
+anchor_right = 0.7707124
+anchor_bottom = 0.008992402
+offset_left = 37.228027
+offset_top = 27.815071
+offset_right = 77.22803
+offset_bottom = 50.81507
+theme_override_font_sizes/font_size = 20
+text = "Mức cược:"
+metadata/_edit_use_anchors_ = true
+
+[node name="le_RoomId" type="LineEdit" parent="pn_Background"]
+layout_mode = 0
+offset_left = 165.0
+offset_top = 27.0
+offset_right = 321.0
+offset_bottom = 64.0
+editable = false
+metadata/_edit_use_anchors_ = true
+
+[node name="ttr_Avatar_You" type="TextureRect" parent="pn_Background"]
+layout_mode = 0
+offset_left = 555.0
+offset_top = 619.0
+offset_right = 662.0
+offset_bottom = 715.7676
+theme = SubResource("Theme_bldg0")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_You"]
+layout_mode = 0
+offset_left = -15.0
+offset_top = -13.0
+offset_right = 122.0
+offset_bottom = 110.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tfju4")
+metadata/_edit_use_anchors_ = true
+
+[node name="le_InGameName_You" type="LineEdit" parent="pn_Background/ttr_Avatar_You"]
+layout_mode = 0
+offset_left = -12.0
+offset_top = 116.0
+offset_right = 116.0
+offset_bottom = 147.0
+editable = false
+
+[node name="le_Money" type="LineEdit" parent="pn_Background/ttr_Avatar_You"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.18995872
+anchor_top = 0.57423156
+anchor_right = 0.18995872
+anchor_bottom = 0.57423156
+offset_left = -29.325583
+offset_top = -104.567
+offset_right = 94.11735
+offset_bottom = -73.567
+editable = false
+
+[node name="TextureRect" type="TextureRect" parent="pn_Background/ttr_Avatar_You"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.053451564
+anchor_top = 0.46533042
+anchor_right = 0.053451564
+anchor_bottom = 0.46533042
+offset_left = -34.71932
+offset_top = -100.0289
+offset_right = 5.2806826
+offset_bottom = -60.0289
+texture = ExtResource("2_as1e0")
+expand_mode = 1
+
+[node name="ttr_Avatar_Player1" type="TextureRect" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.34698996
+anchor_top = -0.22027534
+anchor_right = -0.34698996
+anchor_bottom = -0.22027534
+offset_left = 555.0
+offset_top = 619.0
+offset_right = 662.0
+offset_bottom = 715.7676
+theme = SubResource("Theme_bldg0")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_Player1"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.009345794
+anchor_right = -0.009345794
+offset_left = -15.0
+offset_top = -13.0
+offset_right = 122.0
+offset_bottom = 110.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tfju4")
+metadata/_edit_use_anchors_ = true
+
+[node name="le_InGameName_You" type="LineEdit" parent="pn_Background/ttr_Avatar_Player1"]
+layout_mode = 0
+offset_left = -12.0
+offset_top = 116.0
+offset_right = 116.0
+offset_bottom = 147.0
+editable = false
+
+[node name="le_Money" type="LineEdit" parent="pn_Background/ttr_Avatar_Player1"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.18995872
+anchor_top = 0.57423156
+anchor_right = 0.18995872
+anchor_bottom = 0.57423156
+offset_left = -29.325583
+offset_top = -104.567
+offset_right = 94.11735
+offset_bottom = -73.567
+editable = false
+
+[node name="TextureRect" type="TextureRect" parent="pn_Background/ttr_Avatar_Player1"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.053451564
+anchor_top = 0.46533042
+anchor_right = 0.053451564
+anchor_bottom = 0.46533042
+offset_left = -34.71932
+offset_top = -100.0289
+offset_right = 5.2806826
+offset_bottom = -60.0289
+texture = ExtResource("2_as1e0")
+expand_mode = 1
+
+[node name="ttr_Avatar_Player2" type="TextureRect" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.32943144
+anchor_top = -0.21902378
+anchor_right = 0.32943144
+anchor_bottom = -0.21902378
+offset_left = 555.0
+offset_top = 619.0
+offset_right = 662.0
+offset_bottom = 715.7676
+theme = SubResource("Theme_bldg0")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_Player2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.009345794
+anchor_top = -0.01033404
+anchor_right = -0.009345794
+anchor_bottom = -0.01033404
+offset_left = -15.0
+offset_top = -13.0
+offset_right = 122.0
+offset_bottom = 110.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tfju4")
+metadata/_edit_use_anchors_ = true
+
+[node name="le_InGameName_You" type="LineEdit" parent="pn_Background/ttr_Avatar_Player2"]
+layout_mode = 0
+offset_left = -12.0
+offset_top = 116.0
+offset_right = 116.0
+offset_bottom = 147.0
+editable = false
+
+[node name="le_Money" type="LineEdit" parent="pn_Background/ttr_Avatar_Player2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.18995872
+anchor_top = 0.57423156
+anchor_right = 0.18995872
+anchor_bottom = 0.57423156
+offset_left = -29.325583
+offset_top = -104.567
+offset_right = 94.11735
+offset_bottom = -73.567
+editable = false
+
+[node name="TextureRect" type="TextureRect" parent="pn_Background/ttr_Avatar_Player2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.053451564
+anchor_top = 0.46533042
+anchor_right = 0.053451564
+anchor_bottom = 0.46533042
+offset_left = -34.71932
+offset_top = -100.0289
+offset_right = 5.2806826
+offset_bottom = -60.0289
+texture = ExtResource("2_as1e0")
+expand_mode = 1
+
+[node name="ttr_Avatar_Player3" type="TextureRect" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.4013378
+anchor_top = -0.59574467
+anchor_right = -0.4013378
+anchor_bottom = -0.59574467
+offset_left = 555.0
+offset_top = 619.0
+offset_right = 662.0
+offset_bottom = 715.7676
+theme = SubResource("Theme_bldg0")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_Player3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.02066808
+anchor_bottom = -0.02066808
+offset_left = -15.0
+offset_top = -13.0
+offset_right = 122.0
+offset_bottom = 110.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tfju4")
+metadata/_edit_use_anchors_ = true
+
+[node name="le_InGameName_You" type="LineEdit" parent="pn_Background/ttr_Avatar_Player3"]
+layout_mode = 0
+offset_left = -12.0
+offset_top = 116.0
+offset_right = 116.0
+offset_bottom = 147.0
+editable = false
+
+[node name="le_Money" type="LineEdit" parent="pn_Background/ttr_Avatar_Player3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.18995872
+anchor_top = 0.57423156
+anchor_right = 0.18995872
+anchor_bottom = 0.57423156
+offset_left = -29.325583
+offset_top = -104.567
+offset_right = 94.11735
+offset_bottom = -73.567
+editable = false
+
+[node name="TextureRect" type="TextureRect" parent="pn_Background/ttr_Avatar_Player3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.053451564
+anchor_top = 0.46533042
+anchor_right = 0.053451564
+anchor_bottom = 0.46533042
+offset_left = -34.71932
+offset_top = -100.0289
+offset_right = 5.2806826
+offset_bottom = -60.0289
+texture = ExtResource("2_as1e0")
+expand_mode = 1
+
+[node name="ttr_Avatar_Player4" type="TextureRect" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.38795987
+anchor_top = -0.5944931
+anchor_right = 0.38795987
+anchor_bottom = -0.5944931
+offset_left = 555.0
+offset_top = 619.0
+offset_right = 662.0
+offset_bottom = 715.7676
+theme = SubResource("Theme_bldg0")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_Player4"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.009345794
+anchor_top = -0.010334355
+anchor_right = -0.009345794
+anchor_bottom = -0.010334355
+offset_left = -15.0
+offset_top = -13.0
+offset_right = 122.0
+offset_bottom = 110.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tfju4")
+metadata/_edit_use_anchors_ = true
+
+[node name="le_InGameName_You" type="LineEdit" parent="pn_Background/ttr_Avatar_Player4"]
+layout_mode = 0
+offset_left = -12.0
+offset_top = 116.0
+offset_right = 116.0
+offset_bottom = 147.0
+editable = false
+
+[node name="le_Money" type="LineEdit" parent="pn_Background/ttr_Avatar_Player4"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.18995872
+anchor_top = 0.57423156
+anchor_right = 0.18995872
+anchor_bottom = 0.57423156
+offset_left = -29.325583
+offset_top = -104.567
+offset_right = 94.11735
+offset_bottom = -73.567
+editable = false
+
+[node name="TextureRect" type="TextureRect" parent="pn_Background/ttr_Avatar_Player4"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.053451564
+anchor_top = 0.46533042
+anchor_right = 0.053451564
+anchor_bottom = 0.46533042
+offset_left = -34.71932
+offset_top = -100.0289
+offset_right = 5.2806826
+offset_bottom = -60.0289
+texture = ExtResource("2_as1e0")
+expand_mode = 1
+
+[node name="ttr_Avatar_Bookmaker" type="TextureRect" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.0100334445
+anchor_top = -0.67459327
+anchor_right = -0.0100334445
+anchor_bottom = -0.67459327
+offset_left = 555.0
+offset_top = 619.0
+offset_right = 662.0
+offset_bottom = 715.7676
+theme = SubResource("Theme_bldg0")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_Bookmaker"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.5
+offset_top = -62.38379
+offset_right = 68.5
+offset_bottom = 60.61621
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tfju4")
+
+[node name="le_InGameName_You" type="LineEdit" parent="pn_Background/ttr_Avatar_Bookmaker"]
+layout_mode = 0
+offset_left = -12.0
+offset_top = 116.0
+offset_right = 116.0
+offset_bottom = 147.0
+editable = false
+
+[node name="le_Money" type="LineEdit" parent="pn_Background/ttr_Avatar_Bookmaker"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.18995872
+anchor_top = 0.57423156
+anchor_right = 0.18995872
+anchor_bottom = 0.57423156
+offset_left = -29.325583
+offset_top = -104.567
+offset_right = 94.11735
+offset_bottom = -73.567
+editable = false
+
+[node name="TextureRect2" type="TextureRect" parent="pn_Background/ttr_Avatar_Bookmaker"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.053451564
+anchor_top = 0.46533042
+anchor_right = 0.053451564
+anchor_bottom = 0.46533042
+offset_left = -39.71932
+offset_top = -99.0289
+offset_right = 0.28068256
+offset_bottom = -59.028896
+texture = ExtResource("2_as1e0")
+expand_mode = 1
+
+[node name="le_BetAmount" type="LineEdit" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7590152
+anchor_top = 0.068862304
+anchor_right = 0.7590152
+anchor_bottom = 0.068862304
+offset_left = 106.217834
+offset_top = -27.02098
+offset_right = 254.21783
+offset_bottom = 8.979019
+editable = false
+
+[node name="btn_LeaveRoom" type="Button" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.051225796
+anchor_top = 0.8734594
+anchor_right = 0.051225796
+anchor_bottom = 0.8734594
+offset_left = -34.266052
+offset_top = 23.105957
+offset_right = 94.467896
+offset_bottom = 74.211914
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_efp1y")
+text = "Rời phòng
+"

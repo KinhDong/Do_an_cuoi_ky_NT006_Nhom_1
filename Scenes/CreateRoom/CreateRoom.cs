@@ -139,7 +139,7 @@ public partial class CreateRoom : Node2D
                        $"Người chơi tối đa: {maxPlayers}\nMức cược: {betAmmount}");
 			
 			RoomClass.CurrentRoom = room;
-			GetTree().ChangeSceneToFile("res://Scenes/PlayAsBookmaker/PlayAsBookmaker.tscn");
+			GetTree().ChangeSceneToFile(@"Scenes\PlayAsBookmaker\PlayAsBookmakerScreen.tscn");
 
         }
 		catch (Exception ex)
