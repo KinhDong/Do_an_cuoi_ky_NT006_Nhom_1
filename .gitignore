@@ -1,13 +1,10 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
-.cs.uid
+*.uid*
 
 # Import files
-.jpg.import
-.png.import
-.svg.import
-
+*.import*
 
 # Build results
 bin/

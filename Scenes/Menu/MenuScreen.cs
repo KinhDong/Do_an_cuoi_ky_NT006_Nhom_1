@@ -8,7 +8,7 @@ public partial class MenuScreen : Control
 	Button HowToPlayButton;
 	Button ExitGameButton;
 	Button SettingButton;
-	TextureButton ProfileButton;
+	Button ProfileButton;
 
 	public override void _Ready()
 	{
@@ -22,8 +22,8 @@ public partial class MenuScreen : Control
 
 		SettingButton = GetNode<Button>("pn_Background/btn_Setting");
 
-		ProfileButton = GetNode<TextureButton>("pn_Background/tttbtn_Profile");
-		// ProfileButton.TextureNormal = UserClass.Avatar;
+		ProfileButton = GetNode<Button>("pn_Background/btn_Profile");
+		ProfileButton.Pressed += OnProfileButtonPressed;
 	}
 
 	//Mở màn hình chọn chế độ chơi
@@ -39,4 +39,11 @@ public partial class MenuScreen : Control
 
 		GetTree().Quit();
 	}
+
+	private void OnProfileButtonPressed()
+    {
+        var ProfileScene = GD.Load<PackedScene>(@"Scenes/Profile/ProfileScreen.tscn");
+
+		AddChild(ProfileScene.Instantiate());
+    }
 }
