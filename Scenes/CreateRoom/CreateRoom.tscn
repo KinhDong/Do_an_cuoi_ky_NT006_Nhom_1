@@ -1,6 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://by3pv2il328cq"]
+[gd_scene load_steps=13 format=3 uid="uid://by3pv2il328cq"]
 
 [ext_resource type="Script" uid="uid://cf5b52m0sgcnm" path="res://Scenes/CreateRoom/CreateRoom.cs" id="1_pmnob"]
+[ext_resource type="Texture2D" uid="uid://bjahvlewakmvr" path="res://Assets/MucCuocDesign.png" id="2_30iju"]
+[ext_resource type="Texture2D" uid="uid://dmcio6a7e0g85" path="res://Assets/MucCuocBackground.jpg" id="2_aeb13"]
+[ext_resource type="Texture2D" uid="uid://cvvg1acwtcxsh" path="res://Assets/Menu_Background.jpg" id="2_i0jhr"]
+[ext_resource type="Texture2D" uid="uid://bu3sn4j5vhgo0" path="res://Assets/SoNguoi_Background.jpg" id="3_2ujj3"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dsngn"]
+texture = ExtResource("2_i0jhr")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_csltb"]
 bg_color = Color(0, 0, 0, 0.88235295)
@@ -10,22 +17,47 @@ border_width_right = 4
 border_width_bottom = 4
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pmnob"]
-bg_color = Color(0.29411766, 0.29411766, 0.29411766, 0.3019608)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2ujj3"]
+texture = ExtResource("2_aeb13")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_30iju"]
-bg_color = Color(0.29411766, 0.29411766, 0.3019608, 0.3019608)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aeb13"]
+bg_color = Color(0.49747366, 0.49747372, 0.49747354, 0.2)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.69803923, 0.13333334, 0.13333334, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i0jhr"]
+texture = ExtResource("3_2ujj3")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ujj3"]
+bg_color = Color(0.90588236, 0.41568628, 0.59607846, 0.27058825)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aeb13"]
+texture = ExtResource("2_30iju")
 
 [node name="CreateRoom" type="Node2D"]
 script = ExtResource("1_pmnob")
 
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1200.0
+offset_bottom = 800.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_dsngn")
+
 [node name="Background" type="Panel" parent="."]
-offset_left = 168.0
-offset_top = 184.0
-offset_right = 1000.0
-offset_bottom = 640.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 184.0
+offset_top = 172.0
+offset_right = 1016.0
+offset_bottom = 628.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="btnReturn" type="Button" parent="Background"]
 layout_mode = 1
@@ -55,12 +87,109 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_csltb")
 text = "Tạo phòng
 "
 
+[node name="BetAmmount" type="Panel" parent="."]
+self_modulate = Color(1, 1, 1, 0.24313726)
+offset_left = 344.0
+offset_top = 412.0
+offset_right = 856.0
+offset_bottom = 532.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_2ujj3")
+
+[node name="PanelBA" type="Panel" parent="BetAmmount"]
+layout_mode = 0
+offset_top = -4.0
+offset_right = 512.0
+offset_bottom = 124.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_aeb13")
+
+[node name="cbBet10" type="CheckBox" parent="BetAmmount"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 64.0
+offset_top = -12.0
+offset_right = 88.0
+offset_bottom = 12.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="BetAmmount/cbBet10"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -12.0
+offset_right = 24.0
+offset_bottom = 11.0
+grow_vertical = 2
+text = "10"
+
+[node name="cbBet20" type="CheckBox" parent="BetAmmount"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="BetAmmount/cbBet20"]
+layout_mode = 0
+offset_left = -16.0
+offset_right = 24.0
+offset_bottom = 23.0
+text = "20"
+
+[node name="cbBet50" type="CheckBox" parent="BetAmmount"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -12.0
+offset_right = -40.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="BetAmmount/cbBet50"]
+layout_mode = 0
+offset_left = -16.0
+offset_right = 24.0
+offset_bottom = 23.0
+text = "50"
+
+[node name="Label" type="Label" parent="BetAmmount"]
+layout_mode = 0
+offset_left = 392.0
+offset_top = -12.0
+offset_right = 496.0
+offset_bottom = 11.0
+theme_override_font_sizes/font_size = 12
+text = "Mức cược"
+horizontal_alignment = 1
+
 [node name="NumberOfPlayer" type="Panel" parent="."]
-offset_left = 328.0
-offset_top = 240.0
-offset_right = 840.0
-offset_bottom = 360.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_pmnob")
+offset_left = 344.0
+offset_top = 228.0
+offset_right = 856.0
+offset_bottom = 348.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_i0jhr")
+
+[node name="PanelNOP" type="Panel" parent="NumberOfPlayer"]
+layout_mode = 0
+offset_top = -4.0
+offset_right = 512.0
+offset_bottom = 124.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_2ujj3")
 
 [node name="cbTwoPlayers" type="CheckBox" parent="NumberOfPlayer"]
 layout_mode = 0
@@ -142,90 +271,16 @@ text = "6"
 
 [node name="Label" type="Label" parent="NumberOfPlayer"]
 layout_mode = 0
-offset_top = -8.0
+offset_top = -12.0
 offset_right = 160.0
-offset_bottom = 15.0
+offset_bottom = 11.0
 theme_override_font_sizes/font_size = 12
 text = "Số lượng người chơi"
 horizontal_alignment = 1
 
-[node name="BetAmmount" type="Panel" parent="."]
-offset_left = 328.0
-offset_top = 424.0
-offset_right = 840.0
-offset_bottom = 544.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_30iju")
-
-[node name="cbBet10" type="CheckBox" parent="BetAmmount"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 64.0
-offset_top = -12.0
-offset_right = 88.0
-offset_bottom = 12.0
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="BetAmmount/cbBet10"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = -16.0
-offset_top = -12.0
-offset_right = 24.0
-offset_bottom = 11.0
-grow_vertical = 2
-text = "10"
-
-[node name="cbBet20" type="CheckBox" parent="BetAmmount"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -12.0
-offset_top = -12.0
-offset_right = 12.0
-offset_bottom = 12.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="BetAmmount/cbBet20"]
-layout_mode = 0
-offset_left = -16.0
-offset_right = 24.0
-offset_bottom = 23.0
-text = "20"
-
-[node name="cbBet50" type="CheckBox" parent="BetAmmount"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -12.0
-offset_right = -40.0
-offset_bottom = 12.0
-grow_horizontal = 0
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="BetAmmount/cbBet50"]
-layout_mode = 0
-offset_left = -16.0
-offset_right = 24.0
-offset_bottom = 23.0
-text = "50"
-
-[node name="Label" type="Label" parent="BetAmmount"]
-layout_mode = 0
-offset_top = -8.0
-offset_right = 104.0
-offset_bottom = 15.0
-theme_override_font_sizes/font_size = 12
-text = "Mức cược"
-horizontal_alignment = 1
+[node name="TrangTri" type="Panel" parent="."]
+offset_left = 336.0
+offset_top = 376.0
+offset_right = 416.0
+offset_bottom = 456.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_aeb13")

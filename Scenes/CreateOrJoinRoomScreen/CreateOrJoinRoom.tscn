@@ -1,15 +1,62 @@
-[gd_scene load_steps=2 format=3 uid="uid://provrhb8tp21"]
+[gd_scene load_steps=8 format=3 uid="uid://provrhb8tp21"]
 
 [ext_resource type="Script" uid="uid://tgkp0a1q5bua" path="res://Scenes/CreateOrJoinRoomScreen/CreateOrJoinRoom.cs" id="1_52jrd"]
+[ext_resource type="Texture2D" uid="uid://cvvg1acwtcxsh" path="res://Assets/Menu_Background.jpg" id="2_ifb2r"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8yfev"]
+texture = ExtResource("2_ifb2r")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifb2r"]
+bg_color = Color(0, 0, 0, 0.8627451)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8yfev"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ukv8r"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3oqq2"]
+bg_color = Color(0, 0, 0, 0.47843137)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.44705883)
+border_blend = true
 
 [node name="CreateOrJoinRoom" type="Node2D"]
 script = ExtResource("1_52jrd")
 
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1200.0
+offset_bottom = 800.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_8yfev")
+
 [node name="CreateOrJoin" type="Panel" parent="."]
-offset_left = 392.0
-offset_top = 144.0
-offset_right = 936.0
-offset_bottom = 472.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 328.0
+offset_top = 236.0
+offset_right = 872.0
+offset_bottom = 564.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifb2r")
 
 [node name="btnCreateRoom" type="Button" parent="CreateOrJoin"]
 layout_mode = 1
@@ -24,6 +71,7 @@ offset_right = 88.0
 offset_bottom = -77.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_8yfev")
 text = "Tạo phòng"
 
 [node name="btnJoinRoom" type="Button" parent="CreateOrJoin"]
@@ -39,6 +87,7 @@ offset_right = 88.0
 offset_bottom = 75.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_ukv8r")
 text = "Tham gia qua mã
 "
 
@@ -61,6 +110,8 @@ offset_left = 184.0
 offset_top = 160.0
 offset_right = 360.0
 offset_bottom = 191.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_3oqq2")
+placeholder_text = " Nhập mã phòng"
 
 [node name="btnReturn" type="Button" parent="CreateOrJoin"]
 layout_mode = 1
