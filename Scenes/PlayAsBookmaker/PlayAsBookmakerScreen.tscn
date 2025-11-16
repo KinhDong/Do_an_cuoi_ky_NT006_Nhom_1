@@ -1,8 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dpel6cas7swbb"]
+[gd_scene load_steps=8 format=3 uid="uid://dpel6cas7swbb"]
 
 [ext_resource type="Script" uid="uid://bstndxy3x7fd5" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
-[ext_resource type="Texture2D" uid="uid://8krl6jdbpj3t" path="res://Assets/Table.png" id="2_o7rqj"]
-[ext_resource type="Texture2D" uid="uid://clwgykm1tag2a" path="res://Assets/Coin_Icon.png" id="3_h7bx7"]
+[ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="2_o7rqj"]
+[ext_resource type="Texture2D" uid="uid://b2fxjfp8f5kcr" path="res://Assets/Coin_Icon.png" id="3_h7bx7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o7rqj"]
 bg_color = Color(0.41, 0.16400002, 0, 1)
@@ -15,8 +15,6 @@ corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h7bx7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7bx7"]
 bg_color = Color(0.28937218, 0.6656634, 0.6924187, 1)
@@ -100,7 +98,7 @@ offset_bottom = 64.0
 editable = false
 metadata/_edit_use_anchors_ = true
 
-[node name="ttr_Avatar_Bookmaker" type="TextureRect" parent="pn_Background"]
+[node name="ttr_Avatar_Player0" type="TextureRect" parent="pn_Background"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -0.0091973245
@@ -114,7 +112,8 @@ expand_mode = 1
 stretch_mode = 6
 metadata/_edit_use_anchors_ = true
 
-[node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_Bookmaker"]
+[node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_Player0"]
+show_behind_parent = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -129,7 +128,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_li0bm")
 
-[node name="le_InGameName_You" type="LineEdit" parent="pn_Background/ttr_Avatar_Bookmaker"]
+[node name="le_InGameName_You" type="LineEdit" parent="pn_Background/ttr_Avatar_Player0"]
 layout_mode = 0
 offset_left = -11.0
 offset_top = 107.0
@@ -138,7 +137,7 @@ offset_bottom = 138.0
 alignment = 1
 editable = false
 
-[node name="TextureRect3" type="TextureRect" parent="pn_Background/ttr_Avatar_Bookmaker"]
+[node name="TextureRect3" type="TextureRect" parent="pn_Background/ttr_Avatar_Player0"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.053451564
@@ -152,7 +151,7 @@ offset_bottom = -55.028896
 texture = ExtResource("3_h7bx7")
 expand_mode = 1
 
-[node name="le_Money" type="LineEdit" parent="pn_Background/ttr_Avatar_Bookmaker"]
+[node name="le_Money" type="LineEdit" parent="pn_Background/ttr_Avatar_Player0"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.18995872
@@ -167,6 +166,7 @@ alignment = 2
 editable = false
 
 [node name="ttr_Avatar_Player1" type="TextureRect" parent="pn_Background"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -0.006688963
@@ -183,6 +183,7 @@ stretch_mode = 6
 metadata/_edit_use_anchors_ = true
 
 [node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_Player1"]
+show_behind_parent = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -238,10 +239,10 @@ expand_mode = 1
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -0.31354514
-anchor_top = -0.53566957
-anchor_right = -0.31354514
-anchor_bottom = -0.53566957
+anchor_left = -0.37959865
+anchor_top = -0.3529412
+anchor_right = -0.37959865
+anchor_bottom = -0.3529412
 offset_left = 555.0
 offset_top = 619.0
 offset_right = 662.0
@@ -252,6 +253,7 @@ stretch_mode = 6
 metadata/_edit_use_anchors_ = true
 
 [node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_Player2"]
+show_behind_parent = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -259,9 +261,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -68.5
-offset_top = -106.38382
+offset_top = -108.0
 offset_right = 68.5
-offset_bottom = 109.61618
+offset_bottom = 108.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_li0bm")
@@ -307,10 +309,10 @@ expand_mode = 1
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.29264215
-anchor_top = -0.54693365
-anchor_right = 0.29264215
-anchor_bottom = -0.54693365
+anchor_left = 0.36120403
+anchor_top = -0.35794744
+anchor_right = 0.36120403
+anchor_bottom = -0.35794744
 offset_left = 555.0
 offset_top = 619.0
 offset_right = 662.0
@@ -321,6 +323,7 @@ stretch_mode = 6
 metadata/_edit_use_anchors_ = true
 
 [node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_Player3"]
+show_behind_parent = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -328,9 +331,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -68.5
-offset_top = -108.38379
+offset_top = -111.38379
 offset_right = 68.5
-offset_bottom = 107.61621
+offset_bottom = 104.61621
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_li0bm")
@@ -359,145 +362,6 @@ alignment = 2
 editable = false
 
 [node name="TextureRect2" type="TextureRect" parent="pn_Background/ttr_Avatar_Player3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.053451564
-anchor_top = 0.46533042
-anchor_right = 0.053451564
-anchor_bottom = 0.46533042
-offset_left = -39.71932
-offset_top = -99.0289
-offset_right = 0.28068256
-offset_bottom = -59.028896
-texture = ExtResource("3_h7bx7")
-expand_mode = 1
-
-[node name="ttr_Avatar_Player4" type="TextureRect" parent="pn_Background"]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -0.41555184
-anchor_top = -0.10888611
-anchor_right = -0.41555184
-anchor_bottom = -0.10888611
-offset_left = 555.0
-offset_top = 619.0
-offset_right = 662.0
-offset_bottom = 715.7676
-theme = SubResource("Theme_y4rrx")
-expand_mode = 1
-stretch_mode = 6
-metadata/_edit_use_anchors_ = true
-
-[node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_Player4"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -68.5
-offset_top = -108.38379
-offset_right = 68.5
-offset_bottom = 109.61621
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_li0bm")
-
-[node name="le_InGameName_You" type="LineEdit" parent="pn_Background/ttr_Avatar_Player4"]
-layout_mode = 0
-offset_left = -12.0
-offset_top = 116.0
-offset_right = 116.0
-offset_bottom = 147.0
-alignment = 1
-editable = false
-
-[node name="le_Money" type="LineEdit" parent="pn_Background/ttr_Avatar_Player4"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.18995872
-anchor_top = 0.57423156
-anchor_right = 0.18995872
-anchor_bottom = 0.57423156
-offset_left = -29.325583
-offset_top = -104.567
-offset_right = 94.11735
-offset_bottom = -73.567
-alignment = 2
-editable = false
-
-[node name="TextureRect2" type="TextureRect" parent="pn_Background/ttr_Avatar_Player4"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.053451564
-anchor_top = 0.46533042
-anchor_right = 0.053451564
-anchor_bottom = 0.46533042
-offset_left = -39.71932
-offset_top = -99.0289
-offset_right = 0.28068256
-offset_bottom = -59.028896
-texture = ExtResource("3_h7bx7")
-expand_mode = 1
-
-[node name="ttr_Avatar_Player5" type="TextureRect" parent="pn_Background"]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.4013378
-anchor_top = -0.10888611
-anchor_right = 0.4013378
-anchor_bottom = -0.10888611
-offset_left = 555.0
-offset_top = 619.0
-offset_right = 662.0
-offset_bottom = 715.7676
-theme = SubResource("Theme_y4rrx")
-expand_mode = 1
-stretch_mode = 6
-metadata/_edit_use_anchors_ = true
-
-[node name="pn_AvatarBorder" type="Panel" parent="pn_Background/ttr_Avatar_Player5"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -68.5
-offset_top = -104.38379
-offset_right = 68.5
-offset_bottom = 105.61621
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_li0bm")
-
-[node name="le_InGameName_You" type="LineEdit" parent="pn_Background/ttr_Avatar_Player5"]
-layout_mode = 0
-offset_left = -12.0
-offset_top = 116.0
-offset_right = 116.0
-offset_bottom = 147.0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_h7bx7")
-alignment = 1
-editable = false
-
-[node name="le_Money" type="LineEdit" parent="pn_Background/ttr_Avatar_Player5"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.18995872
-anchor_top = 0.57423156
-anchor_right = 0.18995872
-anchor_bottom = 0.57423156
-offset_left = -29.325583
-offset_top = -104.567
-offset_right = 94.11735
-offset_bottom = -73.567
-alignment = 2
-editable = false
-
-[node name="TextureRect2" type="TextureRect" parent="pn_Background/ttr_Avatar_Player5"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.053451564

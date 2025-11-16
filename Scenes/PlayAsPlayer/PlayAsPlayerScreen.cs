@@ -2,8 +2,10 @@ using Godot;
 using System;
 using NT106.Scripts.Models;
 using System.Collections.Generic;
+using CloudinaryDotNet;
+using NT106.Scripts.Services;
 
-public partial class PlayAsBookmakerScreen : Node2D
+public partial class PlayAsPlayerScreen : Node2D
 {
 	public RoomClass room {get; set;}
 
@@ -24,16 +26,13 @@ public partial class PlayAsBookmakerScreen : Node2D
 	private Button LeaveRoom;
 
 
-	public override void _Ready()
+	public async override void _Ready()
 	{
 		room = RoomClass.CurrentRoom;
 
 		DisplayAvatar = new() {null, null, null, null};
 		DisplayName = new() {null, null, null, null};
-		DisplayMoney = new() {null, null, null, null};
-
-
-		AvilableSlot = new HashSet<int> {1, 2, 3};			
+		DisplayMoney = new() {null, null, null, null};		
 
 		// Hiển thị thông tin chung
 		DisplayRoomId = GetNode<LineEdit>("pn_Background/le_RoomId");
@@ -41,49 +40,54 @@ public partial class PlayAsBookmakerScreen : Node2D
 		DisplayBetAmount = GetNode<LineEdit>("pn_Background/ttr_Table/le_BetAmount");
 		DisplayBetAmount.Text = room.BetAmount.ToString();
 
-		// Gán và hiển thị thông tin PLayer
+		// Gán thông tin PLayer
 		GetNodesForPlayers();
+
+		// Hiển thị 
+		UidDisplayed[0] = room.HostId;
+		room.Players[room.HostId].Avatar = await CloudinaryService.GetImageAsync(room.HostId); // Lấy Avatar trên Cloudinary
+		room.Players[room.HostId].Seat = 0;
 		Display(0, room.Players[room.HostId]);
 
+		UidDisplayed[1] = UserClass.Uid;
+		Display(1, room.Players[UserClass.Uid]);
 
+		int SeatIndex = 2;
+		foreach(var p in room.Players)
+		{
+			if(p.Key != UserClass.Uid)
+			{
+				UidDisplayed[SeatIndex] = p.Key;
+				room.Players[p.Key].Seat = SeatIndex;
+				room.Players[p.Key].Avatar = await CloudinaryService.GetImageAsync(p.Key);
+				Display(SeatIndex, room.Players[p.Key]);
+
+				SeatIndex++;
+			}
+		}
+
+		while(SeatIndex < 4) AvilableSlot.Add(SeatIndex); // Lưu các vị trí trống
+
+		// Rời phòng
 		LeaveRoom = GetNode<Button>("pn_Background/btn_LeaveRoom");
 		LeaveRoom.Pressed += OnLeaveRoomPressed;
-
 	}
 
 	private async void OnLeaveRoomPressed()
 	{
-		if (room == null) return;
-
-		LeaveRoom.Disabled = true;
-		GD.Print($"Đang xóa phòng: {room.RoomId}");
-
 		try
 		{
-			var deleteSuccess = await room.DeleteAsync();
+			var res = await room.LeaveAsync();
 
-			if (deleteSuccess.Item1)
-			{
-				GD.Print("Xóa phòng thành công!");
-				
-				// XÓA KHỎI STATIC VARIABLE
-				RoomClass.CurrentRoom = null;
+			if(!res.Item1) throw new Exception(res.Item2);
 
-				GetTree().ChangeSceneToFile(@"Scenes\CreateRoom\CreateRoom.tscn");				
-			}
-
-			else
-			{
-				GD.PrintErr(deleteSuccess.Item2);
-				LeaveRoom.Disabled = false;
-			}			
+			GetTree().ChangeSceneToFile(@"Scenes\CreateOrJoinRoomScreen\CreateOrJoinRoom.cs");	
 		}
-		
+
 		catch (Exception ex)
 		{
-			GD.PrintErr($"Lỗi khi xóa phòng: {ex.Message}");
-			LeaveRoom.Disabled = false;
-		}
+			GD.PrintErr("Lỗi: ", ex.Message);
+		}        
 	}
 
 	public void GetNodes(int Seat)
@@ -100,6 +104,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	public void Display(int Seat, PlayerClass player)
 	{
+		DisplayAvatar[Seat].Visible = true;
 		DisplayAvatar[Seat].Texture = player.Avatar;
 		DisplayName[Seat].Text = player.InGameName;
 		DisplayMoney[Seat].Text = player.Money.ToString();

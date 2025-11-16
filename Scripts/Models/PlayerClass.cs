@@ -1,16 +1,17 @@
 using Godot;
-using System;
-using Newtonsoft.Json;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using NT106.Scripts.Services;
 
-public class PlayerClass
+namespace NT106.Scripts.Models
 {
-    public string Uid { get; set; }
-    public string InGameName { get; set; }
-    public bool IsHost { get; set; }
-    public long Money { get; set; }
-    public string JoinedAt { get; set; }
+    public class PlayerClass
+    {
+        public string Uid { get; set; }        
+        public string InGameName { get; set; }
+        public long Money { get; set; }
+        public Texture2D Avatar;
+        public int Seat;
+        public string JoinedAt { get; set; }
+
+        
+    }    
 }
+

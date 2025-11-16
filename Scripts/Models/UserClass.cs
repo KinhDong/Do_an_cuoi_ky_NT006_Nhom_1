@@ -4,7 +4,9 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using NT106.Scripts.Services; 
+using NT106.Scripts.Services;
+
+
 
 namespace NT106.Scripts.Models
 {
@@ -17,10 +19,7 @@ namespace NT106.Scripts.Models
 		public static Texture2D Avatar { get; set; }
 		public static string IdToken { get; private set; }
 
-		private const string ApiKey = "AIzaSyD9_ECO_L-ex-4Iy_FkkstF8c6J2qaaW9Q";
-		public const string DatabaseUrl = "https://nt106-cf479-default-rtdb.firebaseio.com/";
-		private static readonly System.Net.Http.HttpClient http = new();
-
+		public static System.Net.Http.HttpClient http = new();
 
 		// Đăng ký
 		public static async Task<(bool, string)> RegisterAsync(string username, string email, string password, string confirm)
@@ -30,7 +29,7 @@ namespace NT106.Scripts.Models
 				if (password != confirm) throw new Exception("Mật khẩu xác nhận không khớp!");
 
 				// Kiểm tra username đã tồn tại chưa
-				var check = await http.GetAsync($"{DatabaseUrl}Usernames/{username}.json");
+				var check = await http.GetAsync($"{FirebaseApi.BaseUrl}Usernames/{username}.json");
 				if (check.IsSuccessStatusCode && check.Content.ReadAsStringAsync().Result.Contains("@"))
 					throw new Exception("Tên tài khoản đã tồn tại!");
 
@@ -43,7 +42,7 @@ namespace NT106.Scripts.Models
 				};
 
 				var res = await http.PostAsync(
-					$"https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={ApiKey}",
+					$"https://identitytoolkit.googleapis.com/v1/accounts:signUp?key={FirebaseApi.ApiKey}",
 					new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json"));
 
 				if (!res.IsSuccessStatusCode)
@@ -54,7 +53,7 @@ namespace NT106.Scripts.Models
 				string newIdToken = json.idToken;
 
 				// Lưu username -> email (public)
-				await http.PutAsync($"{DatabaseUrl}Usernames/{username}.json?auth={newIdToken}",
+				await http.PutAsync($"{FirebaseApi.BaseUrl}Usernames/{username}.json?auth={newIdToken}",
 					new StringContent(JsonConvert.SerializeObject(email)));
 
 				// Tạo user data mới
@@ -68,7 +67,7 @@ namespace NT106.Scripts.Models
 
 				var createUserRes = await http.PutAsync(
 					// Dùng newUid và newIdToken (không phải Uid và IdToken)
-					$"{DatabaseUrl}Users/{newUid}.json?auth={newIdToken}",
+					$"{FirebaseApi.BaseUrl}Users/{newUid}.json?auth={newIdToken}",
 					new StringContent(JsonConvert.SerializeObject(userInfo), Encoding.UTF8, "application/json"));
 
 				if (!createUserRes.IsSuccessStatusCode)
@@ -104,7 +103,7 @@ namespace NT106.Scripts.Models
 				// Lấy email
 				var email = await GetEmailFromUsernameAsync(username);
 				if (string.IsNullOrWhiteSpace(email))
-					return (false, "Không tìm thấy tài khoản!");
+					throw new Exception ("Không tìm thấy tài khoản!");
 
 				// Đăng nhập
 				var payload = new
@@ -115,7 +114,7 @@ namespace NT106.Scripts.Models
 				};
 				
 				var res = await http.PostAsync(
-					$"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={ApiKey}",
+					$"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={FirebaseApi.ApiKey}",
 					new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json"));
 
 				if (!res.IsSuccessStatusCode)
@@ -126,7 +125,7 @@ namespace NT106.Scripts.Models
 				Uid = json.localId;
 
 				// Kiểm tra và tạo user data nếu chưa tồn tại
-				var userCheck = await http.GetAsync($"{DatabaseUrl}Users/{Uid}.json?auth={IdToken}");
+				var userCheck = await http.GetAsync($"{FirebaseApi.BaseUrl}Users/{Uid}.json?auth={IdToken}");
 				string userDataStr = await userCheck.Content.ReadAsStringAsync();
 				
 				// User data đã tồn tại
@@ -137,7 +136,7 @@ namespace NT106.Scripts.Models
 
 				// Cập nhật trạng thái đăng nhập
 				await http.PatchAsync(
-					$"{DatabaseUrl}Users/{Uid}.json?auth={IdToken}",
+					$"{FirebaseApi.BaseUrl}Users/{Uid}.json?auth={IdToken}",
 					new StringContent("{\"isLoggedIn\":true}", Encoding.UTF8, "application/json"));
 
 				UserName = username;
@@ -159,8 +158,8 @@ namespace NT106.Scripts.Models
 		// Đăng xuất 
 		public static async Task LogoutAsync()
 		{
-			await http.PatchAsync($"{DatabaseUrl}Users/{Uid}.json?auth={IdToken}",
-				new StringContent("{\"isLoggedIn\":false}", Encoding.UTF8, "application/json"));
+			await FirebaseApi.Patch($"Users/{Uid}.json?auth={IdToken}",
+				new {isLoggedIn = false});
 
 			Uid = UserName = InGameName = null;
 			IdToken = null;
@@ -170,8 +169,7 @@ namespace NT106.Scripts.Models
 		// Lấy email từ username
 		public static async Task<string> GetEmailFromUsernameAsync(string username)
 		{
-			string emailRes = await http.GetStringAsync($"{DatabaseUrl}Usernames/{username}.json");
-			return JsonConvert.DeserializeObject<string>(emailRes);
+			return await FirebaseApi.Get<string>($"Usernames/{username}.json");
 		}
 
 		// Gửi reset password
@@ -193,7 +191,7 @@ namespace NT106.Scripts.Models
 			);
 
 			var res = await http.PostAsync(
-				$"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={ApiKey}",
+				$"https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key={FirebaseApi.ApiKey}",
 				content
 			);
 
@@ -219,10 +217,10 @@ namespace NT106.Scripts.Models
 		// Đổi tên trong game
 		public static async Task ChangeInGameName(string newName)
 		{
-			await http.PatchAsync(
-				$"{DatabaseUrl}Users/{Uid}.json?auth={IdToken}",
-				new StringContent("{\"InGameName\":\"" + newName + "\"}", Encoding.UTF8, "application/json")
-			);
+			await FirebaseApi.Patch(
+				$"Users/{Uid}.json?auth={IdToken}",
+				new {InGameName = newName});
+				
 			InGameName = newName;
 		}
 	}

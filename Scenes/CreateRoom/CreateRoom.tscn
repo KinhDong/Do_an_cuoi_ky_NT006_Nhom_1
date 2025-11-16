@@ -1,10 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://by3pv2il328cq"]
+[gd_scene load_steps=10 format=3 uid="uid://by3pv2il328cq"]
 
-[ext_resource type="Script" uid="uid://cf5b52m0sgcnm" path="res://Scenes/CreateRoom/CreateRoom.cs" id="1_pmnob"]
-[ext_resource type="Texture2D" uid="uid://bjahvlewakmvr" path="res://Assets/MucCuocDesign.png" id="2_30iju"]
-[ext_resource type="Texture2D" uid="uid://dmcio6a7e0g85" path="res://Assets/MucCuocBackground.jpg" id="2_aeb13"]
+[ext_resource type="Script" uid="uid://0d8csdgharhu" path="res://Scenes/CreateRoom/CreateRoom.cs" id="1_pmnob"]
+[ext_resource type="Texture2D" uid="uid://bpig5j76reltc" path="res://Assets/MucCuocDesign.png" id="2_30iju"]
+[ext_resource type="Texture2D" uid="uid://jpbuvddwjxp4" path="res://Assets/MucCuocBackground.jpg" id="2_aeb13"]
 [ext_resource type="Texture2D" uid="uid://cvvg1acwtcxsh" path="res://Assets/Menu_Background.jpg" id="2_i0jhr"]
-[ext_resource type="Texture2D" uid="uid://bu3sn4j5vhgo0" path="res://Assets/SoNguoi_Background.jpg" id="3_2ujj3"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dsngn"]
 texture = ExtResource("2_i0jhr")
@@ -28,12 +27,6 @@ border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.69803923, 0.13333334, 0.13333334, 1)
 border_blend = true
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i0jhr"]
-texture = ExtResource("3_2ujj3")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2ujj3"]
-bg_color = Color(0.90588236, 0.41568628, 0.59607846, 0.27058825)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aeb13"]
 texture = ExtResource("2_30iju")
@@ -89,17 +82,18 @@ text = "Tạo phòng
 
 [node name="BetAmmount" type="Panel" parent="."]
 self_modulate = Color(1, 1, 1, 0.24313726)
-offset_left = 344.0
-offset_top = 412.0
-offset_right = 856.0
-offset_bottom = 532.0
+offset_left = 345.0
+offset_top = 305.0
+offset_right = 857.0
+offset_bottom = 425.0
 theme_override_styles/panel = SubResource("StyleBoxTexture_2ujj3")
 
 [node name="PanelBA" type="Panel" parent="BetAmmount"]
 layout_mode = 0
-offset_top = -4.0
-offset_right = 512.0
-offset_bottom = 124.0
+offset_left = 6.0
+offset_top = -6.0
+offset_right = 518.0
+offset_bottom = 122.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_aeb13")
 
 [node name="cbBet10" type="CheckBox" parent="BetAmmount"]
@@ -175,107 +169,6 @@ offset_right = 496.0
 offset_bottom = 11.0
 theme_override_font_sizes/font_size = 12
 text = "Mức cược"
-horizontal_alignment = 1
-
-[node name="NumberOfPlayer" type="Panel" parent="."]
-offset_left = 344.0
-offset_top = 228.0
-offset_right = 856.0
-offset_bottom = 348.0
-theme_override_styles/panel = SubResource("StyleBoxTexture_i0jhr")
-
-[node name="PanelNOP" type="Panel" parent="NumberOfPlayer"]
-layout_mode = 0
-offset_top = -4.0
-offset_right = 512.0
-offset_bottom = 124.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_2ujj3")
-
-[node name="cbTwoPlayers" type="CheckBox" parent="NumberOfPlayer"]
-layout_mode = 0
-offset_left = 112.0
-offset_top = 24.0
-offset_right = 136.0
-offset_bottom = 48.0
-
-[node name="Label" type="Label" parent="NumberOfPlayer/cbTwoPlayers"]
-layout_mode = 0
-offset_left = -16.0
-offset_right = 24.0
-offset_bottom = 23.0
-text = "2"
-
-[node name="cbThreePlayers" type="CheckBox" parent="NumberOfPlayer"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -12.0
-offset_top = -12.0
-offset_right = 12.0
-offset_bottom = 12.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="NumberOfPlayer/cbThreePlayers"]
-layout_mode = 0
-offset_left = -16.0
-offset_right = 24.0
-offset_bottom = 23.0
-text = "3"
-
-[node name="cbFourPlayers" type="CheckBox" parent="NumberOfPlayer"]
-layout_mode = 0
-offset_left = 392.0
-offset_top = 24.0
-offset_right = 416.0
-offset_bottom = 48.0
-
-[node name="Label" type="Label" parent="NumberOfPlayer/cbFourPlayers"]
-layout_mode = 0
-offset_left = -16.0
-offset_right = 24.0
-offset_bottom = 23.0
-text = "4"
-
-[node name="cbFivePlayers" type="CheckBox" parent="NumberOfPlayer"]
-layout_mode = 0
-offset_left = 112.0
-offset_top = 64.0
-offset_right = 136.0
-offset_bottom = 88.0
-flat = true
-
-[node name="Label" type="Label" parent="NumberOfPlayer/cbFivePlayers"]
-layout_mode = 0
-offset_left = -16.0
-offset_right = 24.0
-offset_bottom = 23.0
-text = "5"
-
-[node name="cbSixPlayers" type="CheckBox" parent="NumberOfPlayer"]
-layout_mode = 0
-offset_left = 392.0
-offset_top = 64.0
-offset_right = 416.0
-offset_bottom = 88.0
-
-[node name="Label" type="Label" parent="NumberOfPlayer/cbSixPlayers"]
-layout_mode = 0
-offset_left = -16.0
-offset_right = 24.0
-offset_bottom = 23.0
-text = "6"
-
-[node name="Label" type="Label" parent="NumberOfPlayer"]
-layout_mode = 0
-offset_top = -12.0
-offset_right = 160.0
-offset_bottom = 11.0
-theme_override_font_sizes/font_size = 12
-text = "Số lượng người chơi"
 horizontal_alignment = 1
 
 [node name="TrangTri" type="Panel" parent="."]

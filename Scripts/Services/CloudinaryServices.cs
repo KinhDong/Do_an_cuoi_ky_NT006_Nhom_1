@@ -92,7 +92,6 @@ namespace NT106.Scripts.Services
 		{
 			try
 			{
-				// SỬA LẠI: Phải tìm đúng publicId "avatar/..."
 				var getResourceParams = new GetResourceParams($"avatar/{publicId}");
 				var result = await _cloudinary.GetResourceAsync(getResourceParams);
 
@@ -108,7 +107,7 @@ namespace NT106.Scripts.Services
 			catch (Exception ex)
 			{
 				// GD.PrintErr($"Lỗi tải ảnh từ Cloudinary: {ex.Message}");
-				// Nếu không tìm thấy ảnh (lỗi 404), ta tải ảnh default
+				// Nếu không tìm thấy ảnh (lỗi 404), tải ảnh default
 				GD.PrintErr("Không tìm thấy avatar user, tải avatar default.");
 				try
 				{
