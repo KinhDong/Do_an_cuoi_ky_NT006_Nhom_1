@@ -77,20 +77,27 @@ public partial class PlayAsPlayerScreen : Node2D
 			}
 		}
 
-		while(SeatIndex < 4) AvilableSlot.Add(SeatIndex); // Lưu các vị trí trống
+		AvilableSlot = new();
+		while(SeatIndex < 4)
+		{
+			AvilableSlot.Add(SeatIndex); // Lưu các vị trí trống
+			SeatIndex++;
+		} 
 
 		// Thực hiện lắng nghe
-		// lisEvent = new();
-		// string EventUrl = $"{FirebaseApi.BaseUrl}/Rooms/{room.RoomId}/Events.json?auth={UserClass.IdToken}";
-		// lisEvent.StartListen(EventUrl, OnRoomData, OnError);
+		lisEvent = new();
+		AddChild(lisEvent);
+		string EventUrl = $"{FirebaseApi.BaseUrl}/Rooms/{room.RoomId}/Events.json?auth={UserClass.IdToken}";
+		lisEvent.StartListen(EventUrl, OnRoomData, OnError);
 
-		// lisDelete = new();
-		// string DeleteUrl = $"{FirebaseApi.BaseUrl}/Rooms/{room.RoomId}.json?auth={UserClass.IdToken}";
-		// lisDelete.StartListen(DeleteUrl, 
-		// data =>
-		// {
-		// 	if(data == null) OnRoomDelete();
-		// });
+		lisDelete = new();
+		AddChild(lisDelete);
+		string DeleteUrl = $"{FirebaseApi.BaseUrl}/Rooms/{room.RoomId}.json?auth={UserClass.IdToken}";
+		lisDelete.StartListen(DeleteUrl, 
+		data =>
+		{
+			if(data == null) OnRoomDelete();
+		});
 	}
 
 	private async void OnLeaveRoomPressed()
@@ -100,8 +107,8 @@ public partial class PlayAsPlayerScreen : Node2D
 			var res = await room.LeaveAsync();
 			if(!res.Item1) throw new Exception(res.Item2);
 
-			// lisEvent.StopListen();
-			// lisDelete.StopListen();
+			lisEvent.StopListen();
+			lisDelete.StopListen();
 			GetTree().ChangeSceneToFile(@"Scenes\CreateOrJoinRoomScreen\CreateOrJoinRoom.tscn");	
 		}
 
@@ -109,6 +116,12 @@ public partial class PlayAsPlayerScreen : Node2D
 		{
 			GD.PrintErr("Lỗi: ", ex.Message);
 		}        
+	}
+
+	public override void _ExitTree()
+	{
+		lisEvent?.StopListen();
+		lisDelete?.StopListen();
 	}
 
 	public void GetNodes(int Seat)

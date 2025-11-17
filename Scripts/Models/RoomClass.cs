@@ -77,7 +77,6 @@ namespace NT106.Scripts.Models
 
                 // Trả về room để thao tác trong Godot
                 CurrentRoom = roomData;
-                CurrentRoom.Players[UserClass.Uid].Avatar = UserClass.Avatar;
                 CurrentRoom.Players[UserClass.Uid].Seat = 0;
 
                 return (true, "OK");
@@ -116,7 +115,6 @@ namespace NT106.Scripts.Models
                 
                 if (!res) throw new Exception("Không thể thêm người chơi");  
 
-                player.Avatar = UserClass.Avatar;
                 player.Seat = 1;
                 // Thêm vào roomData
                 roomData.Players.Add(UserClass.Uid, player);

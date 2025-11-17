@@ -36,7 +36,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 		DisplayName = new() {null, null, null, null};
 		DisplayMoney = new() {null, null, null, null};
 
-
+		// Tạo các vị trí trống
 		AvilableSlot = new HashSet<int> {1, 2, 3};			
 
 		// Hiển thị thông tin chung
@@ -47,6 +47,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 		// Gán và hiển thị thông tin PLayer
 		GetNodesForPlayers();
+		DisplayAvatar[0].Texture = UserClass.Avatar;
 		Display(0, room.Players[room.HostId]);
 
 
@@ -55,6 +56,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 		// Lắng nghe
 		lisEvent = new();
+		AddChild(lisEvent);
 		string EventUrl = $"{FirebaseApi.BaseUrl}/Rooms/{room.RoomId}/Events.json?auth={UserClass.IdToken}";
 		lisEvent.StartListen(EventUrl, OnRoomData, OnError);
 	}
@@ -107,12 +109,12 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	public async void LoadAvatar(int Seat, string Uid)
 	{
-		room.Players[Uid].Avatar = await CloudinaryService.GetImageAsync(Uid);
+		DisplayAvatar[Seat].Texture = await CloudinaryService.GetImageAsync(Uid);
 	}
 
 	public void Display(int Seat, PlayerClass player)
 	{
-		DisplayAvatar[Seat].Texture = player.Avatar;
+		DisplayAvatar[Seat].Visible = true;
 		DisplayName[Seat].Text = player.InGameName;
 		DisplayMoney[Seat].Text = player.Money.ToString();
 	}
