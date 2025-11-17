@@ -128,6 +128,11 @@ namespace NT106.Scripts.Models
                 if(!res) throw new Exception ("Không thể cập nhật số người chơi");
 
                 CurrentRoom = roomData;
+
+                // Viết Event
+                var evt = new RoomEvent{type = "join", user = UserClass.Uid, time = DateTimeOffset.UtcNow.ToUnixTimeSeconds()};
+                await FirebaseApi.Patch($"Rooms/{roomId}/Events.json?auth={UserClass.IdToken}", evt);
+
                 return (true, "OK");
             }
             catch (Exception ex)
@@ -153,6 +158,11 @@ namespace NT106.Scripts.Models
                 if(!res) throw new Exception("Không thể giảm số người trong phòng");
 
                 CurrentRoom = null;
+
+                // Viết Event
+                var evt = new RoomEvent{type = "leave", user = UserClass.Uid, time = DateTimeOffset.UtcNow.ToUnixTimeSeconds()};
+                await FirebaseApi.Patch($"Rooms/{RoomId}/Events.json?auth={UserClass.IdToken}", evt);
+
                 return (true, "OK");                
             }
 
@@ -172,12 +182,25 @@ namespace NT106.Scripts.Models
                 if(!res) throw new Exception("Không thể xóa phòng");
 
                 CurrentRoom = null;
+
+                // Viết Event
+                var evt = new RoomEvent{type = "delete", user = UserClass.Uid, time = DateTimeOffset.UtcNow.ToUnixTimeSeconds()};
+                await FirebaseApi.Patch($"Rooms/{RoomId}/Events.json?auth={UserClass.IdToken}", evt);
+
                 return (true, "OK");
             }
             catch (Exception ex)
             {
                 return (false, ex.Message);
             }
-        }                
+        }                  
+    }
+
+    public class RoomEvent
+    {
+        public string type { get; set; }   // "join", "leave"
+        public string user { get; set; }   // userId
+        public long time { get; set; }
+        // public object payload { get; set; } // Dữ liệu thêm vào (Nếu có)
     }
 }

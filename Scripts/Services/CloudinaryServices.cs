@@ -87,43 +87,45 @@ namespace NT106.Scripts.Services
 			});
 		}
 
+
 		// Lấy ảnh
 		public static async Task<Texture2D> GetImageAsync(string publicId)
 		{
 			try
 			{
-				var getResourceParams = new GetResourceParams($"avatar/{publicId}");
-				var result = await _cloudinary.GetResourceAsync(getResourceParams);
-
+				var result = await _cloudinary.GetResourceAsync(new GetResourceParams($"avatar/{publicId}"));
 				string imageUrl = result.Url;
 
-				// Tải ảnh từ URL
-				using System.Net.Http.HttpClient httpClient = new();
-				using var response = await httpClient.GetAsync(imageUrl);
-				using var stream = await response.Content.ReadAsStreamAsync();
+				using var http = new System.Net.Http.HttpClient();
+				using var res = await http.GetAsync(imageUrl);
 
+				var stream = await res.Content.ReadAsStreamAsync();
+				var tex = await ConvertStreamToTexture(stream);
+
+				if (tex != null)
+					return tex;
+
+				GD.PrintErr("Ảnh Cloudinary hỏng → dùng default");
+			}
+			catch { }
+
+			// Fallback default
+			try
+			{
+				using var http = new System.Net.Http.HttpClient();
+				using var res = await http.GetAsync(DEFAULT_AVATAR_URL);
+
+				var stream = await res.Content.ReadAsStreamAsync();
 				return await ConvertStreamToTexture(stream);
 			}
-			catch (Exception ex)
+			catch
 			{
-				// GD.PrintErr($"Lỗi tải ảnh từ Cloudinary: {ex.Message}");
-				// Nếu không tìm thấy ảnh (lỗi 404), tải ảnh default
-				GD.PrintErr("Không tìm thấy avatar user, tải avatar default.");
-				try
-				{
-					using System.Net.Http.HttpClient httpClient = new();
-					using var response = await httpClient.GetAsync(DEFAULT_AVATAR_URL);
-					using var stream = await response.Content.ReadAsStreamAsync();
-					return await ConvertStreamToTexture(stream);
-				}
-				catch (Exception defaultEx)
-				{
-					GD.PrintErr($"Lỗi tải ảnh default: {defaultEx.Message}");
-					return null;
-				}
+				GD.PrintErr("Ảnh default cũng lỗi");
+				return null;
 			}
 		}
-		
+
+
 		private static async Task<Texture2D> ConvertStreamToTexture(Stream stream)
 		{
 			try
@@ -133,22 +135,25 @@ namespace NT106.Scripts.Services
 				var imageData = memoryStream.ToArray();
 
 				var image = new Image();
-				
-				if (image.LoadPngFromBuffer(imageData) == Godot.Error.Ok ||
-					image.LoadJpgFromBuffer(imageData) == Godot.Error.Ok ||
-					image.LoadWebpFromBuffer(imageData) == Godot.Error.Ok)
-				{
+
+				var err =
+					image.LoadPngFromBuffer(imageData) != Godot.Error.Ok &&
+					image.LoadJpgFromBuffer(imageData) != Godot.Error.Ok &&
+					image.LoadWebpFromBuffer(imageData) != Godot.Error.Ok;
+
+				if (!err)
 					return ImageTexture.CreateFromImage(image);
-				}
-				
-				GD.PrintErr("Không thể decode ảnh từ stream");
+
+				GD.PrintErr("Ảnh không hợp lệ — dùng ảnh default.");
 				return null;
 			}
 			catch (Exception ex)
 			{
-				GD.PrintErr($"Lỗi chuyển đổi stream: {ex.Message}");
-				return null;
+				GD.PrintErr($"ConvertStreamToTexture EXCEPTION: {ex.Message}");
+				return null;  // quan trọng: KHÔNG throw
 			}
 		}
+		
+		
 	}
 }

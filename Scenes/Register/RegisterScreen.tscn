@@ -1,15 +1,15 @@
 [gd_scene load_steps=14 format=3 uid="uid://choj0x8vnrbg3"]
 
-[ext_resource type="Texture2D" uid="uid://bmm5ielxxtsac" path="res://Assets/Log_Background.jpg" id="1_8ucqs"]
-[ext_resource type="Script" uid="uid://dij2ttweq72yg" path="res://Scenes/Register/RegisterScreen.cs" id="1_rxrp3"]
-[ext_resource type="Texture2D" uid="uid://0dye7k7ypm52" path="res://Assets/GoBack_Icon.png" id="3_6cx5c"]
-[ext_resource type="Texture2D" uid="uid://wyxx84wrkay4" path="res://Assets/Blackjack_Logo.png" id="4_if1n7"]
+[ext_resource type="Script" uid="uid://chltvutwjr3pq" path="res://Scenes/Register/RegisterScreen.cs" id="1_rxrp3"]
+[ext_resource type="Texture2D" uid="uid://pc73r7gjcra2" path="res://Assets/Logg_Background.jpg" id="2_if1n7"]
+[ext_resource type="Texture2D" uid="uid://rylcdbfwcw44" path="res://Assets/GoBack_Icon.png" id="3_6cx5c"]
+[ext_resource type="Texture2D" uid="uid://d3dmthr56osya" path="res://Assets/Blackjack_Logo.png" id="4_if1n7"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rxrp3"]
-texture = ExtResource("1_8ucqs")
+texture = ExtResource("2_if1n7")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6cx5c"]
-bg_color = Color(0.6, 0.50980395, 0.9490196, 0.3372549)
+bg_color = Color(0.23921569, 0.50980395, 0.9490196, 0.7019608)
 corner_radius_top_left = 32
 corner_radius_top_right = 32
 corner_radius_bottom_right = 32

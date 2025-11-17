@@ -1,16 +1,16 @@
 [gd_scene load_steps=15 format=3 uid="uid://r6eto3equjfx"]
 
 [ext_resource type="Script" uid="uid://cxmucvstiotvt" path="res://Scenes/Login/LoginScreen.cs" id="1_v78pv"]
-[ext_resource type="Texture2D" uid="uid://dxvrsohlj640u" path="res://Assets/Log_Background.jpg" id="2_gbvbl"]
+[ext_resource type="Texture2D" uid="uid://pc73r7gjcra2" path="res://Assets/Logg_Background.jpg" id="2_mwris"]
 [ext_resource type="Texture2D" uid="uid://d3dmthr56osya" path="res://Assets/Blackjack_Logo.png" id="3_gbvbl"]
 [ext_resource type="Texture2D" uid="uid://cgff8wtycgokk" path="res://Assets/OpenEye_Icon.png" id="3_mwris"]
 [ext_resource type="Texture2D" uid="uid://dyy3iy1mumlq1" path="res://Assets/CloseEye_Icon.png" id="4_3na2k"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vktwn"]
-texture = ExtResource("2_gbvbl")
+texture = ExtResource("2_mwris")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vktwn"]
-bg_color = Color(0.6, 0.50980395, 0.9490196, 0.3372549)
+bg_color = Color(0.3019608, 0.50980395, 0.9490196, 0.6901961)
 corner_radius_top_left = 32
 corner_radius_top_right = 32
 corner_radius_bottom_right = 32

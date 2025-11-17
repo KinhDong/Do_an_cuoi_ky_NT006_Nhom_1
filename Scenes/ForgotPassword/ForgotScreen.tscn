@@ -1,15 +1,15 @@
 [gd_scene load_steps=13 format=3 uid="uid://bplac5andm5i2"]
 
-[ext_resource type="Script" uid="uid://ce5klyavmuouh" path="res://Scenes/ForgotPassword/ForgotScreen.cs" id="1_ovury"]
-[ext_resource type="Texture2D" uid="uid://wyxx84wrkay4" path="res://Assets/Blackjack_Logo.png" id="2_c4ghp"]
-[ext_resource type="Texture2D" uid="uid://cd3hj8xg3aedh" path="res://Assets/New_Login_Background.jpg" id="2_ovury"]
-[ext_resource type="Texture2D" uid="uid://0dye7k7ypm52" path="res://Assets/GoBack_Icon.png" id="3_6tuts"]
+[ext_resource type="Script" uid="uid://drdl867rbup53" path="res://Scenes/ForgotPassword/ForgotScreen.cs" id="1_ovury"]
+[ext_resource type="Texture2D" uid="uid://d3dmthr56osya" path="res://Assets/Blackjack_Logo.png" id="2_c4ghp"]
+[ext_resource type="Texture2D" uid="uid://pc73r7gjcra2" path="res://Assets/Logg_Background.jpg" id="2_ovury"]
+[ext_resource type="Texture2D" uid="uid://rylcdbfwcw44" path="res://Assets/GoBack_Icon.png" id="3_6tuts"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ovury"]
 texture = ExtResource("2_ovury")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6tuts"]
-bg_color = Color(0.3647059, 0.6, 0.8666667, 0.3137255)
+bg_color = Color(0.3647059, 0.6, 0.8666667, 0.6666667)
 corner_radius_top_left = 32
 corner_radius_top_right = 32
 corner_radius_bottom_right = 32

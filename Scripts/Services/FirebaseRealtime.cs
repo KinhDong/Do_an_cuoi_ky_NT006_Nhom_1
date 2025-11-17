@@ -1,95 +1,55 @@
+// FirebaseStream.cs
 using System;
-using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Godot;
 
-namespace NT106.Scripts.Services
+public partial class FirebaseStream : Node
 {
-    public class FirebaseStream : IDisposable
+    private System.Net.Http.HttpClient _client = new ();
+    private CancellationTokenSource _cts;
+
+    public async void StartListen(string url, Action<string> onData, Action<Exception> onError = null)
     {
-        private readonly HttpClient _client;
-        private CancellationTokenSource _cts;
-        private Task _listenTask;
+        StopListen();
+        _cts = new CancellationTokenSource();
 
-        public FirebaseStream(HttpClient client = null)
+        try
         {
-            _client = client ?? new HttpClient();
-        }
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Add("Accept", "text/event-stream");
 
+            var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, _cts.Token);
+            response.EnsureSuccessStatusCode();
 
-        public void Start(string url, Action<string> onData, Action<Exception> onError = null)
-        {
-            Stop();
-            _cts = new CancellationTokenSource();
+            var stream = await response.Content.ReadAsStreamAsync();
+            var reader = new System.IO.StreamReader(stream);
 
-            _listenTask = Task.Run(async () =>
+            string line;
+            var dataBuilder = new System.Text.StringBuilder();
+            
+            while (!_cts.Token.IsCancellationRequested && (line = await reader.ReadLineAsync()) != null)
             {
-                try
+                if (line.StartsWith("data:"))
                 {
-                    var req = new HttpRequestMessage(HttpMethod.Get, url);
-                    req.Headers.Add("Accept", "text/event-stream");
-
-                    using var resp = await _client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, _cts.Token);
-                    resp.EnsureSuccessStatusCode();
-
-                    using var stream = await resp.Content.ReadAsStreamAsync(_cts.Token);
-                    using var reader = new StreamReader(stream, Encoding.UTF8);
-
-                    var sb = new StringBuilder();
-                    while (!_cts.Token.IsCancellationRequested && !reader.EndOfStream)
-                    {
-                        string line = await reader.ReadLineAsync();
-                        if (line == null) break;
-
-                        if (line.StartsWith("data:"))
-                        {
-                            string dataPart = line.Substring(5).Trim();
-                            
-                            sb.Append(dataPart);
-                        }
-                        else if (string.IsNullOrWhiteSpace(line))
-                        {
-                            if (sb.Length > 0)
-                            {
-                                string payload = sb.ToString();
-                                try
-                                {
-                                    onData?.Invoke(payload);
-                                }
-                                catch (Exception ex)
-                                {
-                                    onError?.Invoke(ex);
-                                }
-                                sb.Clear();
-                            }
-                        }
-                    }
+                    dataBuilder.Append(line.Substring(5).Trim());
                 }
-                catch (Exception ex)
+                else if (string.IsNullOrEmpty(line) && dataBuilder.Length > 0)
                 {
-                    onError?.Invoke(ex);
+                    onData?.Invoke(dataBuilder.ToString());
+                    dataBuilder.Clear();
                 }
-            }, _cts.Token);
-        }
-
-        public void Stop()
-        {
-            try
-            {
-                if (_cts != null && !_cts.IsCancellationRequested)
-                    _cts.Cancel();
             }
-            catch { }
-            _cts = null;
-            _listenTask = null;
         }
-
-        public void Dispose()
+        catch (Exception ex)
         {
-            Stop();
-            _client?.Dispose();
+            onError?.Invoke(ex);
         }
+    }
+
+    public void StopListen()
+    {
+        _cts?.Cancel();
     }
 }
