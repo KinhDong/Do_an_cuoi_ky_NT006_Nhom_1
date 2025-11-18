@@ -1,15 +1,15 @@
 [gd_scene load_steps=13 format=3 uid="uid://bplac5andm5i2"]
 
-[ext_resource type="Script" uid="uid://dkl3hi6k8w6x1" path="res://Scenes/ForgotPassword/ForgotScreen.cs" id="1_ovury"]
-[ext_resource type="Texture2D" uid="uid://dxvrsohlj640u" path="res://Assets/Log_Background.jpg" id="1_sfmxk"]
+[ext_resource type="Script" uid="uid://drdl867rbup53" path="res://Scenes/ForgotPassword/ForgotScreen.cs" id="1_ovury"]
 [ext_resource type="Texture2D" uid="uid://d3dmthr56osya" path="res://Assets/Blackjack_Logo.png" id="2_c4ghp"]
+[ext_resource type="Texture2D" uid="uid://pc73r7gjcra2" path="res://Assets/Logg_Background.jpg" id="2_ovury"]
 [ext_resource type="Texture2D" uid="uid://rylcdbfwcw44" path="res://Assets/GoBack_Icon.png" id="3_6tuts"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ovury"]
-texture = ExtResource("1_sfmxk")
+texture = ExtResource("2_ovury")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6tuts"]
-bg_color = Color(0.3647059, 0.6, 0.8666667, 0.3137255)
+bg_color = Color(0.3647059, 0.6, 0.8666667, 0.6666667)
 corner_radius_top_left = 32
 corner_radius_top_right = 32
 corner_radius_bottom_right = 32
@@ -94,17 +94,23 @@ _data = {
 script = ExtResource("1_ovury")
 
 [node name="pn_Screen" type="Panel" parent="."]
-offset_top = 2.0
 offset_right = 1200.0
 offset_bottom = 800.0
 theme_override_styles/panel = SubResource("StyleBoxTexture_ovury")
 
 [node name="pn_ForgotPassword" type="Panel" parent="pn_Screen"]
-layout_mode = 0
-offset_left = 350.0
-offset_top = 231.0
-offset_right = 903.0
-offset_bottom = 771.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -272.0
+offset_top = -169.0
+offset_right = 272.0
+offset_bottom = 255.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_6tuts")
 
 [node name="Label" type="Label" parent="pn_Screen/pn_ForgotPassword"]
@@ -119,16 +125,21 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="btn_ResetPassword" type="Button" parent="pn_Screen/pn_ForgotPassword"]
-layout_mode = 0
-offset_left = 137.0
-offset_top = 213.0
-offset_right = 419.0
-offset_bottom = 325.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -152.0
+offset_top = 24.0
+offset_right = 147.0
+offset_bottom = 75.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxFlat_kdyr3")
-text = "Gửi email xác minh và 
-đổi mật khẩu
-"
+text = "Nhận email xác thực"
 
 [node name="le_Username" type="LineEdit" parent="pn_Screen/pn_ForgotPassword"]
 layout_mode = 0
@@ -136,6 +147,7 @@ offset_left = 241.0
 offset_top = 119.0
 offset_right = 505.0
 offset_bottom = 159.9985
+placeholder_text = "Xác nhận tên tài khoản"
 
 [node name="lb_Passwird" type="Label" parent="pn_Screen/pn_ForgotPassword"]
 layout_mode = 0
