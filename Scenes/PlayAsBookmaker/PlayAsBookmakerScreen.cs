@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using NT106.Scripts.Services;
 using Newtonsoft.Json;
 using System.Linq;
+using System.Threading.Tasks;
 
 public partial class PlayAsBookmakerScreen : Node2D
 {
@@ -26,7 +27,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 	// Rời phòng
 	private Button LeaveRoom;
 
-	FirebaseStream lisEvent;
+	FirebaseStreaming EventListener;
 
 	public override void _Ready()
 	{
@@ -35,6 +36,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 		DisplayAvatar = new() {null, null, null, null};
 		DisplayName = new() {null, null, null, null};
 		DisplayMoney = new() {null, null, null, null};
+		UidDisplayed = new() {null, null, null, null};
 
 		// Tạo các vị trí trống
 		AvilableSlot = new HashSet<int> {1, 2, 3};			
@@ -54,11 +56,23 @@ public partial class PlayAsBookmakerScreen : Node2D
 		LeaveRoom = GetNode<Button>("pn_Background/btn_LeaveRoom");
 		LeaveRoom.Pressed += OnLeaveRoomPressed;
 
-		// Lắng nghe
-		lisEvent = new();
-		AddChild(lisEvent);
-		string EventUrl = $"{FirebaseApi.BaseUrl}/Rooms/{room.RoomId}/Events.json?auth={UserClass.IdToken}";
-		lisEvent.StartListen(EventUrl, OnRoomData, OnError);
+		EventListener = new(FirebaseApi.BaseUrl, $"Rooms/{room.RoomId}/Events", UserClass.IdToken);
+
+		EventListener.OnConnected += () => GD.Print("Firebase connected");
+		EventListener.OnDisconnected += () => GD.Print("Firebase disconnected");
+		EventListener.OnError += (msg) => GD.Print("ERR: " + msg);
+
+		EventListener.OnData += (json) =>
+		{
+			var evt = json.ToObject<MessageEvent>();
+
+			if(evt != null && evt.data != null)
+			{
+				_ = Update(evt.data.user, evt.data.type);	
+			}
+		};
+
+		EventListener.Start();
 	}
 
 	private async void OnLeaveRoomPressed()
@@ -76,7 +90,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 			{
 				GD.Print("Xóa phòng thành công!");
 				
-				RoomClass.CurrentRoom = null;
+				EventListener.Stop();
+				RoomClass.CurrentRoom = null;				
 
 				GetTree().ChangeSceneToFile(@"Scenes\CreateRoom\CreateRoom.tscn");				
 			}
@@ -121,43 +136,28 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	public void UnDisplay(int Seat)
 	{
-		DisplayAvatar[Seat] = null;
-		DisplayName[Seat] = null;
-		DisplayMoney[Seat] = null;
 		DisplayAvatar[Seat].Visible = false;
-	}
-	
-	private void OnRoomData(string json)
-	{
-		var evt = JsonConvert.DeserializeObject<RoomEvent>(json);
-
-		switch(evt.type)
-		{
-			case "join": 
-				UpdateJoin(evt.user);
-				break;
-
-			case "leave":
-				UpdataLeave(evt.user);
-				break;
-
-		}
+		DisplayAvatar[Seat].Texture = null;
+		DisplayName[Seat].Text = null;
+		DisplayMoney[Seat].Text = null;		
 	}
 
-	private void OnError(Exception ex)
+	private Task Update(string Pid, string Type)
 	{
-		GD.PrintErr($"Firebase error: {ex.Message}");
+		if(Type == "join") CallDeferred(nameof(UpdateJoin), Pid);
+		else if(Type == "leave") CallDeferred(nameof(UpdateLeave), Pid);
+		return Task.CompletedTask;
 	}
 
 	private async void UpdateJoin(string Pid)
 	{
-		var newPlayer = await FirebaseApi.Get<PlayerClass>($"Rooms/{room.RoomId}/{Pid}.json?auth={UserClass.IdToken}");
-
-		room.Players.Add(Pid, newPlayer);
+		var newPlayer = await FirebaseApi.Get<PlayerClass>($"Rooms/{room.RoomId}/Players/{Pid}.json?auth={UserClass.IdToken}");
 
 		// Lấy chỗ
 		int newSeat = AvilableSlot.First();
 		AvilableSlot.Remove(newSeat);
+		newPlayer.Seat = newSeat;
+		room.Players.Add(Pid, newPlayer);
 
 		// Hiển thị thông tin
 		UidDisplayed[newSeat] = Pid;
@@ -165,7 +165,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 		Display(newSeat, newPlayer);
 	}
 
-	private void UpdataLeave(string Pid)
+	private void UpdateLeave(string Pid)
 	{
 		// Lấy lại chỗ
 		int CurrSeat = room.Players[Pid].Seat;

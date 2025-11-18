@@ -29,7 +29,7 @@ public partial class PlayAsPlayerScreen : Node2D
 	private Button LeaveRoom;
 
 	// Lắng nghe realtime
-	private FirebaseStream lisEvent, lisDelete;
+	FirebaseStreaming EventListener;
 
 	public override void _Ready()
 	{
@@ -85,19 +85,22 @@ public partial class PlayAsPlayerScreen : Node2D
 		} 
 
 		// Thực hiện lắng nghe
-		lisEvent = new();
-		AddChild(lisEvent);
-		string EventUrl = $"{FirebaseApi.BaseUrl}/Rooms/{room.RoomId}/Events.json?auth={UserClass.IdToken}";
-		lisEvent.StartListen(EventUrl, OnRoomData, OnError);
+		EventListener = new(FirebaseApi.BaseUrl, $"Rooms/{room.RoomId}/Events", UserClass.IdToken);
+		EventListener.OnConnected += () => GD.Print("Firebase connected");
+		EventListener.OnDisconnected += () => GD.Print("Firebase disconnected");
+		EventListener.OnError += (msg) => GD.Print("ERR: " + msg);
 
-		lisDelete = new();
-		AddChild(lisDelete);
-		string DeleteUrl = $"{FirebaseApi.BaseUrl}/Rooms/{room.RoomId}.json?auth={UserClass.IdToken}";
-		lisDelete.StartListen(DeleteUrl, 
-		data =>
+		EventListener.OnData += (json) =>
 		{
-			if(data == null) OnRoomDelete();
-		});
+			var evt = json.ToObject<MessageEvent>();
+
+			if(evt != null && evt.data != null)
+			{
+				_ = Update(evt.data.user, evt.data.type);	
+			}
+		};
+
+		EventListener.Start();
 	}
 
 	private async void OnLeaveRoomPressed()
@@ -106,9 +109,8 @@ public partial class PlayAsPlayerScreen : Node2D
 		{
 			var res = await room.LeaveAsync();
 			if(!res.Item1) throw new Exception(res.Item2);
-
-			lisEvent.StopListen();
-			lisDelete.StopListen();
+			
+			EventListener.Stop();
 			GetTree().ChangeSceneToFile(@"Scenes\CreateOrJoinRoomScreen\CreateOrJoinRoom.tscn");	
 		}
 
@@ -116,12 +118,6 @@ public partial class PlayAsPlayerScreen : Node2D
 		{
 			GD.PrintErr("Lỗi: ", ex.Message);
 		}        
-	}
-
-	public override void _ExitTree()
-	{
-		lisEvent?.StopListen();
-		lisDelete?.StopListen();
 	}
 
 	public void GetNodes(int Seat)
@@ -144,48 +140,39 @@ public partial class PlayAsPlayerScreen : Node2D
 
 	public void UnDisplay(int Seat)
 	{
-		DisplayAvatar[Seat] = null;
-		DisplayName[Seat] = null;
-		DisplayMoney[Seat] = null;
 		DisplayAvatar[Seat].Visible = false;
+		DisplayAvatar[Seat].Texture = null;
+		DisplayName[Seat].Text = null;
+		DisplayMoney[Seat].Text = null;
 	}
 
 	public async void LoadAvatar(int Seat, string Uid)
 	{
 		DisplayAvatar[Seat].Texture = await CloudinaryService.GetImageAsync(Uid);
-	}
-
-	private void OnRoomData(string json)
-	{
-		var evt = JsonConvert.DeserializeObject<RoomEvent>(json);
-
-		switch(evt.type)
-		{
-			case "join": 
-				UpdateJoin(evt.user);
-				break;
-
-			case "leave":
-				UpdataLeave(evt.user);
-				break;
-
-		}
-	}
+	}	
 
 	private void OnError(Exception ex)
 	{
 		GD.PrintErr($"Firebase error: {ex.Message}");
 	}
 
+	 private Task Update(string Pid, string Type)
+	 {
+		if(Type == "join") CallDeferred(nameof(UpdateJoin), Pid);
+		else if(Type == "leave") CallDeferred(nameof(UpdateLeave), Pid);
+		else if(Type == "deleteRoom") CallDeferred(nameof(UpdataDelete));
+		return Task.CompletedTask;
+	}
+
 	private async void UpdateJoin(string Pid)
 	{
-		var newPlayer = await FirebaseApi.Get<PlayerClass>($"Rooms/{room.RoomId}/{Pid}.json?auth={UserClass.IdToken}");
-
-		room.Players.Add(Pid, newPlayer);
+		var newPlayer = await FirebaseApi.Get<PlayerClass>($"Rooms/{room.RoomId}/Players/{Pid}.json?auth={UserClass.IdToken}");
 
 		// Lấy chỗ
 		int newSeat = AvilableSlot.First();
 		AvilableSlot.Remove(newSeat);
+		newPlayer.Seat = newSeat;
+		room.Players.Add(Pid, newPlayer);
 
 		// Hiển thị thông tin
 		UidDisplayed[newSeat] = Pid;
@@ -193,7 +180,7 @@ public partial class PlayAsPlayerScreen : Node2D
 		Display(newSeat, newPlayer);
 	}
 
-	private void UpdataLeave(string Pid)
+	private void UpdateLeave(string Pid)
 	{
 		// Lấy lại chỗ
 		int CurrSeat = room.Players[Pid].Seat;
@@ -202,14 +189,9 @@ public partial class PlayAsPlayerScreen : Node2D
 		UnDisplay(CurrSeat);
 	}
 
-	private void OnRoomDelete()
+	private void UpdataDelete()
 	{
-		GD.Print("Phòng đã bị xóa");
-
-		lisEvent.StopListen();
-		lisDelete.StopListen();
-
-		RoomClass.CurrentRoom = null;
-		GetTree().ChangeSceneToFile(@"Scenes\CreateOrJoinRoomScreen\CreateOrJoinRoom.tscn");
+		OS.Alert("Phòng đã bị xoá bởi chủ phòng!");
+		GetTree().ChangeSceneToFile(@"Scenes\CreateOrJoinRoomScreen\CreateOrJoinRoom.tscn");	
 	}
 }
