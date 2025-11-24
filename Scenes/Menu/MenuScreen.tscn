@@ -1,10 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://b8lr7yqdp75ev"]
+[gd_scene load_steps=14 format=3 uid="uid://b8lr7yqdp75ev"]
 
 [ext_resource type="Script" uid="uid://cfkbnktngluqa" path="res://Scenes/Menu/MenuScreen.cs" id="1_5xyd2"]
 [ext_resource type="Texture2D" uid="uid://b0jqlqa7b4e34" path="res://Assets/Menu_Background.jpg" id="1_tr0oe"]
-[ext_resource type="Texture2D" uid="uid://wyxx84wrkay4" path="res://Assets/Blackjack_Logo.png" id="3_66ftb"]
-[ext_resource type="Texture2D" uid="uid://bt4mqfrj5ed53" path="res://Assets/settingsicon.png" id="4_00dl2"]
-[ext_resource type="Texture2D" uid="uid://b45623sgooh7f" path="res://Assets/accountprofile.png" id="5_00dl2"]
+[ext_resource type="Texture2D" uid="uid://d3dmthr56osya" path="res://Assets/Blackjack_Logo.png" id="3_66ftb"]
+[ext_resource type="Texture2D" uid="uid://d3axkvylbge6m" path="res://Assets/Setting_Icon.png" id="4_00dl2"]
+[ext_resource type="Texture2D" uid="uid://d4hcxr785sg82" path="res://Assets/accountprofile.png" id="5_00dl2"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x4ls7"]
 texture = ExtResource("1_tr0oe")
@@ -37,8 +37,10 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_00dl2"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8ga1o"]
 texture = ExtResource("4_00dl2")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_00dl2"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfwrt"]
 texture = ExtResource("5_00dl2")
@@ -143,14 +145,14 @@ offset_left = 1088.0
 offset_top = 32.0
 offset_right = 1168.0
 offset_bottom = 104.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_jfwrt")
+theme_override_styles/panel = SubResource("StyleBoxTexture_8ga1o")
 
 [node name="btn_Setting" type="Button" parent="pn_Background"]
 layout_mode = 0
 offset_left = 1096.0
 offset_top = 40.0
 offset_right = 1160.0
-offset_bottom = 96.0
+offset_bottom = 95.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_00dl2")
 
 [node name="btn_Profile" type="Button" parent="pn_Background"]

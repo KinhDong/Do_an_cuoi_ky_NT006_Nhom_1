@@ -28,9 +28,9 @@ public partial class MenuScreen : Control
 
 	//Mở màn hình chọn chế độ chơi
 	private void OpenModeSeclectionScreen()
-    {
+	{
 		GetTree().ChangeSceneToFile("res://Scenes/GameModeSelection/ModeChoosing.tscn");
-    }
+	}
 
 	private async void OnExitGameButtonPressed()
 	{
@@ -41,9 +41,9 @@ public partial class MenuScreen : Control
 	}
 
 	private void OnProfileButtonPressed()
-    {
-        var ProfileScene = GD.Load<PackedScene>(@"Scenes/Profile/ProfileScreen.tscn");
+	{
+		var ProfileScene = GD.Load<PackedScene>(@"Scenes/Profile/ProfileScreen.tscn");
 
 		AddChild(ProfileScene.Instantiate());
-    }
+	}
 }
