@@ -1,11 +1,276 @@
-[gd_scene load_steps=8 format=3 uid="uid://dpel6cas7swbb"]
+[gd_scene load_steps=19 format=3 uid="uid://dpel6cas7swbb"]
 
-[ext_resource type="Script" uid="uid://bstndxy3x7fd5" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
-[ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="2_o7rqj"]
-[ext_resource type="Texture2D" uid="uid://b2fxjfp8f5kcr" path="res://Assets/Coin_Icon.png" id="3_h7bx7"]
+[ext_resource type="Script" uid="uid://chcpicdnstqlh" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
+[ext_resource type="Texture2D" uid="uid://8krl6jdbpj3t" path="res://Assets/Table.png" id="2_o7rqj"]
+[ext_resource type="Texture2D" uid="uid://clwgykm1tag2a" path="res://Assets/Coin_Icon.png" id="3_h7bx7"]
+[ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="3_y4rrx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o7rqj"]
 bg_color = Color(0.41, 0.16400002, 0, 1)
+
+[sub_resource type="Animation" id="Animation_li0bm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardsAni:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.5707964]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardsAni:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(527, 306)]
+}
+
+[sub_resource type="Animation" id="Animation_canpr"]
+resource_name = "DealPlayer1"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardsAni:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5707964, 3.141592653589793]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardsAni:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(527, 306), Vector2(523, 182)]
+}
+
+[sub_resource type="Animation" id="Animation_gq82j"]
+resource_name = "DealPlayer2"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardsAni:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5707964, 3.141592653589793]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardsAni:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(527, 306), Vector2(194, 301)]
+}
+
+[sub_resource type="Animation" id="Animation_pp4ku"]
+resource_name = "DealPlayer3"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardsAni:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5707964, 3.141592653589793]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardsAni:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(527, 306), Vector2(847, 304)]
+}
+
+[sub_resource type="Animation" id="Animation_6h5x8"]
+resource_name = "DealCard0"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardsAni:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5707964, 3.141592653589793]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardsAni:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(527, 306), Vector2(519.9998, 435)]
+}
+
+[sub_resource type="Animation" id="Animation_syfbk"]
+resource_name = "DealCard1"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardsAni:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5707964, 3.141592653589793]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardsAni:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(527, 306), Vector2(544.0002, 435)]
+}
+
+[sub_resource type="Animation" id="Animation_3jx0o"]
+resource_name = "DealCard2"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardsAni:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5707964, 3.141592653589793]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardsAni:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(527, 306), Vector2(493.99976, 435)]
+}
+
+[sub_resource type="Animation" id="Animation_fpad7"]
+resource_name = "DealCard3"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardsAni:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5707964, 3.141592653589793]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardsAni:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(527, 306), Vector2(569, 435)]
+}
+
+[sub_resource type="Animation" id="Animation_y4rrx"]
+resource_name = "DealCard4"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CardsAni:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.5707964, 3.141592653589793]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CardsAni:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(527, 306), Vector2(469, 435)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6h5x8"]
+_data = {
+&"DealCard0": SubResource("Animation_6h5x8"),
+&"DealCard1": SubResource("Animation_syfbk"),
+&"DealCard2": SubResource("Animation_3jx0o"),
+&"DealCard3": SubResource("Animation_fpad7"),
+&"DealCard4": SubResource("Animation_y4rrx"),
+&"DealPlayer1": SubResource("Animation_canpr"),
+&"DealPlayer2": SubResource("Animation_gq82j"),
+&"DealPlayer3": SubResource("Animation_pp4ku"),
+&"RESET": SubResource("Animation_li0bm")
+}
 
 [sub_resource type="Theme" id="Theme_y4rrx"]
 
@@ -79,6 +344,208 @@ theme_override_font_sizes/font_size = 20
 text = "Mức cược:"
 metadata/_edit_use_anchors_ = true
 
+[node name="CardsOfPlayer0" type="Node2D" parent="pn_Background/ttr_Table"]
+position = Vector2(617, 333)
+
+[node name="Card4" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer0"]
+visible = false
+position = Vector2(-148, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="Card2" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer0"]
+visible = false
+position = Vector2(-123.00006, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="Card0" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer0"]
+visible = false
+position = Vector2(-98, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+frame = 28
+
+[node name="Card1" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer0"]
+visible = false
+position = Vector2(-73, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="Card3" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer0"]
+visible = false
+position = Vector2(-48, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="CardsOfPlayer1" type="Node2D" parent="pn_Background/ttr_Table"]
+position = Vector2(621, 80)
+
+[node name="Card4" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer1"]
+visible = false
+position = Vector2(-148, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="Card2" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer1"]
+visible = false
+position = Vector2(-123.00006, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="Card0" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer1"]
+visible = false
+position = Vector2(-98, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="Card1" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer1"]
+visible = false
+position = Vector2(-73, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="Card3" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer1"]
+visible = false
+position = Vector2(-48, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="CardsOfPlayer2" type="Node2D" parent="pn_Background/ttr_Table"]
+position = Vector2(342, 199)
+
+[node name="Card0" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer2"]
+visible = false
+position = Vector2(-148, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="Card1" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer2"]
+visible = false
+position = Vector2(-123.00006, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="Card2" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer2"]
+visible = false
+position = Vector2(-98, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="Card3" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer2"]
+visible = false
+position = Vector2(-73, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="Card4" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer2"]
+visible = false
+position = Vector2(-48, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="CardsOfPlayer3" type="Node2D" parent="pn_Background/ttr_Table"]
+position = Vector2(895, 202)
+
+[node name="Card4" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer3"]
+visible = false
+position = Vector2(-148, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="Card3" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer3"]
+visible = false
+position = Vector2(-123.00006, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="Card2" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer3"]
+visible = false
+position = Vector2(-98, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="Card1" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer3"]
+visible = false
+position = Vector2(-73, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+
+[node name="Card0" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer3"]
+visible = false
+position = Vector2(-48, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="Cards" type="Sprite2D" parent="pn_Background/ttr_Table"]
+position = Vector2(527, 306)
+rotation = 1.5707964
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="CardsAni" type="Sprite2D" parent="pn_Background/ttr_Table"]
+position = Vector2(527, 306)
+rotation = 1.5707964
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("3_y4rrx")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="pn_Background/ttr_Table"]
+libraries = {
+&"": SubResource("AnimationLibrary_6h5x8")
+}
+
 [node name="Label" type="Label" parent="pn_Background"]
 layout_mode = 0
 offset_left = 37.228027
@@ -101,8 +568,10 @@ metadata/_edit_use_anchors_ = true
 [node name="ttr_Avatar_Player0" type="TextureRect" parent="pn_Background"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -0.0091973245
-anchor_right = -0.0091973245
+anchor_left = -0.0100334445
+anchor_top = 0.023779724
+anchor_right = -0.0100334445
+anchor_bottom = 0.023779724
 offset_left = 555.0
 offset_top = 619.0
 offset_right = 662.0
@@ -121,9 +590,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -68.5
-offset_top = -112.38379
+offset_top = -106.38379
 offset_right = 68.5
-offset_bottom = 95.61621
+offset_bottom = 101.61621
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_li0bm")
@@ -169,10 +638,10 @@ editable = false
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = -0.006688963
-anchor_top = -0.6620776
-anchor_right = -0.006688963
-anchor_bottom = -0.6620776
+anchor_left = -0.0050167223
+anchor_top = -0.68961203
+anchor_right = -0.0050167223
+anchor_bottom = -0.68961203
 offset_left = 555.0
 offset_top = 619.0
 offset_right = 662.0
@@ -190,10 +659,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -68.5
-offset_top = -108.38379
-offset_right = 68.5
-offset_bottom = 109.61621
+offset_left = -69.5
+offset_top = -106.38379
+offset_right = 67.5
+offset_bottom = 111.61621
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_li0bm")

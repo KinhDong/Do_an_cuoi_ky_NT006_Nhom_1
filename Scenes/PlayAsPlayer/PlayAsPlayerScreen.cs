@@ -31,6 +31,12 @@ public partial class PlayAsPlayerScreen : Node2D
 	// Lắng nghe realtime
 	FirebaseStreaming EventListener;
 
+	// Hiển thị các lá bài
+	Sprite2D [,]DisplayCards;
+
+	// Animation
+	AnimationPlayer anim;
+
 	public override void _Ready()
 	{
 		room = RoomClass.CurrentRoom;
@@ -49,6 +55,16 @@ public partial class PlayAsPlayerScreen : Node2D
 		// Rời phòng
 		LeaveRoom = GetNode<Button>("pn_Background/btn_LeaveRoom");
 		LeaveRoom.Pressed += OnLeaveRoomPressed;
+
+		// Hiển thị các lá bài
+		DisplayCards = new Sprite2D[4, 5];
+		for(int i = 0; i < 4; i++)
+		{
+			for(int j = 0; j < 5; j++)
+			{
+				DisplayCards[i, j] = GetNode<Sprite2D>($"pn_Background/ttr_Table/CardsOfPlayer{i}/Card{j}");
+			}
+		}
 
 		// Gán thông tin PLayer
 		GetNodesForPlayers();
@@ -156,8 +172,8 @@ public partial class PlayAsPlayerScreen : Node2D
 		GD.PrintErr($"Firebase error: {ex.Message}");
 	}
 
-	 private Task Update(string Pid, string Type)
-	 {
+	private Task Update(string Pid, string Type)
+	{
 		if(Type == "join") CallDeferred(nameof(UpdateJoin), Pid);
 		else if(Type == "leave") CallDeferred(nameof(UpdateLeave), Pid);
 		else if(Type == "deleteRoom") CallDeferred(nameof(UpdataDelete));
@@ -192,6 +208,30 @@ public partial class PlayAsPlayerScreen : Node2D
 	private void UpdataDelete()
 	{
 		OS.Alert("Phòng đã bị xoá bởi chủ phòng!");
+		EventListener.Stop();
 		GetTree().ChangeSceneToFile(@"Scenes\CreateOrJoinRoomScreen\CreateOrJoinRoom.tscn");	
+	}
+
+	// Show giá trị lá bài
+	private void DisplayCard(int playerIndex, int cardIndex, (int, int) card)
+	{
+		DisplayCards[playerIndex, cardIndex].Frame = card.Item1 * 13 + card.Item2;
+		DisplayCards[playerIndex, cardIndex].Visible = true;
+	}
+
+	// Chia bài cho bạn
+	private void AnimDealYou(int cardIndex, (int, int) card) // CardIndex: Lá bài thứ mấy
+	{
+		anim.Play($"DealCard{cardIndex}");
+		DisplayCard(1, cardIndex, card);
+		anim.Queue("RESET"); // Quay về trạng thái ban đầu
+	}
+
+	// Chia bài cho 1 player (1 đến 3)
+	private void AnimDealPlayer(int playerIndex, (int, int) card)
+	{
+		anim.Play($"DealPlayer{playerIndex}");
+		DisplayCards[playerIndex, 0].Visible = true;
+		anim.Queue("RESET");
 	}
 }

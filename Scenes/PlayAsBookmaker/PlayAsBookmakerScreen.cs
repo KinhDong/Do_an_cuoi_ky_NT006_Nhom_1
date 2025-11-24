@@ -23,11 +23,16 @@ public partial class PlayAsBookmakerScreen : Node2D
 	private LineEdit DisplayRoomId;
 	private LineEdit DisplayBetAmount;
 
-
 	// Rời phòng
 	private Button LeaveRoom;
 
 	FirebaseStreaming EventListener;
+
+	// Hiển thị các lá bài
+	Sprite2D [,]DisplayCards;
+
+	// Animation
+	AnimationPlayer anim;
 
 	public override void _Ready()
 	{
@@ -56,6 +61,18 @@ public partial class PlayAsBookmakerScreen : Node2D
 		LeaveRoom = GetNode<Button>("pn_Background/btn_LeaveRoom");
 		LeaveRoom.Pressed += OnLeaveRoomPressed;
 
+		// Hiển thị các lá bài
+		DisplayCards = new Sprite2D[4, 5];
+		for(int i = 0; i < 4; i++)
+		{
+			for(int j = 0; j < 5; j++)
+			{
+				DisplayCards[i, j] = GetNode<Sprite2D>($"pn_Background/ttr_Table/CardsOfPlayer{i}/Card{j}");
+			}
+		}
+
+		anim = GetNode<AnimationPlayer>("pn_Background/ttr_Table/AnimationPlayer");
+
 		EventListener = new(FirebaseApi.BaseUrl, $"Rooms/{room.RoomId}/Events", UserClass.IdToken);
 
 		EventListener.OnConnected += () => GD.Print("Firebase connected");
@@ -72,7 +89,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 			}
 		};
 
-		EventListener.Start();
+		EventListener.Start();		
 	}
 
 	private async void OnLeaveRoomPressed()
@@ -173,4 +190,29 @@ public partial class PlayAsBookmakerScreen : Node2D
 		room.Players.Remove(Pid);
 		UnDisplay(CurrSeat);
 	}
+
+	// Show giá trị lá bài
+	private void DisplayCard(int playerIndex, int cardIndex, (int, int) card)
+	{
+		DisplayCards[playerIndex, cardIndex].Frame = card.Item1 * 13 + card.Item2;
+		DisplayCards[playerIndex, cardIndex].Visible = true;
+	}
+
+	// Chia bài cho bạn
+	private void AnimDealYou(int cardIndex, (int, int) card) // CardIndex: Lá bài thứ mấy
+	{
+		anim.Play($"DealCard{cardIndex}");
+		DisplayCard(0, cardIndex, card);
+		anim.Queue("RESET"); // Quay về trạng thái ban đầu
+	}
+
+	// Chia bài cho 1 player (1 đến 3)
+	private void AnimDealPlayer(int playerIndex, (int, int) card)
+	{
+		anim.Play($"DealPlayer{playerIndex}");
+		DisplayCards[playerIndex, 0].Visible = true;
+		anim.Queue("RESET");
+	}
+
+	
 }
