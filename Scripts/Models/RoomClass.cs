@@ -11,7 +11,19 @@ using System.Threading;
 
 namespace NT106.Scripts.Models
 {
-	public class RoomClass
+    //tạo Room Event để ghi log sự kiện trong phòng
+    public class RoomEvent
+	{
+		public string type { get; set; } // "join", "leave", "deal", "startGame", "endGame", "deleteRoom"
+        public string user { get; set; } // userId
+        public long time { get; set; }
+
+        // Thêm trường này để chứa thông tin lá bài khi type == "deal"
+        // Nullable để các event khác không bị thừa data
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public CardClass card { get; set; }
+    }
+    public class RoomClass
 	{
 		public string RoomId { get; set; }
 		public string HostId {get; set;}
@@ -100,23 +112,34 @@ namespace NT106.Scripts.Models
 				}                    
 				var roomData = JsonConvert.DeserializeObject<RoomClass>(roomJson);
 
-				// Kiểm tra phòng còn chỗ không
-				if (roomData.CurrentPlayers == 4)  throw new Exception("Phòng đã đầy!");             
+                // Tạo thông tin cho Player
+                var player = new PlayerClass
+                {
+                    Uid = UserClass.Uid,
+                    InGameName = UserClass.InGameName,
+                    Money = UserClass.Money,
+                    JoinedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+                };
 
-				var player = new PlayerClass
+                //----------------------------------------Cập nhật trạng thái chờ phòng khi join----------------------------------------
+                //Kiểm tra trạng thái phòng 
+                if (roomData.Status != "Waiting")
 				{
-					Uid = UserClass.Uid,
-					InGameName = UserClass.InGameName,
-					Money = UserClass.Money,
-					JoinedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-				};
+                    throw new Exception("Phòng đã đang bắt đầu trò chơi!");
+                    player.Seat = -1; //Khởi tạo chỗ ngồi tạm thời
+                }
+				else
+				{
+                    // Kiểm tra phòng còn chỗ không
+                    if (roomData.CurrentPlayers == 4) throw new Exception("Phòng đã đầy!");
+					player.Seat = 1; // Gán chỗ ngồi tiếp theo
+                }	
 
 				var res = await FirebaseApi.Put
 				($"Rooms/{roomId}/Players/{UserClass.Uid}.json?auth={UserClass.IdToken}", player);
 				
 				if (!res) throw new Exception("Không thể thêm người chơi");  
 
-				player.Seat = 1;
 				// Thêm vào roomData
 				roomData.Players.Add(UserClass.Uid, player);
 
