@@ -17,6 +17,12 @@ public partial class PlayAsPlayerScreen : Node2D
 	public List<LineEdit> DisplayName {get; set;}
 	public List<LineEdit> DisplayMoney {get; set;}
 	public List<string> UidDisplayed {get; set;}
+	public class GameEventData
+    {
+        public string type { get; set; }
+    	public string user { get; set; }
+    	public object data { get; set; }
+    }
 
 
 	public HashSet<int> AvilableSlot {get; set;} // Những chỗ còn trống
@@ -28,6 +34,13 @@ public partial class PlayAsPlayerScreen : Node2D
 	// Rời phòng
 	private Button LeaveRoom;
 
+	// Nút Hit/Stand
+	private Button HitButton;
+	private Button StandButton;
+	private Label DecisionTimerLabel;
+	private Timer DecisionTimer;
+	private int timeRemaining;
+
 	// Lắng nghe realtime
 	FirebaseStreaming EventListener;
 
@@ -36,6 +49,10 @@ public partial class PlayAsPlayerScreen : Node2D
 
 	// Animation
 	AnimationPlayer anim;
+
+	// Biến để theo dõi lượt chơi hiện tại
+	private string currentPlayerTurn;
+	private bool isMyTurn = false;
 
 	public override void _Ready()
 	{
@@ -55,6 +72,19 @@ public partial class PlayAsPlayerScreen : Node2D
 		// Rời phòng
 		LeaveRoom = GetNode<Button>("pn_Background/btn_LeaveRoom");
 		LeaveRoom.Pressed += OnLeaveRoomPressed;
+
+		//Nút Hit/Stand
+		//HitButton = GetNode<Button>("");
+		//StandButton = GetNode<Button>("");
+		//DecisionTimerLabel = GetNode<Label>("");
+		//DecisionTimer = GetNode<Timer>("");
+
+		//HitButton.Pressed += OnHitPressed;
+		//StandButton.Pressed += OnStandPressed;
+		//DecisionTimer.Timeout += OnDecisionTimerTimeout;
+
+		// Ẩn nút Hit/Stand ban đầu
+		//SetDecisionButtonsVisible(false);
 
 		// Hiển thị các lá bài
 		DisplayCards = new Sprite2D[4, 5];
@@ -233,5 +263,274 @@ public partial class PlayAsPlayerScreen : Node2D
 		anim.Play($"DealPlayer{playerIndex}");
 		DisplayCards[playerIndex, 0].Visible = true;
 		anim.Queue("RESET");
+	}
+
+	public override void _Process(double delta)
+	{
+		// Cập nhật timer
+		if (DecisionTimer.TimeLeft > 0)
+		{
+			timeRemaining = (int)DecisionTimer.TimeLeft;
+			//DecisionTimerLabel.Text = $"Thời gian: {timeRemaining}s";
+		}
+	}
+
+	// Xử lí các event từ Cái
+	private async Task HandleGameEvent(GameEventData eventData)
+    {
+        switch (eventData.type)
+		{
+			case "hitOrStand":
+				await HandleHitStandEvent(eventData);
+				break;
+
+			case "hitConfirmed":
+				HandleHitConfirmed(eventData);
+				break;
+
+			case "standConfirmed":
+				HandleStandConfirmed(eventData);
+				break;
+
+			case "bust":
+				HandleBustEvent(eventData);
+				break;
+
+			case "autoStand":
+				HandleAutoStand(eventData);
+				break;
+
+			case "playerTurnsEnd":
+				HandlePlayerTurnsEnd(eventData);
+				break;
+		}
+    }
+
+	// Xử lí event Hit/Stand
+	private async Task HandleHitStandEvent(GameEventData eventData)
+    {
+        if (eventData.user != UserClass.Uid) 
+		{
+			// Không phải lượt của mình
+			currentPlayerTurn = eventData.user;
+			isMyTurn = false;
+			SetDecisionButtonsVisible(false);
+			//DecisionTimerLabel.Text = $"Đang chờ {room.Players[eventData.user].InGameName}...";
+			return;
+		}
+
+		// Lượt của mình
+		currentPlayerTurn = eventData.user;
+		isMyTurn = true;
+
+		// Hiển thị thông tin bài hiện tại
+		if (eventData.data != null)
+		{
+			var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(eventData.data.ToString());
+			if (data.ContainsKey("currentScore"))
+			{
+				var currentScore = Convert.ToInt32(data["currentScore"]);
+			}
+		}
+		
+		// Hiển thị nút và bắt đầu đếm ngược
+		SetDecisionButtonsVisible(true);
+		DecisionTimer.Start(15);
+		timeRemaining = 15;
+    }
+
+	private void HandleHitConfirmed(GameEventData eventData)
+    {
+        // Thêm cái hiệu ứng hay thông báo gì đấy
+    }
+
+	private void HandleStandConfirmed(GameEventData eventData)
+	{
+		// Thêm hiệu ứng hay thông báo gì đó hoặc khỏi
+	}
+
+	private void HandleBustEvent(GameEventData eventData)
+	{
+		if (eventData.data != null)
+		{
+			var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(eventData.data.ToString());
+			if (data.ContainsKey("score"))
+			{
+				var score = Convert.ToInt32(data["score"]);
+				//GD.Print($"{room.Players[eventData.user].InGameName} BUST với {score} điểm!");
+			}
+		}
+	}
+
+	private void HandleAutoStand(GameEventData eventData)
+	{
+		if (eventData.data != null)
+		{
+			var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(eventData.data.ToString());
+			if (data.ContainsKey("reason") && data.ContainsKey("score"))
+			{
+				var reason = data["reason"].ToString();
+				var score = Convert.ToInt32(data["score"]);
+				//GD.Print($"{room.Players[eventData.user].InGameName} tự động Stand ({reason}) với {score} điểm");
+			}
+		}
+	}
+
+	private void HandlePlayerTurnsEnd(GameEventData eventData)
+    {
+        //GD.Print("Kết thúc lượt tất cả người chơi, chuyển sang lượt Nhà Cái");
+		SetDecisionButtonsVisible(false);
+		//DecisionTimerLabel.Text = "Kết thúc lượt người chơi";
+    }
+
+	// Người chơi chọn Hit
+	private async void OnHitPressed()
+    {
+        if (!isMyTurn) return;
+		SetDecisionButtonsVisible(false);
+		DecisionTimer.Stop();
+		
+		try
+        {
+            // Gửi quyết định Hit lên Firebase
+			await PostDecision("hit");
+			//GD.Print("Đã chọn Hit");
+        }
+		catch (Exception ex)
+		{
+			GD.PrintErr($"Lỗi khi gửi Hit: {ex.Message}");
+		}
+    }
+
+	// Người chơi chọn Stand
+	private async void OnStandPressed()
+    {
+        if (!isMyTurn) return;
+		SetDecisionButtonsVisible(false);
+		DecisionTimer.Stop();
+
+        try
+        {
+            // Gửi quyết định Stand lên Firebase
+			await PostDecision("stand");
+			//GD.Print("Đã chọn Stand");
+        }
+		catch (Exception ex)
+        {
+            GD.PrintErr($"Lỗi khi gửi Stand: {ex.Message}");
+        }
+    }
+
+	// Hết thời gian quyết định
+	private async void OnDecisionTimerTimeout()
+    {
+        if (!isMyTurn) return;
+		SetDecisionButtonsVisible(false);
+		GD.Print("Hết thời gian! Tự động quyết định");
+
+		try
+        {
+            // Lấy điểm hiện tại để quyết định thông minh
+			var playerCards = await GetMyCards();
+			var currentScore = CalculateScore(playerCards);
+
+			// Quyết định tự động: <16 Hit, >=16 Stand
+			string decision = currentScore < 16 ? "hit" : "stand";
+			await PostDecision(decision);
+			//GD.Print($"Tự động chọn {decision} (điểm: {currentScore})");
+        }
+		catch (Exception ex)
+		{
+			GD.PrintErr($"Lỗi khi gửi quyết định tự động: {ex.Message}");
+		}
+    }
+
+	// Gửi quyết định lên Firebase
+	private async Task PostDecision(string decision)
+    {
+        try
+        {
+            var decisionEvent = new
+			{
+				type = "playerDecision",
+				user = UserClass.Uid,
+				data = new
+				{
+					decision = decision,
+					timestamp = DateTime.UtcNow
+				}
+			};
+			await FirebaseApi.Post($"Rooms/{room.RoomId}/Events.json?auth={UserClass.IdToken}", decisionEvent);
+        }
+		catch (Exception ex)
+        {
+            GD.PrintErr($"Lỗi khi post decision: {ex.Message}");
+			throw;
+        }
+    }
+
+	// Lấy bài của người chơi hiện tại
+	private async Task<List<(int, int)>> GetMyCards()
+	{
+		try
+		{
+			var cards = await FirebaseApi.Get<List<(int, int)>>(
+				$"Rooms/{room.RoomId}/CurrentRound/Players/{UserClass.Uid}/Cards.json?auth={UserClass.IdToken}");
+			return cards ?? new List<(int, int)>();
+		}
+		catch (Exception ex)
+		{
+			GD.PrintErr($"Lỗi khi lấy bài: {ex.Message}");
+			return new List<(int, int)>();
+		}
+	}
+
+	// Tính điểm bài
+	private int CalculateScore(List<(int, int)> cards)
+	{
+		int score = 0;
+		int aceCount = 0;
+
+		foreach (var card in cards)
+		{
+			var rank = card.Item1;
+
+			if (rank == 1) // Ace
+			{
+				aceCount++;
+				score += 11;
+			}
+			else if (rank >= 10) // 10, J, Q, K
+			{
+				score += 10;
+			}
+			else
+			{
+				score += rank;
+			}
+		}
+
+		// Điều chỉnh Ace từ 11 xuống 1 nếu cần
+		while (score > 21 && aceCount > 0)
+		{
+			score -= 10;
+			aceCount--;
+		}
+
+		return score;
+	}
+
+	// Hiển thị/ẩn nút quyết định
+	private void SetDecisionButtonsVisible(bool visible)
+	{
+		HitButton.Visible = visible;
+		StandButton.Visible = visible;
+		DecisionTimerLabel.Visible = visible;
+
+		if (visible)
+		{
+			HitButton.Disabled = false;
+			StandButton.Disabled = false;
+		}
 	}
 }
