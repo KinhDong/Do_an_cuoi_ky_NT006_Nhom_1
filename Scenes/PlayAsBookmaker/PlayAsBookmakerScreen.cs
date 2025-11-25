@@ -34,6 +34,22 @@ public partial class PlayAsBookmakerScreen : Node2D
 	// Animation
 	AnimationPlayer anim;
 
+	//Quản lí trạng thái trò chơi: Trạng thái Game (GameState) và Trạng thái Player (PlayerAction)
+	public enum GameState { Waiting, Dealing, PlayerTurn, DealerTurn, GameOver }
+	public enum PlayerAction { None, Hit, Stand, Bust }
+	//
+	public class GameEvent
+    {
+        public string type { get; set; }
+    	public string user { get; set; }
+    	public object data { get; set; }
+    }
+	private GameState currentGameState;
+	private List<string> playerTurnOrder;
+    private int currentPlayerIndex;
+    private Dictionary<string, PlayerAction> playerActions;
+    private Timer decisionTimer;//Thời gian quy định của mỗi lượt
+
 	public override void _Ready()
 	{
 		room = RoomClass.CurrentRoom;
@@ -57,6 +73,13 @@ public partial class PlayAsBookmakerScreen : Node2D
 		DisplayAvatar[0].Texture = UserClass.Avatar;
 		Display(0, room.Players[room.HostId]);
 
+		//Khởi tạo biến cho hit và stand
+		currentGameState = GameState.Waiting;
+		playerTurnOrder = new List<string>();
+		playerActions = new Dictionary<string, PlayerAction>();
+		
+		//Kết nối sự kiện timer
+		//decisionTimer.Timeout += OnDecisionTimeout;
 
 		LeaveRoom = GetNode<Button>("pn_Background/btn_LeaveRoom");
 		LeaveRoom.Pressed += OnLeaveRoomPressed;
@@ -214,5 +237,275 @@ public partial class PlayAsBookmakerScreen : Node2D
 		anim.Queue("RESET");
 	}
 
+	// Bắt đầu lượt chơi hit hoặc stand (sau khi chia bài xong)
+	public async void StartHitStandPhase()
+    {
+        currentGameState = GameState.PlayerTurn;
+		
+		// Thiết lập thứ tự lượt chơi (bỏ qua slot null)
+		playerTurnOrder.Clear();
+		for (int i = 0; i < UidDisplayed.Count; i++)
+        {
+            if (UidDisplayed[i] != null && room.Players.ContainsKey(UidDisplayed[i]))
+			playerTurnOrder.Add(UidDisplayed[i]);
+            // Khởi tạo hành động mặc định
+            playerActions[UidDisplayed[i]] = PlayerAction.None;
+        }
+
+		currentPlayerIndex = 0;
+		await StartNextPlayerTurn();
+    }
+
+	// Bắt đầu lượt chơi tiếp theo
+	private async Task StartNextPlayerTurn()
+    {
+        // Kiểm tra đã hết lượt tất cả người chơi
+		if (currentPlayerIndex >= playerTurnOrder.Count)
+        {
+            await EndPlayerTurns();
+			return;
+        }
+
+		var currentPlayerId = playerTurnOrder[currentPlayerIndex];
+
+		// Kiểm tra người chơi đã stand(dừng bốc bài) hoặc bust(quá điểm)
+		if (playerActions[currentPlayerId] == PlayerAction.Stand || 
+        	playerActions[currentPlayerId] == PlayerAction.Bust)
+        {
+            currentPlayerIndex++;
+        	await StartNextPlayerTurn();
+        	return;
+        }
+
+		// Kiểm tra nếu >= 21 thì tự động xử lí
+		var playerCards = await GetPlayerCards(currentPlayerId);
+    	var currentScore = CalculateScore(playerCards);
+
+		if (currentScore >= 21)
+        {
+            // Đạt 21 điểm
+			if (currentScore == 21)
+            {
+                playerActions[currentPlayerId] = PlayerAction.Stand;
+				await PostEvent("autoStand", currentPlayerId, new { reason = "reached_21_points", score = currentScore });
+            }
+			else if (currentScore > 21)
+            {
+                playerActions[currentPlayerId] = PlayerAction.Bust;
+				 await PostEvent("bust", currentPlayerId, new { score = currentScore });
+            }
+			currentPlayerIndex++;
+        	await StartNextPlayerTurn();
+        	return;
+        }
+
+		// Gửi event hit/stand cho người chơi hiện tai
+		await PostHitStandEvent(currentPlayerId);
+
+		//Bắt đầu timer
+		decisionTimer.Start(15);
+    }
+
+	// Gửi event hit stand cho người chơi
+	private async Task PostHitStandEvent(string playerId)
+    {
+        // Lấy thông tin bài hiện tại của người chơi từ Firebase
+    	var playerCards = await GetPlayerCards(playerId);
+    	var currentScore = CalculateScore(playerCards);
+
+		var eventData = new
+        {
+          	action = "hitOrStand",
+        	playerId = playerId,
+        	currentCards = playerCards,
+        	currentScore = currentScore,
+        	timeout = 15 // thời gian chờ tính bằng giây
+        };
+
+		await PostEvent("hitOrStand", playerId, eventData);
+    }
+
+	// Xử lí hit stand từ người chơi
+	private async void HandlePlayerDecision(string playerId, string decision)
+    {
+        if (currentGameState != GameState.PlayerTurn) return;
+		var currentPlayerId = playerTurnOrder[currentPlayerIndex];
+
+		// Chỉ chấp nhận thao tác từ người chơi hiện tại
+		if (playerId != currentPlayerId) 
+    	{
+        	return;
+    	}
+		//Dừng timer
+		decisionTimer.Stop();
+
+		switch (decision.ToLower())
+    	{
+        	case "hit":
+            	await ProcessHitAction(playerId);
+            	break;
+            
+        	case "stand":
+            	await ProcessStandAction(playerId);
+            	break;
+            
+        	default:
+            	// Mặc định là Stand nếu quyết định không hợp lệ
+            	await ProcessStandAction(playerId);
+            	break;
+    	}
+    }
+
+	// Người chơi chọn Hit
+	private async Task ProcessHitAction(string playerId)
+    {
+        playerActions[playerId] = PlayerAction.Hit;
+		// Gửi event xác nhận hit
+    	await PostEvent("hitConfirmed", playerId, new { action = "hit" });
+
+		// Sau khi chia bài, kiểm tra điểm
+		var playerCards = await GetPlayerCards(playerId);
+    	var newScore = CalculateScore(playerCards);
+
+		// Kiểm tra bust
+		if (newScore > 21)
+        {
+            playerActions[playerId] = PlayerAction.Bust;
+        	await PostEvent("bust", playerId, new { score = newScore });
+        	GD.Print($"{room.Players[playerId].InGameName} BUST với điểm: {newScore}");
+        
+        	// Chuyển sang người chơi tiếp theo
+        	currentPlayerIndex++;
+        	await StartNextPlayerTurn();
+        }
+		else
+        {
+            // Tiếp tục gửi event hit/stand cho cùng người chơi
+        	await PostHitStandEvent(playerId);
+        	decisionTimer.Start(15);
+        }
+    }
+
+	// Người chơi chọn Stand
+	private async Task ProcessStandAction(string playerId)
+    {
+        playerActions[playerId] = PlayerAction.Stand;
+
+		// Gửi event xác nhận stand
+		await PostEvent("standConfirmed", playerId, new { action = "stand" });
+
+		// Chuyển sang người chơi tiếp theo
+    	currentPlayerIndex++;
+    	await StartNextPlayerTurn();
+    }
+
+	// Khi hết thời gian quyết định lựa chọn
+	private async void OnDecisionTimeout()
+	{
+    	if (currentGameState == GameState.PlayerTurn)
+    	{
+        	var currentPlayerId = playerTurnOrder[currentPlayerIndex];
+
+			// Kiểm tra điểm sau khi chia bài để lựa chọn mặc định sau khi hết timer
+			var playerCards = await GetPlayerCards(currentPlayerId);
+        	var currentScore = CalculateScore(playerCards);
+
+			// < 16 mặc định hit, >= 16 mặc định stand
+			if (currentScore < 16)
+            {
+				// Mặc định là Hit nếu hết giờ (< 16)
+                await ProcessHitAction(currentPlayerId);
+            } 
+			else 
+			{
+        		// Mặc định là Stand nếu hết giờ (>= 16)
+        		await ProcessStandAction(currentPlayerId);
+			}
+    	}
+	}
+
+	// Kết thúc lượt tất cả người chơi
+	private async Task EndPlayerTurns()
+    {
+        currentGameState = GameState.DealerTurn;
+
+		// Gửi event thông báo kết thúc lượt người chơi
+    	await PostEvent("playerTurnsEnd", null, new { 
+        	playerActions = playerActions 
+    	});
+
+		// Chuyển sang lượt của Nhà cái
+    	// StartDealerTurn();
+    }
+
+	// Lấy bài của người chơi từ Firebase
+	private async Task<List<(int, int)>> GetPlayerCards(string playerId)
+	{
+    	try
+    	{
+        	var cards = await FirebaseApi.Get<List<(int, int)>>(
+            $"Rooms/{room.RoomId}/CurrentRound/Players/{playerId}/Cards.json?auth={UserClass.IdToken}");
+        	return cards ?? new List<(int, int)>();
+    	}
+    	catch (Exception ex)
+    	{
+        	GD.PrintErr($"Lỗi khi lấy bài của người chơi {playerId}: {ex.Message}");
+        	return new List<(int, int)>();
+    	}
+	}
 	
+	// Tính điểm
+	private int CalculateScore(List<(int, int)> cards)
+    {
+       	int score = 0;
+    	int aceCount = 0;
+    
+    	foreach (var card in cards)
+    	{
+        	var rank = card.Item1;
+        
+        	if (rank == 1) // Ace
+        	{
+            	aceCount++;
+            	score += 11;
+        	}
+        	else if (rank >= 10) // 10, J, Q, K
+        	{
+            	score += 10;
+        	}
+        	else
+        	{
+            	score += rank;
+        	}
+    	}
+    
+    	// Điều chỉnh Ace từ 11 xuống 1 nếu cần
+    	while (score > 21 && aceCount > 0)
+    	{
+        	score -= 10;
+        	aceCount--;
+    	}
+    
+    	return score; 
+    }
+
+	// Post event lên Firebase
+	private async Task PostEvent(string type, string user, object data)
+	{
+    	try
+    	{
+        	var evt = new GameEvent
+        	{	
+            	type = type,
+            	user = user,
+            	data = data
+        	};
+        
+        	await FirebaseApi.Post($"Rooms/{room.RoomId}/Events.json?auth={UserClass.IdToken}", evt);
+    	}	
+    	catch (Exception ex)
+    	{
+        	GD.PrintErr($"Lỗi khi post event: {ex.Message}");
+    	}
+	}
 }
