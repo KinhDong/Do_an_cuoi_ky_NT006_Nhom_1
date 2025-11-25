@@ -16,8 +16,11 @@ public partial class PlayAsBookmakerScreen : Node2D
 	public List<LineEdit> DisplayMoney {get; set;}
 	public List<string> UidDisplayed {get; set;}
 
+	private Button StartGameButton;
+	//Bộ bài
+	public HashSet<CardClass> DeckOfCards;
 
-	public HashSet<int> AvilableSlot {get; set;} // Những chỗ còn trống
+    public HashSet<int> AvilableSlot {get; set;} // Những chỗ còn trống
 
 	// Hiển thị mã phòng và mức cược
 	private LineEdit DisplayRoomId;
@@ -72,7 +75,19 @@ public partial class PlayAsBookmakerScreen : Node2D
 			}
 		};
 
-		EventListener.Start();
+        //Lấy tham chiếu nút Start Game
+		StartGameButton = GetNode<Button>("pn_Background/btn_StartGame");
+		if(room.HostId == UserClass.Uid) //Chủ phòng mới có quyền bắt đầu trò chơi
+        {
+			StartGameButton.Visible = true;
+            StartGameButton.Pressed += OnStartGame;
+        }
+		else
+		{
+			StartGameButton.Visible = false;
+        }	
+
+			EventListener.Start();
 	}
 
 	private async void OnLeaveRoomPressed()
@@ -173,4 +188,99 @@ public partial class PlayAsBookmakerScreen : Node2D
 		room.Players.Remove(Pid);
 		UnDisplay(CurrSeat);
 	}
+
+    //-------------------------Xử lý bắt đầu trò chơi----------------------------------------
+    private async void OnStartGame()
+	{
+		try
+		{
+            room.Status = RoomStatus.PLAYING;
+            //cập nhật lên firebase
+            await FirebaseApi.Patch($"Rooms/{room.RoomId}/Status.json?auth={UserClass.IdToken}", JsonConvert.SerializeObject(RoomStatus.PLAYING));
+
+			//Gửi event bắt đầu trò chơi
+			var startEvent = new NT106.Scripts.Models.RoomEvent
+			{
+				type = "start_game",
+				user = UserClass.Uid,
+				time = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+			};
+            //Ghi event lên firebase
+            await FirebaseApi.Post($"Rooms/{room.RoomId}/Events.json?auth={UserClass.IdToken}", startEvent);
+
+            //Tạo và chia bài 
+            InitializeDeck(); // tạo bộ bài
+            await DealCardsLogic(); //Chia bài
+        }
+		catch (Exception ex)
+		{
+			GD.PrintErr($"Lỗi khi bắt đầu trò chơi: {ex.Message}");
+        }
+    }
+
+    //-------------------------Xử lý tạo bộ bài----------------------------------------
+    //xài HashSet để tránh trùng bài
+	private void InitializeDeck()
+	{
+		DeckOfCards = new HashSet<CardClass>();
+		string[] suits = { "Hearts", "Diamonds", "Clubs", "Spades" };
+		string[] ranks = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" };
+		foreach (var suit in suits)
+		{
+			foreach (var rank in ranks)
+			{
+				//Tính điểm cơ bản 
+				int val = 0;
+				if(int.TryParse(rank, out int num))
+				{
+					val = num;
+				}
+				else if(rank == "A")
+				{
+					val = 11;
+				}
+				else
+				{
+					val = 10;
+                }
+                DeckOfCards.Add(new CardClass { Suit = suit, Rank = rank, Value = val });
+			}
+        }
+    }
+
+    //-------------------------Xử lý chia bài----------------------------------------
+	private async Task DealCardsLogic()
+	{
+        //OrderBySeat để chia bài đúng thứ tự
+		var activePlayers = room.Players.Values.OrderBy(p => p.Seat).ToList();
+
+        Random rand = new Random();
+
+        //Vòng lặp chia bài: mỗi người 2 lá
+        for (int i = 0; i < 2; i++)
+		{
+			foreach (var player in activePlayers)
+			{
+				//bốc bài
+				int index = rand.Next(DeckOfCards.Count);
+				var card = DeckOfCards.ElementAt(index);
+                DeckOfCards.Remove(card); //Xoá lá bài đã chia khỏi bộ bài
+
+                // Thay vì chỉ lưu vào DB, ta bắn Event "deal" để UI các máy khác nhận được
+                var dealEvent = new NT106.Scripts.Models.RoomEvent
+                {
+                    type = "deal",
+                    user = player.Uid,
+                    time = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                    card = card // Gửi kèm lá bài vừa bốc
+                };
+
+                // Post Event lên Firebase
+                await FirebaseApi.Post($"Rooms/{room.RoomId}/Events.json?auth={UserClass.IdToken}", dealEvent);
+
+                //Chờ 500ms để tạo hiệu ứng chia bài (nếu cần)
+                await Task.Delay(500);
+			}
+		}
+    }
 }

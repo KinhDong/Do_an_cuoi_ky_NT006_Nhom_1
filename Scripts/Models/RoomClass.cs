@@ -11,16 +11,19 @@ using System.Threading;
 
 namespace NT106.Scripts.Models
 {
+    // Class chứa hằng số trạng thái phòng
+    public static class RoomStatus
+    {
+        public const string WAITING = "Waiting"; // Đang chờ
+        public const string PLAYING = "Playing"; // Đang chơi
+    }
+
     //tạo Room Event để ghi log sự kiện trong phòng
     public class RoomEvent
 	{
 		public string type { get; set; } // "join", "leave", "deal", "startGame", "endGame", "deleteRoom"
         public string user { get; set; } // userId
         public long time { get; set; }
-
-        // Thêm trường này để chứa thông tin lá bài khi type == "deal"
-        // Nullable để các event khác không bị thừa data
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public CardClass card { get; set; }
     }
     public class RoomClass
@@ -123,7 +126,7 @@ namespace NT106.Scripts.Models
 
                 //----------------------------------------Cập nhật trạng thái chờ phòng khi join----------------------------------------
                 //Kiểm tra trạng thái phòng 
-                if (roomData.Status != "Waiting")
+                if (roomData.Status != RoomStatus.WAITING)
 				{
                     throw new Exception("Phòng đã đang bắt đầu trò chơi!");
                     player.Seat = -1; //Khởi tạo chỗ ngồi tạm thời
@@ -134,6 +137,7 @@ namespace NT106.Scripts.Models
                     if (roomData.CurrentPlayers == 4) throw new Exception("Phòng đã đầy!");
 					player.Seat = 1; // Gán chỗ ngồi tiếp theo
                 }	
+				//----------------------------------------------------------------------------------------------------------------------
 
 				var res = await FirebaseApi.Put
 				($"Rooms/{roomId}/Players/{UserClass.Uid}.json?auth={UserClass.IdToken}", player);

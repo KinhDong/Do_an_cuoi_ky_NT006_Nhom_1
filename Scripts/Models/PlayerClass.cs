@@ -1,4 +1,5 @@
 using Godot;
+using System.Collections.Generic;
 
 namespace NT106.Scripts.Models
 {
@@ -10,7 +11,7 @@ namespace NT106.Scripts.Models
         public int Seat;
         public string JoinedAt { get; set; }
 
-        
+        public List<CardClass> Cards { get; set; } = new List<CardClass>();
     }    
 }
 
