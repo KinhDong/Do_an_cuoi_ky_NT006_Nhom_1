@@ -336,6 +336,7 @@ public partial class PlayAsBookmakerScreen : Node2D
     	{
         	return;
     	}
+		
 		//Dừng timer
 		decisionTimer.Stop();
 
@@ -435,7 +436,111 @@ public partial class PlayAsBookmakerScreen : Node2D
     	});
 
 		// Chuyển sang lượt của Nhà cái
-    	// StartDealerTurn();
+    	await StartDealerTurn();
+    }
+
+	// Lượt của Cái
+	private async Task StartDealerTurn()
+    {
+		// Lấy bài của Cái
+        var dealerCards = await GetDealerCards();
+		int dealerScore = CalculateScore(dealerCards);
+
+		// Gửi event bắt đầu lượt của Cái
+		await PostEvent("dealerTurnStart", null, new
+        {
+            dealerScore = dealerScore,
+			dealerCards = dealerCards
+        });
+
+        //Luật áp dụng tương tự với Cái
+        while (dealerScore < 16)
+        {
+			var newCard = await DrawCardForDealer();
+			if (newCard != (0, 0))
+            {
+                dealerCards.Add(newCard);
+            	dealerScore = CalculateScore(dealerCards);
+
+				// Gửi event Nhà Cái rút bài
+            	await PostEvent("dealerHit", null, new {
+                	newCard = newCard,
+                	dealerCards = dealerCards,
+                	dealerScore = dealerScore
+            	});
+				
+				// Kiểm tra Bust
+				if (dealerScore > 21)
+                {
+                    await PostEvent("dealerBurst", null, new
+                    {
+                       dealerScore = dealerScore 
+                    });
+					//GD.Print($"Nhà Cái BUST với {dealerScore} điểm!");
+					break;
+                }
+            }
+			else
+            {
+                break;
+            }	
+        }
+
+		// Kết thúc lượt của Cái
+		await PostEvent("dealerTurnEnd", null, new
+        {
+            finalDealerScore = dealerScore,
+        	isBust = dealerScore > 21
+        });
+		
+		//GD.Print($"Nhà Cái kết thúc với {dealerScore} điểm");
+		currentGameState = GameState.GameOver;
+    }
+
+	// Rút bài cho Cái 
+	private async Task<(int, int)> DrawCardForDealer()
+    {
+		try
+        {
+            // Giả sử có deck bài
+        	var deck = await FirebaseApi.Get<List<(int, int)>>($"Rooms/{room.RoomId}/CurrentRound/Deck.json?auth={UserClass.IdToken}");
+        
+        	if (deck != null && deck.Count > 0)
+        	{
+            	var card = deck[0];
+            	// Xóa bài đã rút
+            	deck.RemoveAt(0);
+            	await FirebaseApi.Put($"Rooms/{room.RoomId}/CurrentRound/Deck.json?auth={UserClass.IdToken}", deck);
+            
+            	// Thêm bài cho Nhà Cái
+            	var dealerCards = await GetDealerCards();
+            	dealerCards.Add(card);
+            	await FirebaseApi.Put($"Rooms/{room.RoomId}/CurrentRound/Dealer/Cards.json?auth={UserClass.IdToken}", dealerCards);
+            
+            	return card;
+        	}
+        }
+		catch (Exception ex)
+    	{
+        	GD.PrintErr($"Lỗi khi rút bài cho Nhà Cái: {ex.Message}");
+    	}
+        return(0, 0);
+    }
+
+	// Lấy bài của Cái
+	private async Task<List<(int, int)>> GetDealerCards()
+    {
+       try
+    	{
+        	var cards = await FirebaseApi.Get<List<(int, int)>>(
+            $"Rooms/{room.RoomId}/CurrentRound/Dealer/Cards.json?auth={UserClass.IdToken}");
+        	return cards ?? new List<(int, int)>();
+    	}
+    	catch (Exception ex)
+    	{
+        	GD.PrintErr($"Lỗi khi lấy bài Nhà Cái: {ex.Message}");
+        	return new List<(int, int)>();
+    	}
     }
 
 	// Lấy bài của người chơi từ Firebase

@@ -303,6 +303,23 @@ public partial class PlayAsPlayerScreen : Node2D
 			case "playerTurnsEnd":
 				HandlePlayerTurnsEnd(eventData);
 				break;
+			
+			//Thêm các case xử lí sự kiện lượt của Cái
+			case "dealerTurnStart":
+				HandleDealerTurnStart(eventData);
+            	break;
+			
+			case "dealerHit":
+            	HandleDealerHit(eventData);
+            	break;
+            
+        	case "dealerBust":
+            	HandleDealerBust(eventData);
+            	break;
+            
+        	case "dealerTurnEnd":
+            	HandleDealerTurnEnd(eventData);
+            	break;
 		}
     }
 
@@ -381,6 +398,64 @@ public partial class PlayAsPlayerScreen : Node2D
         //GD.Print("Kết thúc lượt tất cả người chơi, chuyển sang lượt Nhà Cái");
 		SetDecisionButtonsVisible(false);
 		//DecisionTimerLabel.Text = "Kết thúc lượt người chơi";
+    }
+
+	// Xử lí bắt đầu lượt Nhà Cái
+	private void HandleDealerTurnStart(GameEventData eventData)
+    {
+        if (eventData.data != null)
+    	{
+        	var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(eventData.data.ToString());
+        	if (data.ContainsKey("dealerScore"))
+        	{
+            	var dealerScore = Convert.ToInt32(data["dealerScore"]);
+            	//DecisionTimerLabel.Text = $"Lượt Nhà Cái - Điểm: {dealerScore}";
+        	}
+    	}
+    	//GD.Print("Bắt đầu lượt Nhà Cái");
+    }
+
+	// Xử lí Nhà Cái rút bài
+	private void HandleDealerHit(GameEventData eventData)
+    {
+        if (eventData.data != null)
+    	{
+        	var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(eventData.data.ToString());
+        	if (data.ContainsKey("dealerScore"))
+        	{
+            	var dealerScore = Convert.ToInt32(data["dealerScore"]);
+            	//DecisionTimerLabel.Text = $"Nhà Cái rút bài... Điểm: {dealerScore}";
+        	}
+    	}
+    	//GD.Print("Nhà Cái rút bài");
+    }
+
+	// Xử lí Nhà Cái bust
+	private void HandleDealerBust(GameEventData eventData)
+    {
+        //DecisionTimerLabel.Text = "Nhà Cái BUST!";
+    	GD.Print("Nhà Cái đã BUST");
+    }
+
+	// Xử lí kết thúc lượt Nhà Cái
+	private void HandleDealerTurnEnd(GameEventData eventData)
+    {
+        if (eventData.data != null)
+    	{
+        	var data = JsonConvert.DeserializeObject<Dictionary<string, object>>(eventData.data.ToString());
+        	if (data.ContainsKey("finalDealerScore"))
+        	{
+            	var finalScore = Convert.ToInt32(data["finalDealerScore"]);
+            	var isBust = data.ContainsKey("isBust") && Convert.ToBoolean(data["isBust"]);
+            
+            	string result = isBust ? "BUST" : $"Điểm: {finalScore}";
+            	//DecisionTimerLabel.Text = $"Nhà Cái kết thúc: {result}";
+        	}
+    	}
+    	//GD.Print("Kết thúc lượt Nhà Cái");
+    
+    	// Ẩn nút Hit/Stand nếu đang hiện
+    	SetDecisionButtonsVisible(false);
     }
 
 	// Người chơi chọn Hit
