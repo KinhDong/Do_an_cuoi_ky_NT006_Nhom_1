@@ -1,0 +1,171 @@
+[gd_scene load_steps=14 format=3 uid="uid://b8lr7yqdp75ev"]
+
+[ext_resource type="Script" uid="uid://cfkbnktngluqa" path="res://Scenes/Menu/MenuScreen.cs" id="1_5xyd2"]
+[ext_resource type="Texture2D" uid="uid://b0jqlqa7b4e34" path="res://Assets/Menu_Background.jpg" id="1_tr0oe"]
+[ext_resource type="Texture2D" uid="uid://d3dmthr56osya" path="res://Assets/Blackjack_Logo.png" id="3_66ftb"]
+[ext_resource type="Texture2D" uid="uid://d3axkvylbge6m" path="res://Assets/Setting_Icon.png" id="4_00dl2"]
+[ext_resource type="Texture2D" uid="uid://d4hcxr785sg82" path="res://Assets/accountprofile.png" id="5_00dl2"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x4ls7"]
+texture = ExtResource("1_tr0oe")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p310n"]
+bg_color = Color(0, 0, 0, 0.40784314)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.69803923, 0.13333334, 0.13333334, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_66ftb"]
+texture = ExtResource("3_66ftb")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5xyd2"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.69803923, 0.13333334, 0.13333334, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jfwrt"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8ga1o"]
+texture = ExtResource("4_00dl2")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_00dl2"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfwrt"]
+texture = ExtResource("5_00dl2")
+
+[node name="MenuScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5xyd2")
+
+[node name="pn_Background" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1200.0
+offset_bottom = 800.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_x4ls7")
+
+[node name="ButtonFrame" type="Panel" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.5
+offset_top = -136.0
+offset_right = 199.5
+offset_bottom = 318.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_p310n")
+
+[node name="Panel" type="Panel" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.5
+offset_top = -304.0
+offset_right = 245.5
+offset_bottom = -106.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_66ftb")
+
+[node name="btn_Play" type="Button" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -168.5
+offset_top = -80.0
+offset_right = 167.5
+offset_bottom = -29.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.8745098, 0.8745098, 0.9411765, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_5xyd2")
+text = "CHƠI
+"
+
+[node name="btn_HowToPlay" type="Button" parent="pn_Background"]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 472.0
+offset_right = 759.0
+offset_bottom = 518.0
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_5xyd2")
+text = "HƯỚNG DẪN
+"
+
+[node name="btn_ExitGame" type="Button" parent="pn_Background"]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 632.0
+offset_right = 759.0
+offset_bottom = 678.0
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_5xyd2")
+text = "THOÁT
+"
+
+[node name="btnProfilePanel" type="Panel" parent="pn_Background"]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 32.0
+offset_right = 111.0
+offset_bottom = 104.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_jfwrt")
+
+[node name="btnSettingsPanel" type="Panel" parent="pn_Background"]
+layout_mode = 0
+offset_left = 1088.0
+offset_top = 32.0
+offset_right = 1168.0
+offset_bottom = 104.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_8ga1o")
+
+[node name="btn_Setting" type="Button" parent="pn_Background"]
+layout_mode = 0
+offset_left = 1096.0
+offset_top = 40.0
+offset_right = 1160.0
+offset_bottom = 95.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_00dl2")
+
+[node name="btn_Profile" type="Button" parent="pn_Background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -556.5
+offset_top = -356.0
+offset_right = -500.5
+offset_bottom = -308.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_jfwrt")

@@ -1,0 +1,261 @@
+[gd_scene load_steps=15 format=3 uid="uid://r6eto3equjfx"]
+
+[ext_resource type="Script" uid="uid://cxmucvstiotvt" path="res://Scenes/Login/LoginScreen.cs" id="1_v78pv"]
+[ext_resource type="Texture2D" uid="uid://pc73r7gjcra2" path="res://Assets/Logg_Background.jpg" id="2_mwris"]
+[ext_resource type="Texture2D" uid="uid://wyxx84wrkay4" path="res://Assets/Blackjack_Logo.png" id="3_gbvbl"]
+[ext_resource type="Texture2D" uid="uid://qe57x3pef0pw" path="res://Assets/OpenEye_Icon.png" id="3_mwris"]
+[ext_resource type="Texture2D" uid="uid://bew4bljfjem2d" path="res://Assets/CloseEye_Icon.png" id="4_3na2k"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_vktwn"]
+texture = ExtResource("2_mwris")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vktwn"]
+bg_color = Color(0.3019608, 0.50980395, 0.9490196, 0.6901961)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rxrqw"]
+bg_color = Color(0.24705882, 0.65882355, 0.6313726, 1)
+border_color = Color(0.73333335, 0.73333335, 0.8, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="SystemFont" id="SystemFont_tbjhg"]
+font_weight = 600
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v78pv"]
+bg_color = Color(0.17254902, 0.6, 0.79607844, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xj0xw"]
+texture = ExtResource("3_gbvbl")
+
+[sub_resource type="Animation" id="Animation_vktwn"]
+resource_name = "Login_Appear"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("pn_Screen/pn_Login:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("pn_Screen/pn_Login:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [250.0, 200.0]
+}
+
+[sub_resource type="Animation" id="Animation_rxrqw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("pn_Screen/pn_Login:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("pn_Screen/pn_Login:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [112.5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rxrqw"]
+_data = {
+&"Login_Appear": SubResource("Animation_vktwn"),
+&"RESET": SubResource("Animation_rxrqw")
+}
+
+[node name="LoginScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v78pv")
+
+[node name="pn_Screen" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_vktwn")
+
+[node name="pn_Login" type="Panel" parent="pn_Screen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -279.5
+offset_top = -287.5
+offset_right = 279.5
+offset_bottom = 284.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vktwn")
+
+[node name="btn_Login" type="Button" parent="pn_Screen/pn_Login"]
+layout_mode = 0
+offset_left = 188.5
+offset_top = 368.5
+offset_right = 364.5
+offset_bottom = 428.3826
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_rxrqw")
+text = "Đăng nhập"
+
+[node name="lb_Username" type="Label" parent="pn_Screen/pn_Login"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -186.5
+offset_right = 186.5
+offset_bottom = 152.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 0.97, 0.9607843)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = SubResource("SystemFont_tbjhg")
+theme_override_font_sizes/font_size = 44
+text = "ĐĂNG NHẬP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Passwird" type="Label" parent="pn_Screen/pn_Login"]
+layout_mode = 0
+offset_left = 56.5
+offset_top = 131.0
+offset_right = 260.85596
+offset_bottom = 207.2829
+theme_override_font_sizes/font_size = 25
+text = "Tên tài khoản"
+
+[node name="le_Username" type="LineEdit" parent="pn_Screen/pn_Login"]
+layout_mode = 0
+offset_left = 251.5
+offset_top = 132.0
+offset_right = 515.5
+offset_bottom = 172.9985
+placeholder_text = "Nhập tên tài khoản"
+
+[node name="Label3" type="Label" parent="pn_Screen/pn_Login"]
+layout_mode = 0
+offset_left = 58.5
+offset_top = 203.0
+offset_right = 262.85596
+offset_bottom = 279.2829
+theme_override_font_sizes/font_size = 25
+text = "Mật khẩu"
+
+[node name="le_Password" type="LineEdit" parent="pn_Screen/pn_Login"]
+layout_mode = 0
+offset_left = 253.5
+offset_top = 206.0
+offset_right = 517.5
+offset_bottom = 246.9985
+placeholder_text = "Nhập mật khẩu"
+secret = true
+
+[node name="lbtn_ForgotPassword" type="LinkButton" parent="pn_Screen/pn_Login"]
+layout_mode = 0
+offset_left = 366.5
+offset_top = 269.5
+offset_right = 517.5
+offset_bottom = 343.5
+theme_override_font_sizes/font_size = 20
+text = "Quên mật khẩu"
+
+[node name="lb_Register" type="Label" parent="pn_Screen/pn_Login"]
+layout_mode = 0
+offset_left = 72.5
+offset_top = 483.5
+offset_right = 302.5
+offset_bottom = 559.7829
+theme_override_font_sizes/font_size = 25
+text = "Chưa có tài khoản?"
+
+[node name="btn_Register" type="Button" parent="pn_Screen/pn_Login"]
+layout_mode = 0
+offset_left = 348.5
+offset_top = 471.5
+offset_right = 495.5
+offset_bottom = 532.5
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_v78pv")
+text = "Đăng kí"
+
+[node name="lb_Error" type="Label" parent="pn_Screen/pn_Login"]
+layout_mode = 0
+offset_left = 59.0
+offset_top = 307.5
+offset_right = 317.0
+offset_bottom = 354.35965
+theme_override_colors/font_color = Color(1, 0.09411765, 0.05490196, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="ttbtn_HidePassword" type="TextureButton" parent="pn_Screen/pn_Login"]
+layout_mode = 0
+offset_left = 476.5
+offset_top = 207.5
+offset_right = 516.5
+offset_bottom = 247.5
+toggle_mode = true
+button_pressed = true
+texture_normal = ExtResource("3_mwris")
+texture_pressed = ExtResource("4_3na2k")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="pn_Logo" type="Panel" parent="pn_Screen"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -243.0
+offset_right = 243.0
+offset_bottom = 198.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_xj0xw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_rxrqw")
+}
