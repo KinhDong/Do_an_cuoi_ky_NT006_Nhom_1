@@ -98,7 +98,7 @@ _data = {
 &"RESET": SubResource("Animation_rxrqw")
 }
 
-[node name="LoginScreen" type="Control"]
+[node name="LoginScreen" type="Control" node_paths=PackedStringArray("anim", "UsernameLineEdit", "PasswordLineEdit", "LoginButton", "RegisterButton", "ForgotPasswordButton", "ErrorLabel", "HidePasswordButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -106,6 +106,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_v78pv")
+anim = NodePath("AnimationPlayer")
+UsernameLineEdit = NodePath("pn_Screen/pn_Login/le_Username")
+PasswordLineEdit = NodePath("pn_Screen/pn_Login/le_Password")
+LoginButton = NodePath("pn_Screen/pn_Login/btn_Login")
+RegisterButton = NodePath("pn_Screen/pn_Login/btn_Register")
+ForgotPasswordButton = NodePath("pn_Screen/pn_Login/lbtn_ForgotPassword")
+ErrorLabel = NodePath("pn_Screen/pn_Login/lb_Error")
+HidePasswordButton = NodePath("pn_Screen/pn_Login/ttbtn_HidePassword")
 
 [node name="pn_Screen" type="Panel" parent="."]
 layout_mode = 1

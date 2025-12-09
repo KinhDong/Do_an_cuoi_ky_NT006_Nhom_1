@@ -90,8 +90,12 @@ _data = {
 &"RESET": SubResource("Animation_u82xy")
 }
 
-[node name="ForgotScreen" type="Node2D"]
+[node name="ForgotScreen" type="Node2D" node_paths=PackedStringArray("anim", "UsernameLineEdit", "ResetPasswordButton", "BackButton")]
 script = ExtResource("1_ovury")
+anim = NodePath("AnimationPlayer")
+UsernameLineEdit = NodePath("pn_Screen/pn_ForgotPassword/le_Username")
+ResetPasswordButton = NodePath("pn_Screen/pn_ForgotPassword/btn_ResetPassword")
+BackButton = NodePath("pn_Screen/pn_ForgotPassword/btn_Back")
 
 [node name="pn_Screen" type="Panel" parent="."]
 offset_right = 1200.0

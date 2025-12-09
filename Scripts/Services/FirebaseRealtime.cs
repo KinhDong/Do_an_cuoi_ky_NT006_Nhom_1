@@ -116,7 +116,7 @@ namespace NT106.Scripts.Services
 		public string type { get; set; }   // "join", "leave"
 		public string user { get; set; }   // userId
 		public long time { get; set; }
-		// public object payload { get; set; } // Dữ liệu thêm vào (Nếu có)
+		public dynamic payload { get; set; } // Dữ liệu thêm vào (Nếu có)
 	}    
 
 	public class MessageEvent

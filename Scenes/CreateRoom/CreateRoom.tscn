@@ -39,8 +39,13 @@ border_blend = true
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_aeb13"]
 texture = ExtResource("2_30iju")
 
-[node name="CreateRoom" type="Node2D"]
+[node name="CreateRoom" type="Node2D" node_paths=PackedStringArray("CreateRoomWithCondition", "Return", "Bet10", "Bet20", "Bet50")]
 script = ExtResource("1_pmnob")
+CreateRoomWithCondition = NodePath("Background/btnCreateRoom")
+Return = NodePath("Background/btnReturn")
+Bet10 = NodePath("BetAmmount/cbBet10")
+Bet20 = NodePath("BetAmmount/cbBet20")
+Bet50 = NodePath("BetAmmount/cbBet50")
 
 [node name="Panel" type="Panel" parent="."]
 offset_right = 1200.0

@@ -1,11 +1,7 @@
-using Godot;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using SystemHttpClient = System.Net.Http.HttpClient;
 using NT106.Scripts.Services;
 using System.Threading;
 
@@ -18,8 +14,8 @@ namespace NT106.Scripts.Models
 		public string Status { get; set; }
 		public int BetAmount { get; set; }
 		public int CurrentPlayers { get; set; }
-		public Dictionary<string, PlayerClass> Players { get; set; }        
-		
+		public Dictionary<string, PlayerClass> Players { get; set; }  
+		public List<string> Seats {get; set;}
 		public static RoomClass CurrentRoom { get; set; }
 
 
@@ -52,20 +48,20 @@ namespace NT106.Scripts.Models
 					InGameName = UserClass.InGameName,
 					Money = UserClass.Money,
 					JoinedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-				};
+				};				
 
-				// Dữ liệu phòng mới 
+				// Dữ liệu phòng mới
 				var roomData = new RoomClass
 				{
 					RoomId = roomId,
 					HostId = UserClass.Uid,
 					CurrentPlayers = 1,
 					BetAmount = betAmount,
-					Status = "Waiting",
+					Status = "WAITING",
 					Players = new Dictionary<string, PlayerClass>
 					{
 						[UserClass.Uid] = player
-					}                    
+					}                
 				};
 
 				// Ghi vào Firebase
@@ -78,7 +74,10 @@ namespace NT106.Scripts.Models
 
 				// Trả về room để thao tác trong Godot
 				CurrentRoom = roomData;
+				CurrentRoom.Seats = new () {UserClass.Uid, null, null, null};
 				CurrentRoom.Players[UserClass.Uid].Seat = 0;
+				CurrentRoom.Players[UserClass.Uid].Avatar = UserClass.Avatar;
+				CurrentRoom.Players[UserClass.Uid].Hands = new();
 
 				return (true, "OK");
 			}
@@ -98,11 +97,9 @@ namespace NT106.Scripts.Models
 				{
 					throw new Exception("Phòng không tồn tại!");
 				}                    
-				var roomData = JsonConvert.DeserializeObject<RoomClass>(roomJson);
+				CurrentRoom = JsonConvert.DeserializeObject<RoomClass>(roomJson);
 
-				// Kiểm tra phòng còn chỗ không
-				if (roomData.CurrentPlayers == 4)  throw new Exception("Phòng đã đầy!");             
-
+				// Tạo thông tin cho Player
 				var player = new PlayerClass
 				{
 					Uid = UserClass.Uid,
@@ -111,22 +108,41 @@ namespace NT106.Scripts.Models
 					JoinedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
 				};
 
+				CurrentRoom.Players.Add(UserClass.Uid, player);
+				// Ghi vào Firebase
 				var res = await FirebaseApi.Put
 				($"Rooms/{roomId}/Players/{UserClass.Uid}.json?auth={UserClass.IdToken}", player);
 				
-				if (!res) throw new Exception("Không thể thêm người chơi");  
-
-				player.Seat = 1;
-				// Thêm vào roomData
-				roomData.Players.Add(UserClass.Uid, player);
+				if (!res) throw new Exception("Không thể thêm người chơi");
 
 				// Cập nhật số người chơi
-				roomData.CurrentPlayers++;
-				res = await FirebaseApi.Put($"Rooms/{roomId}/CurrentPlayers.json?auth={UserClass.IdToken}", roomData.CurrentPlayers);
+				CurrentRoom.CurrentPlayers++;
+				res = await FirebaseApi.Put($"Rooms/{roomId}/CurrentPlayers.json?auth={UserClass.IdToken}", CurrentRoom.CurrentPlayers);
 
 				if(!res) throw new Exception ("Không thể cập nhật số người chơi");
 
-				CurrentRoom = roomData;
+				// Thêm chỗ ngồi và ảnh cho Cái và Bạn
+				CurrentRoom.Seats = [CurrentRoom.HostId, UserClass.Uid];
+				CurrentRoom.Players[CurrentRoom.HostId].Seat = 0;
+				CurrentRoom.Players[CurrentRoom.HostId].Hands = new();
+				await CurrentRoom.Players[CurrentRoom.HostId].LoadAvatarAsync();
+
+				CurrentRoom.Players[UserClass.Uid].Seat = 1;
+				CurrentRoom.Players[UserClass.Uid].Avatar = UserClass.Avatar;
+				CurrentRoom.Players[UserClass.Uid].Hands = new();
+
+				// Thêm chỗ ngồi cho các player khác
+				foreach (var p in CurrentRoom.Players)
+				{
+					if (p.Key != CurrentRoom.HostId && p.Key != UserClass.Uid)
+					{
+						await CurrentRoom.Players[p.Key].LoadAvatarAsync(); // Tải avatar						
+						CurrentRoom.Players[p.Key].Seat = CurrentRoom.Seats.Count;
+						CurrentRoom.Players[p.Key].Hands = new();
+						CurrentRoom.Seats.Add(p.Key);
+					}
+				}	
+				while(CurrentRoom.Seats.Count < 4) CurrentRoom.Seats.Add(null);
 
 				// Viết Event
 				var evt = new RoomEvent{type = "join", user = UserClass.Uid, time = DateTimeOffset.UtcNow.ToUnixTimeSeconds()};

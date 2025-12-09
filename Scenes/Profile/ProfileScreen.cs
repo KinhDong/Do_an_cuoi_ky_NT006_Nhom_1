@@ -4,53 +4,45 @@ using System;
 
 public partial class ProfileScreen : Control
 {
-	private TextureRect Avatar;
-	private TextureButton ChangeAvatar;
-	private LineEdit UsernameLE;
-	private LineEdit InGameNameLE;
-	private TextureButton ChangeInGameName;
-	private LineEdit Money;
-	private Button Exit;
-	private AnimationPlayer anim;
+	[Export] private TextureRect Avatar;
+	[Export] private TextureButton ChangeAvatar;
+	[Export] private LineEdit UsernameLE;
+	[Export] private LineEdit InGameNameLE;
+	[Export] private TextureButton ChangeInGameName;
+	[Export] private LineEdit Money;
+	[Export] private Button Exit;
+	[Export] private AnimationPlayer anim;
 
 	// Thêm một FileDialog để chọn ảnh
 	private FileDialog avatarDialog;
 
 	public override void _Ready()
 	{
-		Avatar = GetNode<TextureRect>("Panel/pn_Profile/pn_Outline/ttr_Avatar");
 		// Tải Avatar từ UserClass
 		if (UserClass.Avatar != null)
 		{
 			Avatar.Texture = UserClass.Avatar;
 		}
 
-		ChangeAvatar = GetNode<TextureButton>("Panel/pn_Profile/ttbtn_ChangeAvatar");
 		ChangeAvatar.ToggleMode = false; 
 		ChangeAvatar.Pressed += OnChangeAvatarPressed;
 
-		UsernameLE = GetNode<LineEdit>("Panel/pn_Profile/le_Username");
 		// Tải Username
 		UsernameLE.Text = UserClass.UserName;
 		UsernameLE.Editable = false; 
 
-		InGameNameLE = GetNode<LineEdit>("Panel/pn_Profile/le_InGameName");
 		// Tải InGameName
 		InGameNameLE.Text = UserClass.InGameName;
 		InGameNameLE.Editable = false; 
 
-		ChangeInGameName = GetNode<TextureButton>("Panel/pn_Profile/ttbtn_ChangeInGameName");
 		ChangeInGameName.Pressed += OnChangeInGameNamePressed;
 
 		// Lấy node Money và gán giá trị
-		Money = GetNode<LineEdit>("Panel/pn_Profile/le_Money");
 		Money.Text = UserClass.Money.ToString();
 		Money.Editable = false; 
 
-		Exit = GetNode<Button>("Panel/pn_Profile/btn_Exit");
 		Exit.Pressed += OnExitButtonPressed;
 
-		anim = GetNode<AnimationPlayer>("AnimationPlayer");
 		anim.Play("Profile_Appear");
 
 		// Khởi tạo FileDialog

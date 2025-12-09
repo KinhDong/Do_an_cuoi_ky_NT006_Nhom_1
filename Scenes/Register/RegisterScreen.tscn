@@ -93,7 +93,7 @@ _data = {
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wjyoc"]
 texture = ExtResource("4_if1n7")
 
-[node name="RegisterScreen" type="Control"]
+[node name="RegisterScreen" type="Control" node_paths=PackedStringArray("anim", "RegisterButton", "BackButton", "usernameInput", "emailInput", "passwordInput", "confirmInput")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -101,6 +101,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rxrp3")
+anim = NodePath("pn_Screen/AnimationPlayer")
+RegisterButton = NodePath("pn_Screen/pn_Register/btn_Register")
+BackButton = NodePath("pn_Screen/pn_Register/btn_Back")
+usernameInput = NodePath("pn_Screen/pn_Register/le_Username")
+emailInput = NodePath("pn_Screen/pn_Register/le_Email")
+passwordInput = NodePath("pn_Screen/pn_Register/le_Password")
+confirmInput = NodePath("pn_Screen/pn_Register/le_ConfirmPassword")
 
 [node name="pn_Screen" type="Panel" parent="."]
 layout_mode = 1
@@ -160,7 +167,7 @@ offset_top = 132.0
 offset_right = 515.5
 offset_bottom = 172.9985
 
-[node name="le_Email" type="Label" parent="pn_Screen/pn_Register"]
+[node name="lb_Email" type="Label" parent="pn_Screen/pn_Register"]
 layout_mode = 0
 offset_left = 58.5
 offset_top = 203.0
@@ -188,7 +195,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_if1n7")
 text = "Đăng kí
 "
 
-[node name="lb_Email" type="Label" parent="pn_Screen/pn_Register"]
+[node name="lb_Password" type="Label" parent="pn_Screen/pn_Register"]
 layout_mode = 0
 offset_left = 55.5
 offset_top = 279.5
@@ -197,14 +204,14 @@ offset_bottom = 355.7829
 theme_override_font_sizes/font_size = 25
 text = "Mật khẩu"
 
-[node name="le_Password2" type="LineEdit" parent="pn_Screen/pn_Register"]
+[node name="le_Email" type="LineEdit" parent="pn_Screen/pn_Register"]
 layout_mode = 0
 offset_left = 252.5
 offset_top = 206.5
 offset_right = 516.5
 offset_bottom = 247.4985
 
-[node name="lb_Email2" type="Label" parent="pn_Screen/pn_Register"]
+[node name="lb_Confirm" type="Label" parent="pn_Screen/pn_Register"]
 layout_mode = 0
 offset_left = 56.5
 offset_top = 357.5

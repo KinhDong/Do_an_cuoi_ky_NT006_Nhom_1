@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://ca6qq7li4x6qa"]
 
-[ext_resource type="Script" uid="uid://dxmqn6rmhckeu" path="res://Scenes/GameModeSelection/ModeChoosing.cs" id="1_ek4n8"]
-[ext_resource type="Texture2D" uid="uid://dj5kpo734v0so" path="res://Assets/ImageForPVPMode.jpg" id="1_l5hqa"]
-[ext_resource type="Texture2D" uid="uid://drj3yyosrn5md" path="res://Assets/ImageForPVEMode.jpg" id="1_x3jvv"]
+[ext_resource type="Script" uid="uid://cfov2kflgk0o5" path="res://Scenes/GameModeSelection/ModeChoosing.cs" id="1_ek4n8"]
+[ext_resource type="Texture2D" uid="uid://dlir2kif1droa" path="res://Assets/ImageForPVPMode.jpg" id="1_l5hqa"]
+[ext_resource type="Texture2D" uid="uid://cx3x3u4o8kmko" path="res://Assets/ImageForPVEMode.jpg" id="1_x3jvv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_145h3"]
 bg_color = Color(0, 0, 0, 0.38039216)
@@ -12,8 +12,11 @@ border_width_right = 5
 border_width_bottom = 5
 border_blend = true
 
-[node name="ModeChoosing" type="Node2D"]
+[node name="ModeChoosing" type="Node2D" node_paths=PackedStringArray("PvP", "PvE", "Return")]
 script = ExtResource("1_ek4n8")
+PvP = NodePath("ModeBackground/btnPVP")
+PvE = NodePath("ModeBackground/btnPVE")
+Return = NodePath("ModeBackground/btnReturn")
 
 [node name="ModeBackground" type="Panel" parent="."]
 offset_right = 1200.0

@@ -1,0 +1,99 @@
+[gd_scene load_steps=5 format=3 uid="uid://kpjpgk3symv4"]
+
+[ext_resource type="Script" uid="uid://b8reng6prw6mf" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.cs" id="1_beqej"]
+[ext_resource type="Texture2D" uid="uid://clwgykm1tag2a" path="res://Assets/Coin_Icon.png" id="2_e8bu7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hrw6r"]
+bg_color = Color(0.15, 0.15, 0.15, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="Theme" id="Theme_kdkke"]
+
+[node name="DisplayPlayerInfo" type="Control" node_paths=PackedStringArray("Group", "AvatarDisplay", "NameDisplay", "MoneyDisplay")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_beqej")
+Group = NodePath("n_DisplayPlayerInfo")
+AvatarDisplay = NodePath("n_DisplayPlayerInfo/ttr_Avatar")
+NameDisplay = NodePath("n_DisplayPlayerInfo/le_Name")
+MoneyDisplay = NodePath("n_DisplayPlayerInfo/le_Money")
+
+[node name="n_DisplayPlayerInfo" type="Node2D" parent="."]
+position = Vector2(-1, 0)
+
+[node name="pn_AvatarBorder" type="Panel" parent="n_DisplayPlayerInfo"]
+show_behind_parent = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.5
+offset_top = -104.0
+offset_right = 68.5
+offset_bottom = 104.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hrw6r")
+
+[node name="ttr_Avatar" type="TextureRect" parent="n_DisplayPlayerInfo"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.5
+offset_top = -48.38379
+offset_right = 53.5
+offset_bottom = 48.38379
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_kdkke")
+expand_mode = 1
+stretch_mode = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="le_Money" type="LineEdit" parent="n_DisplayPlayerInfo"]
+show_behind_parent = true
+anchors_preset = -1
+anchor_left = 0.18995872
+anchor_top = 0.57423156
+anchor_right = 0.18995872
+anchor_bottom = 0.57423156
+offset_left = -61.0
+offset_top = -94.0
+offset_right = 62.442932
+offset_bottom = -63.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+editable = false
+metadata/_edit_use_anchors_ = true
+
+[node name="ttr_MoneyIcon" type="TextureRect" parent="n_DisplayPlayerInfo"]
+anchors_preset = -1
+anchor_left = 0.053451564
+anchor_top = 0.46533042
+anchor_right = 0.053451564
+anchor_bottom = 0.46533042
+offset_left = -80.0
+offset_top = -99.0
+offset_right = -40.0
+offset_bottom = -59.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_e8bu7")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="le_Name" type="LineEdit" parent="n_DisplayPlayerInfo"]
+offset_left = -63.0
+offset_top = 62.0
+offset_right = 65.0
+offset_bottom = 93.0
+alignment = 1
+editable = false
+metadata/_edit_use_anchors_ = true
