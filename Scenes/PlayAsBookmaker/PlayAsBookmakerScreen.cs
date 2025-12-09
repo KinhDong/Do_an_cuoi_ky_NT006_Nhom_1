@@ -253,9 +253,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	private async Task DealCardInit() // Chia bài cho các player ban đầu
 	{
-		foreach (var pid in TurnOrder)
-		{
-			await DealCard(pid);
-		}
+		for(int i = 0; i < 2; i++)
+			foreach (var pid in TurnOrder)			
+				await DealCard(pid);	
 	}
 }
