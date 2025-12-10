@@ -45,11 +45,7 @@ texture = ExtResource("4_00dl2")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfwrt"]
 texture = ExtResource("5_00dl2")
 
-<<<<<<< HEAD
 [node name="MenuScreen" type="Control" node_paths=PackedStringArray("PlayButton", "HowToPlayButton", "ExitGameButton", "SettingButton", "ProfileButton")]
-=======
-[node name="MenuScreen" type="Control"]
->>>>>>> 017fb416630f3da94466b98f78a0fbb684bc8804
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -57,14 +53,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5xyd2")
-<<<<<<< HEAD
 PlayButton = NodePath("pn_Background/btn_Play")
 HowToPlayButton = NodePath("pn_Background/btn_HowToPlay")
 ExitGameButton = NodePath("pn_Background/btn_ExitGame")
 SettingButton = NodePath("pn_Background/btn_Setting")
 ProfileButton = NodePath("pn_Background/btn_Profile")
-=======
->>>>>>> 017fb416630f3da94466b98f78a0fbb684bc8804
 
 [node name="pn_Background" type="Panel" parent="."]
 layout_mode = 0

@@ -325,32 +325,32 @@ public partial class PlayAsBookmakerScreen : Node2D
 	}	
 
 	private void ShowCard(int seat, int cardIndex, (int, int) card) // Hiển thị 1 lá bài
-    {
-        DisplayCards[seat, cardIndex].Frame = (card.Item1 - 1) + (card.Item2 - 1) * 13;
+	{
+		DisplayCards[seat, cardIndex].Frame = (card.Item1 - 1) + (card.Item2 - 1) * 13;
 		DisplayCards[seat, cardIndex].Visible = true;
-    }
+	}
 
 	private void ShowCards(string pid) // Hiển thị các lá bài của 1 player
-    {
-        int seat = RoomClass.CurrentRoom.Players[pid].Seat;
+	{
+		int seat = RoomClass.CurrentRoom.Players[pid].Seat;
 
 		for(int i = 0; i < RoomClass.CurrentRoom.Players[pid].Hands.Count; i++)        
-            ShowCard(seat, i, RoomClass.CurrentRoom.Players[pid].Hands[i]);        
-    }
+			ShowCard(seat, i, RoomClass.CurrentRoom.Players[pid].Hands[i]);        
+	}
 
 	private void UnShowCards(string pid)
-    {
-        int seat = RoomClass.CurrentRoom.Players[pid].Seat;
+	{
+		int seat = RoomClass.CurrentRoom.Players[pid].Seat;
 
 		for(int i = 0; i < RoomClass.CurrentRoom.Players[pid].Hands.Count; i++)        
-            DisplayCards[seat, i].Visible = false;
-        DisplayCards[seat, 0].Frame = 51; // Mặt sau lá bài
-    }
+			DisplayCards[seat, i].Visible = false;
+		DisplayCards[seat, 0].Frame = 51; // Mặt sau lá bài
+	}
 
 	private async void ProcessResult()
-    {
+	{
 		try
-        {            
+		{            
 			(int, int) myScore = (RoomClass.CurrentRoom.Players[UserClass.Uid].Score,
 					RoomClass.CurrentRoom.Players[UserClass.Uid].Strength);		
 
@@ -410,13 +410,13 @@ public partial class PlayAsBookmakerScreen : Node2D
 		}
 
 		catch (Exception ex) {GD.PrintErr(ex.Message);}
-    }
+	}
 
 	private async void EndRound()
-    {
+	{
 		try
-        {
-            var evt = new RoomEvent
+		{
+			var evt = new RoomEvent
 			{
 				type = "end_round",
 			};
@@ -438,8 +438,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 			TurnOrder.Clear();
 
 			StartGameButton.Disabled = false; // Cho phép bắt đầu ván
-        }
+		}
 		
 		catch (Exception ex) {GD.PrintErr(ex.Message);}
-    }
+	}
 }
