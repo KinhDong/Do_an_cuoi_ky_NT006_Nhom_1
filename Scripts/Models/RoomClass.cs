@@ -207,6 +207,6 @@ namespace NT106.Scripts.Models
 			{
 				return (false, ex.Message);
 			}
-		}                  
+		}            
 	}
 }

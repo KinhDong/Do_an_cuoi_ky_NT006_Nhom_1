@@ -17,4 +17,9 @@ public partial class DisplayPlayerInfo : Control
 
 		Group.Visible = true;
 	}	
+
+	public void UpdateMoney(long money)
+    {
+        MoneyDisplay.Text = money.ToString();
+    }
 }

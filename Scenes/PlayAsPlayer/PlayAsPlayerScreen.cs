@@ -145,6 +145,14 @@ public partial class PlayAsPlayerScreen : Node2D
 				CallDeferred(nameof(UpdateStand), evtData.user);
 				break;
 
+			case "win" or "lose" or "draw":
+				CallDeferred(nameof(UpdateResult), evtData.user, evtData.type);
+				break;
+
+			case "end_round":
+				CallDeferred(nameof(UpdateEnd));
+				break;
+
 			default:
 				break;
         }
@@ -202,10 +210,9 @@ public partial class PlayAsPlayerScreen : Node2D
             int cardIndex = RoomClass.CurrentRoom.Players[pid].Hands.Count;
 			GD.Print(cardIndex);
 			anim.Play($"DealCard{cardIndex}");
-			DisplayCards[1, cardIndex].Frame = (rank - 1) + (suit - 1) * 13;
+			ShowCard(1, cardIndex, (rank, suit));
 			DisplayCards[1, cardIndex].Visible = true;
         }
-		anim.Queue("RESET");
 
 		RoomClass.CurrentRoom.Players[pid].Hands.Add((rank, suit));
 
@@ -218,16 +225,15 @@ public partial class PlayAsPlayerScreen : Node2D
 
 		if (playerId != UserClass.Uid) return; // Không phải mình thì không quan tâm
 
-		int score = CalculateScore(RoomClass.CurrentRoom.Players[playerId].Hands);
-		int cardCount = RoomClass.CurrentRoom.Players[playerId].Hands.Count;
+		var score = RoomClass.CurrentRoom.Players[playerId].CaclulateScore();
 
-		if(RoomClass.CurrentRoom.Players[playerId].Hands.Count == 5 || score >= 21)
+		if(score.Item2 > 1 || score.Item1 > 21)
         {
             OnStandPressed(); // Buộc dừng
 			return;
         }
 
-		if(score < 16)
+		if(score.Item1 < 16)
         {
             OnHitPressed(); // Buộc rút
 			return;
@@ -283,32 +289,72 @@ public partial class PlayAsPlayerScreen : Node2D
         // Không làm sáng nữa
     }
 
+	private void ShowCard(int seat, int cardIndex, (int, int) card) // Hiển thị 1 lá bài
+    {
+        DisplayCards[seat, cardIndex].Frame = (card.Item1 - 1) + (card.Item2 - 1) * 13;
+		DisplayCards[seat, cardIndex].Visible = true;
+    }
 
-	// Tính điểm
-	private int CalculateScore(List<(int, int)> cards)
-	{
-	   	int score = 0;
-		int aceCount = 0;
-	
-		foreach (var card in cards)
-		{
-			var rank = card.Item1;
-		
-			if (rank == 1) // Ace
-			{
-				aceCount++;
-				score += 1;
-			}
-			else if (rank >= 10) // 10, J, Q, K
-			{
-				score += 10;
-			}
+	private void ShowCards(string pid) // Hiển thị các lá bài của 1 player
+    {
+        int seat = RoomClass.CurrentRoom.Players[pid].Seat;
+
+		for(int i = 0; i < RoomClass.CurrentRoom.Players[pid].Hands.Count; i++)        
+            ShowCard(seat, i, RoomClass.CurrentRoom.Players[pid].Hands[i]);        
+    }
+
+	private void UnShowCards(string pid)
+    {
+        int seat = RoomClass.CurrentRoom.Players[pid].Seat;
+
+		for(int i = 0; i < RoomClass.CurrentRoom.Players[pid].Hands.Count; i++)        
+            DisplayCards[seat, i].Visible = false;
+        DisplayCards[seat, 0].Frame = 51; // Mặt sau lá bài
+    }
+
+	private async void UpdateResult(string pid, string result)
+    {
+        try
+        {
+			if (pid != UserClass.Uid) ShowCards(pid);
+
+			if (result == "draw")
+            {
+                // Animation các thứ
+				return;
+            }
+
+			long betAmout = RoomClass.CurrentRoom.BetAmount;
+			long currMoney = RoomClass.CurrentRoom.Players[pid].Money;
+
+			if (result == "win")
+            {
+                currMoney += betAmout;
+            }
 			else
-			{
-				score += rank;
-			}
-		}
-	
-		return score; 
-	}
+            {
+                currMoney -= betAmout;
+            } 
+
+			RoomClass.CurrentRoom.Players[pid].Money = currMoney;
+
+            if (pid != UserClass.Uid)
+				await FirebaseApi.Put(
+			$"Users/{UserClass.Uid}/Money.json?auth={UserClass.IdToken}", currMoney);
+        }
+
+		catch (Exception ex)
+        {
+            GD.PrintErr(ex.Message);
+        }
+    }
+
+	private void UpdateEnd()
+    {
+        foreach (var player in RoomClass.CurrentRoom.Players)
+        {
+            RoomClass.CurrentRoom.Players[player.Key].Hands.Clear();
+			UnShowCards(player.Key);
+        }
+    }
 }

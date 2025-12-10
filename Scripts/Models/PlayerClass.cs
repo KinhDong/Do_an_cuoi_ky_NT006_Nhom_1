@@ -1,5 +1,6 @@
 using Godot;
 using NT106.Scripts.Services;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,10 +15,75 @@ namespace NT106.Scripts.Models
         public int Seat { get; set; }
         public string JoinedAt { get; set; }
         public List<(int, int)> Hands {get; set;}
+        public int Score {get; set;}
+        public int Strength {get; set;}
 
         public async Task LoadAvatarAsync()
         {
             Avatar = await CloudinaryService.GetImageAsync(Uid);
+        }
+
+        public (int, int) CaclulateScore()
+        {
+            Score = 0;
+            int aceCount = 0;
+
+            for (int i = 0; i < Hands.Count; i++)
+            {
+                if (Hands[i].Item1 == 1)
+                {
+                    aceCount++;
+                    Score += 11;
+                }
+                else if (Hands[i].Item1 > 10) Score += 10; // J, Q, K
+                else Score += Hands[i].Item1;
+            }
+
+            if(Score > 21)
+            {
+                Strength = 0; // Quắc
+                return (Score, Strength);
+            }
+
+            if(Hands.Count == 2)
+            {
+                if(aceCount == 2)
+                {
+                    Strength = 4; // Xì bàng
+                    Score = 21;
+                    return (Score, Strength);
+                }
+
+                if(aceCount == 1)
+                {
+                    if(Hands[0].Item1 >= 10 || Hands[1].Item1 >= 10)
+                    {
+                        Strength = 3; // Xì dách
+                    }
+                }
+                return (Score, Strength);
+            }
+
+            while (Score > 21 && aceCount > 0) // Giảm điểm nếu có A
+            {
+                Score -= 10;
+                aceCount--;
+            }
+
+            if (Score > 22)
+            {
+                Strength = 0; // Quắc
+                return (Score, Strength);
+            }
+
+            if (Hands.Count == 5)
+            {
+                Strength = 2; // Ngũ linh
+                return (Score, Strength);
+            }
+
+            Strength = 1;
+            return (Score, Strength);
         }
     }
 }
