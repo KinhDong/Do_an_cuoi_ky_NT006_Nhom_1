@@ -47,6 +47,7 @@ namespace NT106.Scripts.Models
 					Uid = hostUid,                    
 					InGameName = UserClass.InGameName,
 					Money = UserClass.Money,
+					Hands = new(),
 					JoinedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
 				};				
 
@@ -77,7 +78,6 @@ namespace NT106.Scripts.Models
 				CurrentRoom.Seats = new () {UserClass.Uid, null, null, null};
 				CurrentRoom.Players[UserClass.Uid].Seat = 0;
 				CurrentRoom.Players[UserClass.Uid].Avatar = UserClass.Avatar;
-				CurrentRoom.Players[UserClass.Uid].Hands = new();
 
 				return (true, "OK");
 			}
@@ -105,6 +105,7 @@ namespace NT106.Scripts.Models
 					Uid = UserClass.Uid,
 					InGameName = UserClass.InGameName,
 					Money = UserClass.Money,
+					Hands = new(),
 					JoinedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
 				};
 
@@ -124,12 +125,10 @@ namespace NT106.Scripts.Models
 				// Thêm chỗ ngồi và ảnh cho Cái và Bạn
 				CurrentRoom.Seats = [CurrentRoom.HostId, UserClass.Uid];
 				CurrentRoom.Players[CurrentRoom.HostId].Seat = 0;
-				CurrentRoom.Players[CurrentRoom.HostId].Hands = new();
 				await CurrentRoom.Players[CurrentRoom.HostId].LoadAvatarAsync();
 
 				CurrentRoom.Players[UserClass.Uid].Seat = 1;
 				CurrentRoom.Players[UserClass.Uid].Avatar = UserClass.Avatar;
-				CurrentRoom.Players[UserClass.Uid].Hands = new();
 
 				// Thêm chỗ ngồi cho các player khác
 				foreach (var p in CurrentRoom.Players)
@@ -138,7 +137,6 @@ namespace NT106.Scripts.Models
 					{
 						await CurrentRoom.Players[p.Key].LoadAvatarAsync(); // Tải avatar						
 						CurrentRoom.Players[p.Key].Seat = CurrentRoom.Seats.Count;
-						CurrentRoom.Players[p.Key].Hands = new();
 						CurrentRoom.Seats.Add(p.Key);
 					}
 				}	

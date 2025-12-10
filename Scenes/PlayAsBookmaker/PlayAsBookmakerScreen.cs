@@ -6,6 +6,7 @@ using NT106.Scripts.Services;
 using System.Linq;
 using System.Threading.Tasks;
 using Godot.Collections;
+using System.IO.Pipes;
 
 public partial class PlayAsBookmakerScreen : Node2D
 {
@@ -28,6 +29,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 	List<string> TurnOrder; // Lượt
 	[Export] AnimationPlayer anim; // animation
 	Sprite2D[,] DisplayCards; // Hiển thị các lá bài
+
+	private int currentTurn;
 
 	public override void _Ready()
 	{
@@ -59,9 +62,6 @@ public partial class PlayAsBookmakerScreen : Node2D
 				DisplayCards[playerIndex, cardIndex] = 
 				GetNode<Sprite2D>($"pn_Background/ttr_Table/CardsOfPlayer{playerIndex}/Card{cardIndex}");
 						
-		
-			
-
 		// Lắng nghe sự kiện từ Firebase
 		EventListener = new(FirebaseApi.BaseUrl, $"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", UserClass.IdToken);
 
@@ -117,8 +117,27 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	private Task Update(RoomEvent evtData)
 	{
-		if(evtData.type == "join") CallDeferred(nameof(UpdateJoin), evtData.user);
-		else if(evtData.type == "leave") CallDeferred(nameof(UpdateLeave), evtData.user);
+		switch (evtData.type)
+		{
+			case "join":
+				CallDeferred(nameof(UpdateJoin), evtData.user);
+				break;
+
+			case "leave":
+				CallDeferred(nameof(UpdateJoin), evtData.user);
+				break;
+
+			case "hit":
+				CallDeferred(nameof(UpdateHit), evtData.user);
+				break;
+
+			case "stand":
+				CallDeferred(nameof(UpdateStand), evtData.user);
+				break;
+
+			default:
+				break;
+		}
 		return Task.CompletedTask;
 	}
 
@@ -160,7 +179,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 	}
 
 	
-	//-------------------------Xử lý bắt đầu trò chơi----------------------------------------
+	//-------------------------Xử lý bắt đầu ván chơi----------------------------------------
 	private async void OnStartGame()
 	{
 		if(RoomClass.CurrentRoom.CurrentPlayers < 2)
@@ -174,6 +193,10 @@ public partial class PlayAsBookmakerScreen : Node2D
 		else return;
 
 		await DealCardInit();
+
+		// Bắt đầu giai đoạn rút hoặc dằn
+		currentTurn = 0;
+		HitOrStandPlayer(TurnOrder[currentTurn]);
 	}
 
 	private async Task<bool> StartNewRound()
@@ -222,7 +245,13 @@ public partial class PlayAsBookmakerScreen : Node2D
 				payload = card
 			};
 
-			await FirebaseApi.Post($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events.json?auth={UserClass.IdToken}", DealEvt);
+			await FirebaseApi.Post(
+				$"Rooms/{RoomClass.CurrentRoom.RoomId}/Events.json?auth={UserClass.IdToken}", 
+				DealEvt);
+
+			await FirebaseApi.Post(
+				$"Room/{RoomClass.CurrentRoom.RoomId}/Players/{pid}/Hands.json?auth={UserClass.IdToken}", 
+				card);
 			
 			if(pid != UserClass.Uid)
 			{
@@ -255,6 +284,86 @@ public partial class PlayAsBookmakerScreen : Node2D
 	{
 		for(int i = 0; i < 2; i++)
 			foreach (var pid in TurnOrder)			
-				await DealCard(pid);	
+				await DealCard(pid);
 	}
+
+	private async void HitOrStandPlayer(string playerId)
+	{
+		try
+		{
+			var evt = new RoomEvent
+			{
+				type = "hit_or_stand",
+				user = playerId
+			};
+
+			await FirebaseApi.Post
+			($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events.json?auth={UserClass.IdToken}", evt);
+		}
+
+		catch (Exception ex)
+		{
+			GD.PrintErr(ex.Message);
+		}        
+	}
+
+	private async void HitOrStandBookmaker()
+	{        
+		while(CalculateScore(RoomClass.CurrentRoom.Players[UserClass.Uid].Hands) < 17)
+			await DealCard(UserClass.Uid);	
+	}
+
+	private async void UpdateHit(string playerId)
+	{
+		await DealCard(playerId);
+	}
+
+	private async void UpdateStand(string playerId)
+	{
+		currentTurn++;
+		if(currentTurn < TurnOrder.Count)
+		{
+			HitOrStandPlayer(TurnOrder[currentTurn]);
+		}
+
+		else
+		{
+			HitOrStandBookmaker();
+		}
+	}	
+
+	// Tính điểm
+	private int CalculateScore(List<(int, int)> cards)
+	{
+	   	int score = 0;
+		int aceCount = 0;
+	
+		foreach (var card in cards)
+		{
+			var rank = card.Item1;
+		
+			if (rank == 1) // Ace
+			{
+				aceCount++;
+				score += 11;
+			}
+			else if (rank >= 10) // 10, J, Q, K
+			{
+				score += 10;
+			}
+			else
+			{
+				score += rank;
+			}
+		}
+	
+		// Điều chỉnh Ace từ 11 xuống 1 nếu cần
+		while (score > 21 && aceCount > 0)
+		{
+			score -= 10;
+			aceCount--;
+		}
+	
+		return score; 
+	}	
 }
