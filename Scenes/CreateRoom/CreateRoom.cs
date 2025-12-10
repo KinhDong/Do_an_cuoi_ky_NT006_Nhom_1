@@ -6,27 +6,20 @@ using System.Threading;
 
 public partial class CreateRoom : Node2D
 {
-	Button CreateRoomWithCondition;
-	Button Return;
+	[Export] Button CreateRoomWithCondition;
+	[Export] Button Return;
 
-	CheckBox Bet10;
-	CheckBox Bet20;
-	CheckBox Bet50;
+	[Export] CheckBox Bet10;
+	[Export] CheckBox Bet20;
+	[Export] CheckBox Bet50;
 	
 	public override void _Ready()
     {
 		//Nút "Tạo phòng"
-        CreateRoomWithCondition = GetNode<Button>("Background/btnCreateRoom");
 		CreateRoomWithCondition.Pressed += PlayAsBookMaker;
 
 		//Nút "Quay về"
-		Return = GetNode<Button>("Background/btnReturn");
 		Return.Pressed += GoBackToCreateOrJoin;
-
-		//Các lựa chọn "Mức cược"
-		Bet10 = GetNode<CheckBox>("BetAmmount/cbBet10");
-		Bet20 = GetNode<CheckBox>("BetAmmount/cbBet20");
-		Bet50 = GetNode<CheckBox>("BetAmmount/cbBet50");
 
 		//Chỉ chọn duy nhất một "Mức cược"
 		ButtonGroup BetAmmountGroup = new ButtonGroup();

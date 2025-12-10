@@ -3,26 +3,21 @@ using System;
 using NT106.Scripts.Models;
 public partial class CreateOrJoinRoom : Node2D
 {
-	Button CreateRoom;
-	Button JoinRoom;
-	LineEdit RoomId;
+	[Export] Button CreateRoom;
+	[Export] Button JoinRoom;
+	[Export] LineEdit RoomId;
 
-	Button Return;
+	[Export] Button Return;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		//Nút "Tạo phòng"
-		CreateRoom = GetNode<Button>("CreateOrJoin/btnCreateRoom");
 		CreateRoom.Pressed += OpenCreateRoom;
 
 		//Nút "Tham gia phòng"
-		JoinRoom = GetNode<Button>("CreateOrJoin/btnJoinRoom");
 		JoinRoom.Pressed += OnJoinRoomPressed;
 
-		RoomId = GetNode<LineEdit>("CreateOrJoin/txtRoomID");
-
 		//Nút "Quay về"
-		Return = GetNode<Button>("CreateOrJoin/btnReturn");
 		Return.Pressed += GoBackToGameMode;
 	}
 

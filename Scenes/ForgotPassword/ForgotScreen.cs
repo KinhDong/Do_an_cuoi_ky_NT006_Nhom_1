@@ -5,21 +5,15 @@ using System.Threading.Tasks;
 
 public partial class ForgotScreen : Node2D
 {
-	private AnimationPlayer anim;
-	private LineEdit UsernameLineEdit;
-	private Button ResetPasswordButton;
-	private Button BackButton;
+	[Export] private AnimationPlayer anim;
+	[Export] private LineEdit UsernameLineEdit;
+	[Export] private Button ResetPasswordButton;
+	[Export] private Button BackButton;
 
 	public override void _Ready()
 	{
-		anim = GetNode<AnimationPlayer>("AnimationPlayer");
-
-		UsernameLineEdit = GetNode<LineEdit>("pn_Screen/pn_ForgotPassword/le_Username");
-
-		ResetPasswordButton = GetNode<Button>("pn_Screen/pn_ForgotPassword/btn_ResetPassword");
 		ResetPasswordButton.Pressed += OnResetPasswordButtonPressed;
 
-		BackButton = GetNode<Button>("pn_Screen/pn_ForgotPassword/btn_Back");
 		BackButton.Pressed += OnBackButtonPressed;
 
 		anim.Play("ForgotPassword_Appear");

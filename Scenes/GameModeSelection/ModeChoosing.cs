@@ -4,20 +4,17 @@ using NT106.Scripts.Models;
 
 public partial class ModeChoosing : Node2D
 {
-	Button PvP;
-	Button PvE;
-	Button Return;
+	[Export] Button PvP;
+	[Export] Button PvE;
+	[Export] Button Return;
 	public override void _Ready()
 	{
 		//Nút "Chơi với người"
-		PvP = GetNode<Button>("ModeBackground/btnPVP");
 		PvP.Pressed += OpenCreateOrJoin;
 
 		//Nút chơi với máy
-		PvE = GetNode<Button>("ModeBackground/btnPVE");
 
 		//Nút "Quay về"
-		Return = GetNode<Button>("ModeBackground/btnReturn");
 		Return.Pressed += GoBackToMenu;
 	}
 

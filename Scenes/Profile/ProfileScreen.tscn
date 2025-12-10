@@ -91,7 +91,7 @@ _data = {
 &"RESET": SubResource("Animation_q4vvm")
 }
 
-[node name="ProfileScreen" type="Control"]
+[node name="ProfileScreen" type="Control" node_paths=PackedStringArray("Avatar", "ChangeAvatar", "UsernameLE", "InGameNameLE", "ChangeInGameName", "Money", "Exit", "anim")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -99,6 +99,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_q4vvm")
+Avatar = NodePath("Panel/pn_Profile/pn_Outline/ttr_Avatar")
+ChangeAvatar = NodePath("Panel/pn_Profile/ttbtn_ChangeAvatar")
+UsernameLE = NodePath("Panel/pn_Profile/le_Username")
+InGameNameLE = NodePath("Panel/pn_Profile/le_InGameName")
+ChangeInGameName = NodePath("Panel/pn_Profile/ttbtn_ChangeInGameName")
+Money = NodePath("Panel/pn_Profile/le_Money")
+Exit = NodePath("Panel/pn_Profile/btn_Exit")
+anim = NodePath("AnimationPlayer")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0

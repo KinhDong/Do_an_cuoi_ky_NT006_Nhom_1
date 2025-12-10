@@ -87,7 +87,6 @@ namespace NT106.Scripts.Services
 			});
 		}
 
-
 		// Lấy ảnh
 		public static async Task<Texture2D> GetImageAsync(string publicId)
 		{

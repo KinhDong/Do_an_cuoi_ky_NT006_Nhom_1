@@ -5,32 +5,18 @@ using NT106.Scripts.Models;
 
 public partial class RegisterScreen : Control
 {
-	private AnimationPlayer anim;
-	private Button RegisterButton;
-	private Button BackButton;
+	[Export] private AnimationPlayer anim;
+	[Export] private Button RegisterButton;
+	[Export] private Button BackButton;
 	
-	private LineEdit usernameInput;
-	private LineEdit emailInput;
-	private LineEdit passwordInput;
-	private LineEdit confirmInput;
+	[Export] private LineEdit usernameInput;
+	[Export] private LineEdit emailInput;
+	[Export] private LineEdit passwordInput;
+	[Export] private LineEdit confirmInput;
 
 	public override void _Ready()
 	{
-		anim = GetNode<AnimationPlayer>("pn_Screen/AnimationPlayer");
-
-		RegisterButton = GetNode<Button>("pn_Screen/pn_Register/btn_Register");
-		RegisterButton.Pressed += OnRegisterButtonPressed;
-
-		BackButton = GetNode<Button>("pn_Screen/pn_Register/btn_Back");
 		BackButton.Pressed += OnBackButtonPressed;
-
-		usernameInput = GetNode<LineEdit>("pn_Screen/pn_Register/le_Username");
-
-		emailInput = GetNode<LineEdit>("pn_Screen/pn_Register/le_Password2"); 
-
-		passwordInput = GetNode<LineEdit>("pn_Screen/pn_Register/le_Password");
-		
-		confirmInput = GetNode<LineEdit>("pn_Screen/pn_Register/le_ConfirmPassword");
 
 		anim.Play("Register_Appear");
 	}
