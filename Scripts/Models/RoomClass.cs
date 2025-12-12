@@ -16,8 +16,7 @@ namespace NT106.Scripts.Models
 		public int CurrentPlayers { get; set; }
 		public Dictionary<string, PlayerClass> Players { get; set; }  
 		public List<string> Seats {get; set;}
-		public static RoomClass CurrentRoom { get; set; }
-
+		public static RoomClass CurrentRoom { get; set; }		
 
 		// Tạo phòng mới
 		public static async Task<(bool, string)> CreateAsync(int betAmount)
@@ -35,7 +34,7 @@ namespace NT106.Scripts.Models
 					roomId = $"{new Random().Next(1000, 9999)}"; // RoomNoXXXX
 
 					// Kiểm tra mã phòng đã tồn tại hay chưa
-					var response = await FirebaseApi.GetRaw($"Rooms/{roomId}.json?auth={UserClass.IdToken}");
+					var response = await FirebaseApi.GetRaw($"Rooms/{roomId}");
 					if (response == "null" || string.IsNullOrEmpty(response)) break;
 				}
 
@@ -49,7 +48,7 @@ namespace NT106.Scripts.Models
 					Money = UserClass.Money,
 					Hands = new(),
 					JoinedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-				};				
+				};						
 
 				// Dữ liệu phòng mới
 				var roomData = new RoomClass
@@ -66,7 +65,7 @@ namespace NT106.Scripts.Models
 				};
 
 				// Ghi vào Firebase
-				var res = await FirebaseApi.Put($"Rooms/{roomId}.json?auth={UserClass.IdToken}", roomData);
+				var res = await FirebaseApi.Put($"Rooms/{roomId}", roomData);
 
 				if (!res)
 				{
@@ -92,7 +91,7 @@ namespace NT106.Scripts.Models
 		{
 			try
 			{
-				var roomJson = await FirebaseApi.GetRaw($"Rooms/{roomId}.json?auth={UserClass.IdToken}");
+				var roomJson = await FirebaseApi.GetRaw($"Rooms/{roomId}");
 				if (roomJson == "null")
 				{
 					throw new Exception("Phòng không tồn tại!");
@@ -112,13 +111,13 @@ namespace NT106.Scripts.Models
 				CurrentRoom.Players.Add(UserClass.Uid, player);
 				// Ghi vào Firebase
 				var res = await FirebaseApi.Put
-				($"Rooms/{roomId}/Players/{UserClass.Uid}.json?auth={UserClass.IdToken}", player);
+				($"Rooms/{roomId}/Players/{UserClass.Uid}", player);
 				
 				if (!res) throw new Exception("Không thể thêm người chơi");
 
 				// Cập nhật số người chơi
 				CurrentRoom.CurrentPlayers++;
-				res = await FirebaseApi.Put($"Rooms/{roomId}/CurrentPlayers.json?auth={UserClass.IdToken}", CurrentRoom.CurrentPlayers);
+				res = await FirebaseApi.Put($"Rooms/{roomId}/CurrentPlayers", CurrentRoom.CurrentPlayers);
 
 				if(!res) throw new Exception ("Không thể cập nhật số người chơi");
 
@@ -126,6 +125,8 @@ namespace NT106.Scripts.Models
 				CurrentRoom.Seats = [CurrentRoom.HostId, UserClass.Uid];
 				CurrentRoom.Players[CurrentRoom.HostId].Seat = 0;
 				await CurrentRoom.Players[CurrentRoom.HostId].LoadAvatarAsync();
+				if (CurrentRoom.Players[CurrentRoom.HostId].Hands == null)
+					CurrentRoom.Players[CurrentRoom.HostId].Hands = new();
 
 				CurrentRoom.Players[UserClass.Uid].Seat = 1;
 				CurrentRoom.Players[UserClass.Uid].Avatar = UserClass.Avatar;
@@ -138,13 +139,20 @@ namespace NT106.Scripts.Models
 						await CurrentRoom.Players[p.Key].LoadAvatarAsync(); // Tải avatar						
 						CurrentRoom.Players[p.Key].Seat = CurrentRoom.Seats.Count;
 						CurrentRoom.Seats.Add(p.Key);
+						if (CurrentRoom.Players[p.Key].Hands == null)
+							CurrentRoom.Players[p.Key].Hands = new();
 					}
 				}	
 				while(CurrentRoom.Seats.Count < 4) CurrentRoom.Seats.Add(null);
 
 				// Viết Event
-				var evt = new RoomEvent{type = "join", user = UserClass.Uid, time = DateTimeOffset.UtcNow.ToUnixTimeSeconds()};
-				await FirebaseApi.Post($"Rooms/{roomId}/Events.json?auth={UserClass.IdToken}", evt);
+				var evt = new RoomEvent
+				{
+					type = "join", 
+					user = UserClass.Uid,
+					time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+				};
+				await FirebaseApi.Post($"Rooms/{roomId}/Events", evt);
 
 				return (true, "OK");
 			}
@@ -160,21 +168,26 @@ namespace NT106.Scripts.Models
 			try
 			{                
 				// Xoá player khỏi phòng
-				var delPlayer = await FirebaseApi.Delete($"Rooms/{RoomId}/Players/{UserClass.Uid}.json?auth={UserClass.IdToken}");
+				var delPlayer = await FirebaseApi.Delete($"Rooms/{RoomId}/Players/{UserClass.Uid}");
 				if (!delPlayer)
 					throw new Exception("Không thể xóa player khỏi phòng");
 
 				// Giảm currentPlayers
 				CurrentPlayers--;
-				var res = await FirebaseApi.Put($"Rooms/{RoomId}/CurrentPlayers.json?auth={UserClass.IdToken}", CurrentPlayers);
+				var res = await FirebaseApi.Put($"Rooms/{RoomId}/CurrentPlayers", CurrentPlayers);
 
 				if(!res) throw new Exception("Không thể giảm số người trong phòng");
 
 				CurrentRoom = null;
 
 				// Viết Event
-				var evt = new RoomEvent{type = "leave", user = UserClass.Uid, time = DateTimeOffset.UtcNow.ToUnixTimeSeconds()};
-				await FirebaseApi.Post($"Rooms/{RoomId}/Events.json?auth={UserClass.IdToken}", evt);
+				var evt = new RoomEvent
+				{
+					type = "leave", 
+					user = UserClass.Uid,
+					time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+				};
+				await FirebaseApi.Post($"Rooms/{RoomId}/Events", evt);
 
 				return (true, "OK");                
 			}
@@ -190,12 +203,17 @@ namespace NT106.Scripts.Models
 		{
 			try
 			{
-				var evt = new RoomEvent{type = "deleteRoom", user = UserClass.Uid, time = DateTimeOffset.UtcNow.ToUnixTimeSeconds()};
-				await FirebaseApi.Post($"Rooms/{RoomId}/Events.json?auth={UserClass.IdToken}", evt);
+				var evt = new RoomEvent
+				{
+					type = "delete_room", 
+					user = UserClass.Uid,
+					time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+				};
+				await FirebaseApi.Post($"Rooms/{RoomId}/Events", evt);
 
-				Thread.Sleep(5000); // Đợi 1 giây để các client nhận được event xoá phòng
+				Thread.Sleep(3000); // Đợi 3 giây để các client nhận được event xoá phòng
 
-				var res = await FirebaseApi.Delete($"Rooms/{RoomId}.json?auth={UserClass.IdToken}");
+				var res = await FirebaseApi.Delete($"Rooms/{RoomId}");
 
 				if(!res) throw new Exception("Không thể xóa phòng");
 

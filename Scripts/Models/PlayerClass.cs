@@ -15,9 +15,7 @@ namespace NT106.Scripts.Models
         public int Seat { get; set; }
         public string JoinedAt { get; set; }
         public List<(int, int)> Hands {get; set;}
-        public int Score {get; set;}
-        public int Strength {get; set;}
-
+        
         public async Task LoadAvatarAsync()
         {
             Avatar = await CloudinaryService.GetImageAsync(Uid);
@@ -25,7 +23,8 @@ namespace NT106.Scripts.Models
 
         public (int, int) CaclulateScore()
         {
-            Score = 0;
+            int Score = 0;
+            int Strength = 1;
             int aceCount = 0;
 
             for (int i = 0; i < Hands.Count; i++)
@@ -37,30 +36,16 @@ namespace NT106.Scripts.Models
                 }
                 else if (Hands[i].Item1 > 10) Score += 10; // J, Q, K
                 else Score += Hands[i].Item1;
-            }
-
-            if(Score > 21)
-            {
-                Strength = 0; // Quắc
-                return (Score, Strength);
-            }
+            }            
 
             if(Hands.Count == 2)
             {
-                if(aceCount == 2)
-                {
-                    Strength = 4; // Xì bàng
-                    Score = 21;
-                    return (Score, Strength);
-                }
+                if(aceCount == 2) return (21, 4);
 
-                if(aceCount == 1)
-                {
-                    if(Hands[0].Item1 >= 10 || Hands[1].Item1 >= 10)
-                    {
+                if(aceCount == 1)                
+                    if(Hands[0].Item1 >= 10 || Hands[1].Item1 >= 10)                    
                         Strength = 3; // Xì dách
-                    }
-                }
+                       
                 return (Score, Strength);
             }
 
@@ -70,19 +55,10 @@ namespace NT106.Scripts.Models
                 aceCount--;
             }
 
-            if (Score > 22)
-            {
-                Strength = 0; // Quắc
-                return (Score, Strength);
-            }
+            if(Score > 21) return (Score, 0); // Quắc
 
-            if (Hands.Count == 5)
-            {
-                Strength = 2; // Ngũ linh
-                return (Score, Strength);
-            }
+            if (Hands.Count == 5) return (Score, 2); // Ngũ linh
 
-            Strength = 1;
             return (Score, Strength);
         }
     }

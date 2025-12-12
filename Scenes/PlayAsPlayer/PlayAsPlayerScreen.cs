@@ -22,6 +22,7 @@ public partial class PlayAsPlayerScreen : Node2D
 
 	// Lắng nghe realtime
 	FirebaseStreaming EventListener;
+	string CurrTime;
 
 	// ----- Ván chơi
 
@@ -59,19 +60,19 @@ public partial class PlayAsPlayerScreen : Node2D
 
 		// Hiển thị thông tin các người chơi
 		foreach (var p in RoomClass.CurrentRoom.Players) 
-            DisplayPlayerInfos[p.Value.Seat].Display(p.Value);
+			DisplayPlayerInfos[p.Value.Seat].Display(p.Value);
 
 		// Hiển thị các lá bài hiện tại (Nếu phòng trong trạng thái đang chơi)
 		if (RoomClass.CurrentRoom.Status == "PLAYING")
-        {
-            for(int i = 0; i < 4; i++)
-            {
-                string pid = RoomClass.CurrentRoom.Seats[i];
+		{
+			for(int i = 0; i < 4; i++)
+			{
+				string pid = RoomClass.CurrentRoom.Seats[i];
 				if(pid == null) continue;
 				if(RoomClass.CurrentRoom.Players[pid].Hands.Count > 0)
 					DisplayCards[i, 0].Visible = true;
-            }
-        }        
+			}
+		}        
 
 		// Thực hiện lắng nghe
 		EventListener = new(FirebaseApi.BaseUrl, $"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", UserClass.IdToken);
@@ -90,6 +91,8 @@ public partial class PlayAsPlayerScreen : Node2D
 		};
 
 		EventListener.Start();
+
+		CurrTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"); // Thời gian hiện tại
 	}
 
 	private async void OnLeaveRoomPressed()
@@ -100,6 +103,7 @@ public partial class PlayAsPlayerScreen : Node2D
 			if(!res.Item1) throw new Exception(res.Item2);
 			
 			EventListener.Stop();
+			RoomClass.CurrentRoom = null;
 			GetTree().ChangeSceneToFile(@"Scenes\CreateOrJoinRoomScreen\CreateOrJoinRoom.tscn");	
 		}
 
@@ -109,12 +113,48 @@ public partial class PlayAsPlayerScreen : Node2D
 		}        
 	}
 
+	private async void UpdateJoin(string Pid)
+	{
+		var newPlayer = await FirebaseApi.Get<PlayerClass>($"Rooms/{RoomClass.CurrentRoom.RoomId}/Players/{Pid}");
+		await newPlayer.LoadAvatarAsync();
+		newPlayer.Hands = new();
+		RoomClass.CurrentRoom.Players.Add(Pid, newPlayer);
+
+		int seat = 2;
+		while(RoomClass.CurrentRoom.Seats[seat] != null) seat++;
+		
+		RoomClass.CurrentRoom.Players[Pid].Seat = seat;
+		DisplayPlayerInfos[seat].Display(RoomClass.CurrentRoom.Players[Pid]);
+		DisplayPlayerInfos[seat].Visible = true;
+	}
+
+	private void UpdateLeave(string Pid)
+	{
+		// Lấy lại chỗ
+		int seat = RoomClass.CurrentRoom.Players[Pid].Seat;
+		RoomClass.CurrentRoom.Players.Remove(Pid);
+		RoomClass.CurrentRoom.Seats[seat] = null;
+		DisplayPlayerInfos[seat].Visible = false;
+	}
+
+	private void UpdateDelete()
+	{
+		OS.Alert("Phòng đã bị xoá bởi chủ phòng!");
+		EventListener.Stop();
+		RoomClass.CurrentRoom = null;
+		GetTree().ChangeSceneToFile(@"Scenes\CreateOrJoinRoomScreen\CreateOrJoinRoom.tscn");	
+	}
+
+	//-------------------------Xử lý bắt đầu ván chơi----------------------------------------
 
 	private Task Update(RoomEvent evtData)
 	{
+		if (evtData.time.CompareTo(CurrTime) < 0)
+			return Task.CompletedTask; // Không xem các sự kiện cũ hơn
+
 		switch (evtData.type)
-        {
-            case "join": 
+		{
+			case "join": 
 				CallDeferred(nameof(UpdateJoin), evtData.user);
 				break;
 
@@ -122,7 +162,7 @@ public partial class PlayAsPlayerScreen : Node2D
 				CallDeferred(nameof(UpdateLeave), evtData.user);
 				break;
 
-			case "deleteRoom":
+			case "delete_room":
 				CallDeferred(nameof(UpdateDelete));
 				break;
 
@@ -145,6 +185,10 @@ public partial class PlayAsPlayerScreen : Node2D
 				CallDeferred(nameof(UpdateStand), evtData.user);
 				break;
 
+			case "result":
+				CallDeferred(nameof(UpdateResultProcess));
+				break;
+
 			case "win" or "lose" or "draw":
 				CallDeferred(nameof(UpdateResult), evtData.user, evtData.type);
 				break;
@@ -155,40 +199,12 @@ public partial class PlayAsPlayerScreen : Node2D
 
 			default:
 				break;
-        }
+		}
 
 		return Task.CompletedTask;
 	}
 
-	private async void UpdateJoin(string Pid)
-	{
-		var newPlayer = await FirebaseApi.Get<PlayerClass>($"Rooms/{RoomClass.CurrentRoom.RoomId}/Players/{Pid}.json?auth={UserClass.IdToken}");
-		await newPlayer.LoadAvatarAsync();
-		newPlayer.Hands = new();
-		RoomClass.CurrentRoom.Players.Add(Pid, newPlayer);
-
-		int seat = 2;
-		while(RoomClass.CurrentRoom.Seats[seat] != null) seat++;
-		
-		RoomClass.CurrentRoom.Players[Pid].Seat = seat;
-		DisplayPlayerInfos[seat].Display(RoomClass.CurrentRoom.Players[Pid]);
-		DisplayPlayerInfos[seat].Visible = true;
-	}
-
-	private void UpdateLeave(string Pid)
-	{
-		// Lấy lại chỗ
-		int seat = RoomClass.CurrentRoom.Players[Pid].Seat;
-		RoomClass.CurrentRoom.Seats[seat] = null;
-		DisplayPlayerInfos[seat].Visible = false;
-	}
-
-	private void UpdateDelete()
-	{
-		OS.Alert("Phòng đã bị xoá bởi chủ phòng!");
-		EventListener.Stop();
-		GetTree().ChangeSceneToFile(@"Scenes\CreateOrJoinRoomScreen\CreateOrJoinRoom.tscn");	
-	}
+	
 
 	private void UpdateStartGame()
 	{
@@ -197,164 +213,173 @@ public partial class PlayAsPlayerScreen : Node2D
 	}
 
 	private void UpdateDeal(string pid, int rank, int suit)
-    {		
-        if(pid != UserClass.Uid)
-        {
-			int seat = RoomClass.CurrentRoom.Players[pid].Seat;
-            anim.Play($"DealPlayer{seat}");
-			DisplayCards[seat, 0].Visible = true;
-        }
-
-		else
-        {
-            int cardIndex = RoomClass.CurrentRoom.Players[pid].Hands.Count;
-			GD.Print(cardIndex);
-			anim.Play($"DealCard{cardIndex}");
-			ShowCard(1, cardIndex, (rank, suit));
-			DisplayCards[1, cardIndex].Visible = true;
-        }
-
+	{	
 		RoomClass.CurrentRoom.Players[pid].Hands.Add((rank, suit));
 
-		if (RoomClass.CurrentRoom.Players[pid].Hands.Count > 2) UpdateHitOrStand(UserClass.Uid);
-    }
+		if(pid != UserClass.Uid)
+		{
+			int seat = RoomClass.CurrentRoom.Players[pid].Seat;
+			anim.Play($"DealPlayer{seat}");
+			anim.Queue("RESET");
+			DisplayCards[seat, 0].Visible = true;
+		}
+
+		else
+		{
+			int cardIndex = RoomClass.CurrentRoom.Players[pid].Hands.Count - 1;
+			GD.Print(cardIndex);
+			anim.Play($"DealCard{cardIndex}");
+			anim.Queue("RESET");
+			ShowCard(1, cardIndex, (rank, suit));
+			DisplayCards[1, cardIndex].Visible = true;
+			if (cardIndex >= 2) UpdateHitOrStand(UserClass.Uid);
+		}
+	}
 
 	private async void UpdateHitOrStand(string playerId)
-    {
-        // Animation làm sáng các thứ
+	{
+		// Animation làm sáng các thứ
 
 		if (playerId != UserClass.Uid) return; // Không phải mình thì không quan tâm
 
 		var score = RoomClass.CurrentRoom.Players[playerId].CaclulateScore();
+		GD.Print($"Score: {score.Item1}, Strength: {score.Item2}");
 
-		if(score.Item2 > 1 || score.Item1 > 21)
-        {
-            OnStandPressed(); // Buộc dừng
+		if(score.Item2 != 1)
+		{
+			StandButton.Disabled = false;
 			return;
-        }
+		}
 
 		if(score.Item1 < 16)
-        {
-            OnHitPressed(); // Buộc rút
+		{
+			HitButton.Disabled = false;
 			return;
-        }
+		}
 
 		HitButton.Disabled = false;
 		StandButton.Disabled = false;
-    }
+	}
 
 	private async void OnHitPressed()
-    {
+	{
 		try
-        {
-            HitButton.Disabled = true;
+		{
+			HitButton.Disabled = true;
+			StandButton.Disabled = true;
 			var evt = new RoomEvent
 			{
 				type = "hit",
-				user = UserClass.Uid
+				user = UserClass.Uid,
+				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
 			};
-			await FirebaseApi.Post(
-				$"Rooms/{RoomClass.CurrentRoom.RoomId}/Events.json?auth={UserClass.IdToken}", evt);
+			await FirebaseApi.Post($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", evt);
 		}
 
 		catch (Exception ex)
-        {
-            GD.PrintErr(ex.Message);
-        }		
-    }
+		{
+			GD.PrintErr(ex.Message);
+		}		
+	}
 
 	private async void OnStandPressed()
-    {
+	{
 		try
-        {
+		{
 			HitButton.Disabled = true;
-            StandButton.Disabled = true;
+			StandButton.Disabled = true;
 			var evt = new RoomEvent
 			{
 				type = "stand",
-				user = UserClass.Uid
+				user = UserClass.Uid,
+				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
 			};
-			await FirebaseApi.Post(
-				$"Rooms/{RoomClass.CurrentRoom.RoomId}/Events.json?auth={UserClass.IdToken}", evt);
+			await FirebaseApi.Post($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", evt);			
 		}
-        
+		
 		catch (Exception ex)
-        {
-            GD.PrintErr(ex.Message);
-        }
-    }
+		{
+			GD.PrintErr(ex.Message);
+		}
+	}
 
 	private void UpdateStand(string playerId)
-    {
-        // Không làm sáng nữa
-    }
+	{
+		// Không làm sáng nữa
+	}	
 
-	private void ShowCard(int seat, int cardIndex, (int, int) card) // Hiển thị 1 lá bài
-    {
-        DisplayCards[seat, cardIndex].Frame = (card.Item1 - 1) + (card.Item2 - 1) * 13;
-		DisplayCards[seat, cardIndex].Visible = true;
-    }
-
-	private void ShowCards(string pid) // Hiển thị các lá bài của 1 player
-    {
-        int seat = RoomClass.CurrentRoom.Players[pid].Seat;
-
-		for(int i = 0; i < RoomClass.CurrentRoom.Players[pid].Hands.Count; i++)        
-            ShowCard(seat, i, RoomClass.CurrentRoom.Players[pid].Hands[i]);        
-    }
-
-	private void UnShowCards(string pid)
-    {
-        int seat = RoomClass.CurrentRoom.Players[pid].Seat;
-
-		for(int i = 0; i < RoomClass.CurrentRoom.Players[pid].Hands.Count; i++)        
-            DisplayCards[seat, i].Visible = false;
-        DisplayCards[seat, 0].Frame = 51; // Mặt sau lá bài
-    }
+	private async void UpdateResultProcess()
+	{
+		ShowCards(RoomClass.CurrentRoom.HostId); // Show bài của Cái
+	}
 
 	private async void UpdateResult(string pid, string result)
-    {
-        try
-        {
-			if (pid != UserClass.Uid) ShowCards(pid);
+	{
+		try
+		{			
+			if (pid != UserClass.Uid) ShowCards(pid); // Show bài của Player
 
 			if (result == "draw")
-            {
-                // Animation các thứ
+			{
+				// Animation các thứ
 				return;
-            }
+			}
 
 			long betAmout = RoomClass.CurrentRoom.BetAmount;
 			long currMoney = RoomClass.CurrentRoom.Players[pid].Money;
 
 			if (result == "win")
-            {
-                currMoney += betAmout;
-            }
+			{
+				// Animation
+				currMoney += betAmout;
+			}
 			else
-            {
-                currMoney -= betAmout;
-            } 
+			{
+				// Animation
+				currMoney -= betAmout;
+			} 
 
 			RoomClass.CurrentRoom.Players[pid].Money = currMoney;
+			DisplayPlayerInfos[RoomClass.CurrentRoom.Players[pid].Seat].UpdateMoney(currMoney);
+			if (pid == UserClass.Uid)
+				await FirebaseApi.Put($"Users/{UserClass.Uid}/Money", currMoney);
+		}
 
-            if (pid != UserClass.Uid)
-				await FirebaseApi.Put(
-			$"Users/{UserClass.Uid}/Money.json?auth={UserClass.IdToken}", currMoney);
-        }
+		catch (Exception ex) {GD.PrintErr(ex.Message);}
+	}
 
-		catch (Exception ex)
-        {
-            GD.PrintErr(ex.Message);
-        }
-    }
-
-	private void UpdateEnd()
-    {
-        foreach (var player in RoomClass.CurrentRoom.Players)
-        {
-            RoomClass.CurrentRoom.Players[player.Key].Hands.Clear();
+	private async void UpdateEnd()
+	{
+		await Task.Delay(5000); // Cho 5s ngắm bài
+		foreach (var player in RoomClass.CurrentRoom.Players)
+		{
 			UnShowCards(player.Key);
-        }
-    }
+			RoomClass.CurrentRoom.Players[player.Key].Hands.Clear();		
+		}
+	}
+
+	private void ShowCard(int seat, int cardIndex, (int, int) card) // Hiển thị 1 lá bài
+	{
+		DisplayCards[seat, cardIndex].Frame = (card.Item1 - 1) + (card.Item2 - 1) * 13;
+		DisplayCards[seat, cardIndex].Visible = true;
+	}
+
+	private void ShowCards(string pid) // Hiển thị các lá bài của 1 player
+	{
+		int seat = RoomClass.CurrentRoom.Players[pid].Seat;
+
+		for(int i = 0; i < RoomClass.CurrentRoom.Players[pid].Hands.Count; i++)        
+			ShowCard(seat, i, RoomClass.CurrentRoom.Players[pid].Hands[i]);        
+	}
+
+	private void UnShowCards(string pid)
+	{
+		int seat = RoomClass.CurrentRoom.Players[pid].Seat;
+
+		for(int i = 0; i < RoomClass.CurrentRoom.Players[pid].Hands.Count; i++)        
+			DisplayCards[seat, i].Visible = false;
+		DisplayCards[seat, 0].Frame = 52; // Mặt sau lá bài
+		if (pid != UserClass.Uid)
+			DisplayCards[seat, 0].Visible = true;
+	}
 }

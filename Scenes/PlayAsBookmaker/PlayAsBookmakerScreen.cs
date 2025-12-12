@@ -123,7 +123,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 				break;
 
 			case "leave":
-				CallDeferred(nameof(UpdateJoin), evtData.user);
+				CallDeferred(nameof(UpdateLeave), evtData.user);
 				break;
 
 			case "hit":
@@ -144,7 +144,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 	{
 		try
 		{
-			var newPlayer = await FirebaseApi.Get<PlayerClass>($"Rooms/{RoomClass.CurrentRoom.RoomId}/Players/{Pid}.json?auth={UserClass.IdToken}");
+			var newPlayer = await FirebaseApi.Get<PlayerClass>($"Rooms/{RoomClass.CurrentRoom.RoomId}/Players/{Pid}");
 			await newPlayer.LoadAvatarAsync();
 			newPlayer.Hands = new();
 			RoomClass.CurrentRoom.Players.Add(Pid, newPlayer);
@@ -202,16 +202,17 @@ public partial class PlayAsBookmakerScreen : Node2D
 			var startEvt = new RoomEvent
 			{
 				type = "start_game",
+				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
 			};
 
 			//Ghi event lên firebase
-			await FirebaseApi.Post($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events.json?auth={UserClass.IdToken}", startEvt);
+			await FirebaseApi.Post($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", startEvt);
 
 			RoomClass.CurrentRoom.Status = "PLAYING";
 			//cập nhật lên firebase
-			await FirebaseApi.Patch($"Rooms/{RoomClass.CurrentRoom.RoomId}/Status.json?auth={UserClass.IdToken}", "PLAYING");
+			await FirebaseApi.Put($"Rooms/{RoomClass.CurrentRoom.RoomId}/Status", "PLAYING");
 
-			for(int i = 1; i < 4; i++)
+			for(int i = 1; i < 4; i++) // Không lấy cái
 			{
 				string pid = RoomClass.CurrentRoom.Seats[i];
 				if(pid != null) TurnOrder.Add(pid);
@@ -232,22 +233,23 @@ public partial class PlayAsBookmakerScreen : Node2D
 		try
 		{
 			var card = DeckOfCards.ElementAt(ran.Next(DeckOfCards.Count)); // Bốc 1 lá
-			DeckOfCards.Remove(card);
+			DeckOfCards.Remove(card);			
 
 			var DealEvt = new RoomEvent
 			{
 				type = "deal_card",
 				user = pid,
-				payload = card
+				payload = card,
+				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
 			};
 
 			await FirebaseApi.Post(
-				$"Rooms/{RoomClass.CurrentRoom.RoomId}/Events.json?auth={UserClass.IdToken}", 
+				$"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", 
 				DealEvt);
 
-			await FirebaseApi.Post(
-				$"Room/{RoomClass.CurrentRoom.RoomId}/Players/{pid}/Hands.json?auth={UserClass.IdToken}", 
-				card);
+			await FirebaseApi.Put(
+				$"Room/{RoomClass.CurrentRoom.RoomId}/Players/{pid}/Hands", 
+				RoomClass.CurrentRoom.Players[pid].Hands);
 			
 			if(pid != UserClass.Uid)
 			{
@@ -263,7 +265,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 				ShowCard(0, cardIndex, card);
 			}
 
-			RoomClass.CurrentRoom.Players[pid].Hands.Add(card); // Thêm trên dữ liệu
+			anim.Queue("RESET");
+			RoomClass.CurrentRoom.Players[pid].Hands.Add(card); // Thêm trên dữ liệu			
 			return true;
 		}
 
@@ -277,8 +280,11 @@ public partial class PlayAsBookmakerScreen : Node2D
 	private async Task DealCardInit() // Chia bài cho các player ban đầu
 	{
 		for(int i = 0; i < 2; i++)
-			foreach (var pid in TurnOrder)			
+			foreach (var pid in TurnOrder)
+			{
+				await Task.Delay(500);
 				await DealCard(pid);
+			}		
 	}
 
 	private async void HitOrStandPlayer(string playerId)
@@ -288,21 +294,29 @@ public partial class PlayAsBookmakerScreen : Node2D
 			var evt = new RoomEvent
 			{
 				type = "hit_or_stand",
-				user = playerId
+				user = playerId,
+				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
 			};
 
 			await FirebaseApi.Post
-			($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events.json?auth={UserClass.IdToken}", evt);
+			($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", evt);
 		}
 
 		catch (Exception ex) {GD.PrintErr(ex.Message);}      
 	}
 
 	private async void HitOrStandBookmaker()
-	{     
+	{
 		var Score = RoomClass.CurrentRoom.Players[UserClass.Uid].CaclulateScore();
-		while(Score.Item2 > 1 && Score.Item1 < 17) // Ngừng nếu trúng các trường hợp đặc biệt
+
+		while(Score.Item2 == 1 && Score.Item1 < 17) // Ngừng nếu trúng các trường hợp đặc biệt
+		{
+			await Task.Delay(500);
 			await DealCard(UserClass.Uid);
+			Score = RoomClass.CurrentRoom.Players[UserClass.Uid].CaclulateScore();
+		}
+
+		ProcessResult(); // Bắt đầu tính điểm
 	}
 
 	private async void UpdateHit(string playerId)
@@ -313,16 +327,118 @@ public partial class PlayAsBookmakerScreen : Node2D
 	private async void UpdateStand(string playerId)
 	{
 		currentTurn++;
-		if(currentTurn < TurnOrder.Count)
-		{
-			HitOrStandPlayer(TurnOrder[currentTurn]);
+		if(currentTurn < TurnOrder.Count)		
+			HitOrStandPlayer(TurnOrder[currentTurn]); // Tiến đến player tiếp theo	
+
+		else HitOrStandBookmaker();
+	}	
+
+	private async void ProcessResult() // Quá trình đánh giá kết quả
+	{
+		try
+		{         
+			var evt = new RoomEvent
+			{
+				type = "result",
+				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+			};
+			await FirebaseApi.Post($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", evt);
+
+			(int, int) myScore = RoomClass.CurrentRoom.Players[UserClass.Uid].CaclulateScore();	
+			GD.Print($"My score: Score = {myScore.Item1}, Strength = {myScore.Item2}");
+
+			long betAmout = RoomClass.CurrentRoom.BetAmount;
+			long myMoney = UserClass.Money;			
+
+			foreach (string pid in TurnOrder)
+			{
+				await Task.Delay(500);
+				var pScore = RoomClass.CurrentRoom.Players[pid].CaclulateScore();
+				long pMoney = RoomClass.CurrentRoom.Players[pid].Money;
+
+				ShowCards(pid);				
+
+				string result = Result(pScore, myScore);
+				if (result == "win")
+				{
+					pMoney += betAmout;
+					myMoney -= betAmout;
+				} 
+				else if (result == "lose")
+				{
+					pMoney -= betAmout;
+					myMoney += betAmout;
+				}
+
+				DisplayPlayerInfos[RoomClass.CurrentRoom.Players[pid].Seat].UpdateMoney(pMoney);
+
+				evt = new RoomEvent {
+					type = result,
+					user = pid,
+					time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+				};
+
+				await FirebaseApi.Post($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", evt);
+
+				// Thêm animation chiến thắng, trường hợp đặc biệt, hiệu ứng cộng tiền
+			}
+
+			// Cập nhật:
+			UserClass.Money = myMoney;
+			
+			DisplayPlayerInfos[0].UpdateMoney(myMoney);
+			await FirebaseApi.Put($"Users/{UserClass.Uid}/Money", myMoney);
+
+			if (myMoney < (RoomClass.CurrentRoom.CurrentPlayers - 1) * 
+			RoomClass.CurrentRoom.BetAmount)
+				OnLeaveRoomPressed(); // Thoát và xóa phòng
+
+			EndRound();
 		}
 
-		else
+		catch (Exception ex) {GD.PrintErr(ex.Message);}
+	}
+
+	private async void EndRound()
+	{
+		try
 		{
-			HitOrStandBookmaker();
+			var evt = new RoomEvent
+			{
+				type = "end_round",
+				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+			};
+
+			await FirebaseApi.Post($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", evt);
+
+			await Task.Delay(5000);
+
+			RoomClass.CurrentRoom.Status = "WAITING";
+			await FirebaseApi.Put(
+				$"Rooms/{RoomClass.CurrentRoom.RoomId}/Status", "WATING");
+
+			foreach (var p in RoomClass.CurrentRoom.Players)
+			{
+				foreach (var card in RoomClass.CurrentRoom.Players[p.Key].Hands)            
+					DeckOfCards.Add(card); // Lấy lại bài
+				UnShowCards(p.Key); // Ẩn bài
+				RoomClass.CurrentRoom.Players[p.Key].Hands.Clear();				
+			}
+			TurnOrder.Clear();
+
+			StartGameButton.Disabled = false; // Cho phép bắt đầu ván
 		}
-	}	
+		
+		catch (Exception ex) {GD.PrintErr(ex.Message);}
+	}
+
+	private string Result((int, int) Score1, (int, int) Score2) // Phân định kết quả
+	{
+		if (Score1.Item2 > Score2.Item2) return "win"; // Player win
+		if (Score1.Item2 < Score2.Item2) return "lose"; // Bookmaker win
+		if (Score1.Item2 != 1 && Score1.Item2 != 2) return "draw"; // draw
+		return Score1.Item1 > Score2.Item1 ? "win" : "lose";
+	}
 
 	private void ShowCard(int seat, int cardIndex, (int, int) card) // Hiển thị 1 lá bài
 	{
@@ -344,102 +460,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 		for(int i = 0; i < RoomClass.CurrentRoom.Players[pid].Hands.Count; i++)        
 			DisplayCards[seat, i].Visible = false;
-		DisplayCards[seat, 0].Frame = 51; // Mặt sau lá bài
-	}
-
-	private async void ProcessResult()
-	{
-		try
-		{            
-			(int, int) myScore = (RoomClass.CurrentRoom.Players[UserClass.Uid].Score,
-					RoomClass.CurrentRoom.Players[UserClass.Uid].Strength);		
-
-			long betAmout = RoomClass.CurrentRoom.BetAmount;
-			long currMoney = UserClass.Money;
-
-			for (int i = 1; i < TurnOrder.Count; i++)
-			{
-				string pid = TurnOrder[i];
-				string result;
-				(int, int) pScore = (RoomClass.CurrentRoom.Players[pid].Score,
-					RoomClass.CurrentRoom.Players[pid].Strength);
-
-				ShowCards(pid);
-
-				if (myScore.Item2 > pScore.Item2 || 
-				myScore.Item2 == pScore.Item2 && myScore.Item1 > pScore.Item1)
-				{
-					currMoney += betAmout;
-					result = "win";
-					RoomClass.CurrentRoom.Players[pid].Money += betAmout;				
-				}
-
-				else if (myScore.Item2 < pScore.Item2 || 
-				myScore.Item2 == pScore.Item2 && myScore.Item1 < pScore.Item1)
-				{
-					currMoney -= betAmout;
-					result = "lose";
-					RoomClass.CurrentRoom.Players[pid].Money -= betAmout;	
-				}
-
-				else result = "draw";
-
-				DisplayPlayerInfos[RoomClass.CurrentRoom.Players[pid].Seat].UpdateMoney(currMoney);
-
-				var evt = new RoomEvent {
-					type = "reault",
-					user = pid
-				};
-
-				await FirebaseApi.Post(
-				$"Rooms/{RoomClass.CurrentRoom.RoomId}/Status.json?auth={UserClass.IdToken}", evt);
-
-				// Thêm animation chiến thắng, trường hợp đặc biệt, hiệu ứng cộng tiền
-			}
-
-			// Cập nhật:
-			UserClass.Money = currMoney;
-			
-			DisplayPlayerInfos[0].UpdateMoney(currMoney);
-			await FirebaseApi.Put(
-				$"Users/{UserClass.Uid}/Money.json?auth={UserClass.IdToken}", currMoney);
-
-			if (currMoney < (RoomClass.CurrentRoom.CurrentPlayers - 1) * 
-			RoomClass.CurrentRoom.BetAmount)
-				OnLeaveRoomPressed(); // Thoát và xóa phòng
-		}
-
-		catch (Exception ex) {GD.PrintErr(ex.Message);}
-	}
-
-	private async void EndRound()
-	{
-		try
-		{
-			var evt = new RoomEvent
-			{
-				type = "end_round",
-			};
-
-			await FirebaseApi.Post(
-				$"Rooms/{RoomClass.CurrentRoom.RoomId}/Status.json?auth={UserClass.IdToken}", evt);
-
-			RoomClass.CurrentRoom.Status = "WAITING";
-			await FirebaseApi.Put(
-				$"Rooms/{RoomClass.CurrentRoom.RoomId}/Status.json?auth={UserClass.IdToken}", "WATING");
-
-			foreach (string pid in TurnOrder)
-			{
-				foreach (var card in RoomClass.CurrentRoom.Players[pid].Hands)            
-					DeckOfCards.Add(card); // Lấy lại bài
-				RoomClass.CurrentRoom.Players[pid].Hands.Clear();
-				UnShowCards(pid);
-			}
-			TurnOrder.Clear();
-
-			StartGameButton.Disabled = false; // Cho phép bắt đầu ván
-		}
-		
-		catch (Exception ex) {GD.PrintErr(ex.Message);}
+		DisplayCards[seat, 0].Frame = 52; // Mặt sau lá bài
+		if (pid != UserClass.Uid)
+			DisplayCards[seat, 0].Visible = true;
 	}
 }

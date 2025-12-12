@@ -158,8 +158,7 @@ namespace NT106.Scripts.Models
 		// Đăng xuất 
 		public static async Task LogoutAsync()
 		{
-			await FirebaseApi.Patch($"Users/{Uid}.json?auth={IdToken}",
-				new {isLoggedIn = false});
+			await FirebaseApi.Patch($"Users/{Uid}", new {isLoggedIn = false});
 
 			Uid = UserName = InGameName = null;
 			IdToken = null;
@@ -169,7 +168,7 @@ namespace NT106.Scripts.Models
 		// Lấy email từ username
 		public static async Task<string> GetEmailFromUsernameAsync(string username)
 		{
-			return await FirebaseApi.Get<string>($"Usernames/{username}.json");
+			return await FirebaseApi.Get<string>($"Usernames/{username}");
 		}
 
 		// Gửi reset password
@@ -218,8 +217,7 @@ namespace NT106.Scripts.Models
 		public static async Task ChangeInGameName(string newName)
 		{
 			await FirebaseApi.Patch(
-				$"Users/{Uid}.json?auth={IdToken}",
-				new {InGameName = newName});
+				$"Users/{Uid}", new {InGameName = newName});
 				
 			InGameName = newName;
 		}

@@ -113,9 +113,9 @@ namespace NT106.Scripts.Services
 
 	public class RoomEvent
 	{
-		public string type { get; set; }   // "join", "leave"
+		public string type { get; set; }   // "join", "leave", ...
 		public string user { get; set; }   // userId
-		public long time { get; set; }
+		public string time { get; set; }
 		public dynamic payload { get; set; } // Dữ liệu thêm vào (Nếu có)
 	}    
 

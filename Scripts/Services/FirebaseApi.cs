@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json;
 using Newtonsoft.Json;
+using System.Security.Principal;
+using NT106.Scripts.Models;
 
 namespace NT106.Scripts.Services
 {
@@ -16,7 +18,7 @@ namespace NT106.Scripts.Services
 
 		private static string BuildUrl(string path)
 		{
-			return BaseUrl + path;
+			return BaseUrl + path + ".json?auth=" + UserClass.IdToken;
 		}
 
 		public static async Task<T?> Get<T>(string path)
