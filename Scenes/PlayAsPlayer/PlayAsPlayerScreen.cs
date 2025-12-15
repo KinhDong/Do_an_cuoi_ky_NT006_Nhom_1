@@ -62,7 +62,7 @@ public partial class PlayAsPlayerScreen : Node2D
 		foreach (var p in RoomClass.CurrentRoom.Players) 
 			DisplayPlayerInfos[p.Value.Seat].Display(p.Value);
 
-		// Hiển thị các lá bài hiện tại (Nếu phòng trong trạng thái đang chơi)
+		// Hiển thị các lá bài của những người chơi đã ở trong phòng
 		if (RoomClass.CurrentRoom.Status == "PLAYING")
 		{
 			for(int i = 0; i < 4; i++)
@@ -204,36 +204,35 @@ public partial class PlayAsPlayerScreen : Node2D
 		return Task.CompletedTask;
 	}
 
-	
-
 	private void UpdateStartGame()
 	{
 		RoomClass.CurrentRoom.Status = "PLAYING";
 		OS.Alert("Ván mới đã bắt đầu!");
 	}
 
-	private void UpdateDeal(string pid, int rank, int suit)
+	private async void UpdateDeal(string pid, int rank, int suit)
 	{	
-		RoomClass.CurrentRoom.Players[pid].Hands.Add((rank, suit));
+		int cardIndex = RoomClass.CurrentRoom.Players[pid].Hands.Count;
+		RoomClass.CurrentRoom.Players[pid].Hands.Add(cardIndex, (rank, suit));
 
 		if(pid != UserClass.Uid)
 		{
 			int seat = RoomClass.CurrentRoom.Players[pid].Seat;
 			anim.Play($"DealPlayer{seat}");
-			anim.Queue("RESET");
+			await Task.Delay(300);
 			DisplayCards[seat, 0].Visible = true;
 		}
 
 		else
 		{
-			int cardIndex = RoomClass.CurrentRoom.Players[pid].Hands.Count - 1;
-			GD.Print(cardIndex);
 			anim.Play($"DealCard{cardIndex}");
-			anim.Queue("RESET");
-			ShowCard(1, cardIndex, (rank, suit));
+			await Task.Delay(300);
+			ShowCard(1, cardIndex, (rank, suit));			
 			DisplayCards[1, cardIndex].Visible = true;
 			if (cardIndex >= 2) UpdateHitOrStand(UserClass.Uid);
 		}
+
+		anim.Queue("RESET");
 	}
 
 	private async void UpdateHitOrStand(string playerId)
@@ -326,23 +325,33 @@ public partial class PlayAsPlayerScreen : Node2D
 			}
 
 			long betAmout = RoomClass.CurrentRoom.BetAmount;
-			long currMoney = RoomClass.CurrentRoom.Players[pid].Money;
+			long change = RoomClass.CurrentRoom.Players[pid].Money;
 
 			if (result == "win")
 			{
 				// Animation
-				currMoney += betAmout;
+				change = betAmout;
 			}
 			else
 			{
 				// Animation
-				currMoney -= betAmout;
+				change = - betAmout;
 			} 
+			RoomClass.CurrentRoom.Players[RoomClass.CurrentRoom.HostId].Money -= change;
+			DisplayPlayerInfos[0].UpdateMoney(
+				RoomClass.CurrentRoom.Players[RoomClass.CurrentRoom.HostId].Money);
 
-			RoomClass.CurrentRoom.Players[pid].Money = currMoney;
-			DisplayPlayerInfos[RoomClass.CurrentRoom.Players[pid].Seat].UpdateMoney(currMoney);
+			RoomClass.CurrentRoom.Players[pid].Money += change;
+			DisplayPlayerInfos[RoomClass.CurrentRoom.Players[pid].Seat].UpdateMoney(
+				RoomClass.CurrentRoom.Players[pid].Money);			
+
 			if (pid == UserClass.Uid)
-				await FirebaseApi.Put($"Users/{UserClass.Uid}/Money", currMoney);
+			{
+				UserClass.Money += change;
+				await FirebaseApi.Put($"Users/{UserClass.Uid}/Money", 
+				UserClass.Money + change);
+			}
+				
 		}
 
 		catch (Exception ex) {GD.PrintErr(ex.Message);}
@@ -379,7 +388,5 @@ public partial class PlayAsPlayerScreen : Node2D
 		for(int i = 0; i < RoomClass.CurrentRoom.Players[pid].Hands.Count; i++)        
 			DisplayCards[seat, i].Visible = false;
 		DisplayCards[seat, 0].Frame = 52; // Mặt sau lá bài
-		if (pid != UserClass.Uid)
-			DisplayCards[seat, 0].Visible = true;
 	}
 }

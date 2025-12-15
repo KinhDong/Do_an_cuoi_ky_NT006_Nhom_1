@@ -14,7 +14,7 @@ namespace NT106.Scripts.Models
         public Texture2D Avatar { get; set; }
         public int Seat { get; set; }
         public string JoinedAt { get; set; }
-        public List<(int, int)> Hands {get; set;}
+        public Dictionary<int, (int, int)> Hands {get; set;}
         
         public async Task LoadAvatarAsync()
         {

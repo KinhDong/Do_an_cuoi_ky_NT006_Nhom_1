@@ -13,4 +13,5 @@ obj/
 
 # IDE files
 .vs/
+.vscode/
 *.csproj.user
