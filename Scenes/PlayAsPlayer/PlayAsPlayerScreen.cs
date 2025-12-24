@@ -32,8 +32,14 @@ public partial class PlayAsPlayerScreen : Node2D
 	// Animation
 	[Export] AnimationPlayer anim;
 
+	// Timer cho lựa chọn Hit/Stand
+	[Export] private Timer timer;
+
 	// Biến để theo dõi lượt chơi hiện tại
 	private string currentPlayerTurn;
+
+	// Điểm số hiện tại để quyết định khi timeout
+	private (int, int) currentScore;
 
 	public override void _Ready()
 	{
@@ -48,6 +54,8 @@ public partial class PlayAsPlayerScreen : Node2D
 
 		HitButton.Pressed += OnHitPressed;
 		StandButton.Pressed += OnStandPressed;
+
+		timer.Timeout += OnTimerTimeout;
 
 		// Hiển thị các lá bài
 		DisplayCards = new Sprite2D[4, 5];
@@ -64,7 +72,7 @@ public partial class PlayAsPlayerScreen : Node2D
 			DisplayPlayerInfos[p.Value.Seat].Display(p.Value);
 
 		// Hiển thị các lá bài của những người chơi đã ở trong phòng
-		if (room.Status == "PLAYING")
+		if (room.Status != "WAITING")
 		{
 			for(int i = 0; i < 4; i++)
 			{
@@ -186,6 +194,10 @@ public partial class PlayAsPlayerScreen : Node2D
 				CallDeferred(nameof(UpdateHitOrStand), evtData.user);
 				break;
 
+			case "hit":
+				CallDeferred(nameof(UpdateHit), evtData.user);
+				break;
+
 			case "stand":
 				CallDeferred(nameof(UpdateStand), evtData.user);
 				break;
@@ -211,7 +223,7 @@ public partial class PlayAsPlayerScreen : Node2D
 
 	private void UpdateStartGame()
 	{
-		room.Status = "PLAYING";
+		room.Status = "DEAL_INIT";
 		OS.Alert("Ván mới đã bắt đầu!");
 	}
 
@@ -219,10 +231,10 @@ public partial class PlayAsPlayerScreen : Node2D
 	{	
 		int cardIndex = room.Players[pid].Hands.Count;
 		room.Players[pid].Hands.Add((rank, suit));
+		int seat = room.Players[pid].Seat;
 
 		if(pid != UserClass.Uid)
-		{
-			int seat = room.Players[pid].Seat;
+		{			
 			anim.Play($"DealPlayer{seat}");
 			await Task.Delay(300);
 			DisplayCards[seat, 0].Visible = true;
@@ -237,38 +249,47 @@ public partial class PlayAsPlayerScreen : Node2D
 			if (cardIndex >= 2) UpdateHitOrStand(UserClass.Uid);
 		}
 
+		if (room.Status == "HIT_OR_STAND")
+			DisplayPlayerInfos[seat].StartCountdown();
 		anim.Queue("RESET");
 	}
 
 	private async void UpdateHitOrStand(string playerId)
 	{
+		room.Status = "HIT_OR_STAND";
 		// Animation làm sáng các thứ
+		DisplayPlayerInfos[room.Players[playerId].Seat].StartCountdown();
+		timer.Start(10);
 
 		if (playerId != UserClass.Uid) return; // Không phải mình thì không quan tâm
 
 		var score = room.Players[playerId].CaclulateScore();
+		currentScore = score;
 		GD.Print($"Score: {score.Item1}, Strength: {score.Item2}");
 
 		if(score.Item2 != 1)
 		{
 			StandButton.Disabled = false;
+			timer.Start(10);
 			return;
 		}
 
 		if(score.Item1 < 16)
 		{
 			HitButton.Disabled = false;
+			timer.Start(10);
 			return;
 		}
 
 		HitButton.Disabled = false;
-		StandButton.Disabled = false;
+		StandButton.Disabled = false;		
 	}
 
 	private async void OnHitPressed()
 	{
 		try
 		{
+			timer.Stop();
 			HitButton.Disabled = true;
 			StandButton.Disabled = true;
 			var evt = new RoomEvent
@@ -290,6 +311,7 @@ public partial class PlayAsPlayerScreen : Node2D
 	{
 		try
 		{
+			timer.Stop();
 			HitButton.Disabled = true;
 			StandButton.Disabled = true;
 			var evt = new RoomEvent
@@ -307,13 +329,21 @@ public partial class PlayAsPlayerScreen : Node2D
 		}
 	}
 
-	private void UpdateStand(string playerId)
+	private void UpdateHit(string pid)
+	{
+		DisplayPlayerInfos[room.Players[pid].Seat].EndCountdown();
+	}
+
+	private void UpdateStand(string pid)
 	{
 		// Không làm sáng nữa
+		DisplayPlayerInfos[room.Players[pid].Seat].EndCountdown();
 	}	
 
 	private async void UpdateResultProcess()
 	{
+		room.Status = "RESULT";
+		DisplayPlayerInfos[0].EndCountdown();
 		ShowCards(room.HostId); // Show bài của Cái
 	}
 
@@ -369,6 +399,8 @@ public partial class PlayAsPlayerScreen : Node2D
 			UnShowCards(player.Key);
 			room.Players[player.Key].Hands.Clear();		
 		}
+
+		room.Status = "WAITING";
 	}
 
 	private void ShowCard(int seat, int cardIndex, (int, int) card) // Hiển thị 1 lá bài
@@ -392,5 +424,27 @@ public partial class PlayAsPlayerScreen : Node2D
 		for(int i = 0; i < room.Players[pid].Hands.Count; i++)        
 			DisplayCards[seat, i].Visible = false;
 		DisplayCards[seat, 0].Frame = 52; // Mặt sau lá bài
+	}
+
+	private async void OnTimerTimeout()
+	{
+		try
+		{
+			HitButton.Disabled = true;
+			StandButton.Disabled = true;
+
+			if (currentScore.Item1 < 16)
+			{
+				OnHitPressed();
+			}
+			else
+			{
+				OnStandPressed();
+			}
+		}
+		catch (Exception ex)
+		{
+			GD.PrintErr(ex.Message);
+		}
 	}
 }

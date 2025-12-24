@@ -36,7 +36,6 @@ public partial class PlayAsBookmakerScreen : Node2D
 	public override void _Ready()
 	{
 		room = RoomClass.CurrentRoom;
-		if (room == null) GD.Print("NULL");
 		
 		// Hiển thị thông tin chung
 		DisplayRoomId.Text = room.RoomId;
@@ -184,7 +183,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 		room.CurrentPlayers--;
 
 		// Xư lý nếu đang trong ván
-		if (room.Status == "PLAYING")
+		if (room.Status != "WAITING")
 		{
 			int playerTurnIndex = TurnOrder.IndexOf(Pid);
 			TurnOrder.RemoveAt(playerTurnIndex);
@@ -214,6 +213,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 		await DealCardInit();
 
 		// Bắt đầu giai đoạn rút hoặc dằn
+		await FirebaseApi.Put($"Rooms/{room.RoomId}/Status", "HIT_OR_STAND");
+		room.Status = "HIT_OR_STAND";
 		currentTurn = 0;
 		HitOrStandPlayer(TurnOrder[currentTurn]);
 	}
@@ -231,9 +232,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 			//Ghi event lên firebase
 			await FirebaseApi.Post($"Rooms/{room.RoomId}/Events", startEvt);
 
-			room.Status = "PLAYING";
-			//cập nhật lên firebase
-			await FirebaseApi.Put($"Rooms/{room.RoomId}/Status", "PLAYING");
+			room.Status = "DEAL_INIT";
 
 			for(int i = 1; i < 4; i++) // Không lấy cái
 			{
@@ -269,17 +268,15 @@ public partial class PlayAsBookmakerScreen : Node2D
 			int cardIndex = room.Players[pid].Hands.Count;
 			room.Players[pid].Hands.Add(card); // Thêm trên dữ liệu
 
-			await FirebaseApi.Post(
-				$"Rooms/{room.RoomId}/Events", 
-				DealEvt);
+			await FirebaseApi.Post($"Rooms/{room.RoomId}/Events", DealEvt);
+			await FirebaseApi.Put($"Rooms/{room.RoomId}/Players/{pid}/Hands/{cardIndex}", card);
 
-			await FirebaseApi.Put(
-				$"Rooms/{room.RoomId}/Players/{pid}/Hands/{cardIndex}", 
-				card);
+			int seat = room.Players[pid].Seat;
+			if (room.Status == "HIT_OR_STAND")
+				DisplayPlayerInfos[seat].StartCountdown(); // Chạy timer
 			
 			if(pid != UserClass.Uid)
 			{
-				int seat = room.Players[pid].Seat;
 				anim.Play($"DealPlayer{seat}");
 				await Task.Delay(300);
 				DisplayCards[seat, 0].Visible = true;			
@@ -292,8 +289,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 				ShowCard(0, cardIndex, card);
 			}
 
-			anim.Queue("RESET");
-						
+			anim.Queue("RESET");						
 			return true;
 		}
 
@@ -306,6 +302,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	private async Task DealCardInit() // Chia bài cho các player ban đầu
 	{
+		await FirebaseApi.Put($"Rooms/{room.RoomId}/Status", "DEAL_INIT");
 		for(int i = 0; i < 2; i++)
 			foreach (var pid in TurnOrder)
 			{
@@ -327,6 +324,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 			await FirebaseApi.Post
 			($"Rooms/{room.RoomId}/Events", evt);
+
+			DisplayPlayerInfos[room.Players[playerId].Seat].StartCountdown();
 		}
 
 		catch (Exception ex) {GD.PrintErr(ex.Message);}      
@@ -343,16 +342,19 @@ public partial class PlayAsBookmakerScreen : Node2D
 			Score = room.Players[UserClass.Uid].CaclulateScore();
 		}
 
+		DisplayPlayerInfos[room.Players[UserClass.Uid].Seat].EndCountdown();
 		ProcessResult(); // Bắt đầu tính điểm
 	}
 
 	private async void UpdateHit(string playerId)
 	{
-		await DealCard(playerId);
+		DisplayPlayerInfos[room.Players[playerId].Seat].EndCountdown();
+		await DealCard(playerId);				
 	}
 
 	private async void UpdateStand(string playerId)
 	{
+		DisplayPlayerInfos[room.Players[playerId].Seat].EndCountdown();
 		currentTurn++;
 		if(currentTurn < TurnOrder.Count)		
 			HitOrStandPlayer(TurnOrder[currentTurn]); // Tiến đến player tiếp theo	
@@ -370,6 +372,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
 			};
 			await FirebaseApi.Post($"Rooms/{room.RoomId}/Events", evt);
+			await FirebaseApi.Put($"Rooms/{room.RoomId}/Status", "RESULT");
+			room.Status = "RESULT";
 
 			(int, int) myScore = room.Players[UserClass.Uid].CaclulateScore();
 
@@ -436,8 +440,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 				type = "end_round",
 				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
 			};
-
-			await FirebaseApi.Post($"Rooms/{room.RoomId}/Events", evt);
+			await FirebaseApi.Post($"Rooms/{room.RoomId}/Events", evt);			
 
 			await Task.Delay(5000);
 
@@ -456,6 +459,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 			}
 			TurnOrder.Clear();
 
+			await FirebaseApi.Put($"Rooms/{room.RoomId}/Status", "WAITING");
 			StartGameButton.Disabled = false; // Cho phép bắt đầu ván
 		}
 		

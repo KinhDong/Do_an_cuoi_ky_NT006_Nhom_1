@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://kpjpgk3symv4"]
+[gd_scene load_steps=6 format=3 uid="uid://kpjpgk3symv4"]
 
-[ext_resource type="Script" uid="uid://b8reng6prw6mf" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.cs" id="1_beqej"]
-[ext_resource type="Texture2D" uid="uid://clwgykm1tag2a" path="res://Assets/Coin_Icon.png" id="2_e8bu7"]
+[ext_resource type="Script" uid="uid://b6mmvc86wi2pk" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.cs" id="1_beqej"]
+[ext_resource type="Texture2D" uid="uid://b2fxjfp8f5kcr" path="res://Assets/Coin_Icon.png" id="2_e8bu7"]
+[ext_resource type="Texture2D" uid="uid://1fdf7tmka2g2" path="res://Assets/Countdown_Icon.png" id="3_e8bu7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hrw6r"]
 bg_color = Color(0.15, 0.15, 0.15, 1)
@@ -12,7 +13,7 @@ corner_radius_bottom_left = 16
 
 [sub_resource type="Theme" id="Theme_kdkke"]
 
-[node name="DisplayPlayerInfo" type="Control" node_paths=PackedStringArray("Group", "AvatarDisplay", "NameDisplay", "MoneyDisplay")]
+[node name="DisplayPlayerInfo" type="Control" node_paths=PackedStringArray("Group", "AvatarDisplay", "NameDisplay", "MoneyDisplay", "TimerDisplay", "timer")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_beqej")
@@ -20,6 +21,8 @@ Group = NodePath("n_DisplayPlayerInfo")
 AvatarDisplay = NodePath("n_DisplayPlayerInfo/ttr_Avatar")
 NameDisplay = NodePath("n_DisplayPlayerInfo/le_Name")
 MoneyDisplay = NodePath("n_DisplayPlayerInfo/le_Money")
+TimerDisplay = NodePath("n_DisplayPlayerInfo/lb_Timer")
+timer = NodePath("n_DisplayPlayerInfo/lb_Timer/Timer")
 
 [node name="n_DisplayPlayerInfo" type="Node2D" parent="."]
 position = Vector2(-1, 0)
@@ -97,3 +100,26 @@ offset_bottom = 93.0
 alignment = 1
 editable = false
 metadata/_edit_use_anchors_ = true
+
+[node name="lb_Timer" type="Label" parent="n_DisplayPlayerInfo"]
+visible = false
+offset_left = -25.0
+offset_top = -20.0
+offset_right = 29.0
+offset_bottom = 20.0
+theme_override_font_sizes/font_size = 29
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ttr_Countdown" type="TextureRect" parent="n_DisplayPlayerInfo/lb_Timer"]
+layout_mode = 0
+offset_left = -39.0
+offset_top = -43.0
+offset_right = 91.0
+offset_bottom = 85.0
+texture = ExtResource("3_e8bu7")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Timer" type="Timer" parent="n_DisplayPlayerInfo/lb_Timer"]

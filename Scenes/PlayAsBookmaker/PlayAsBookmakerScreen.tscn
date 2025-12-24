@@ -537,6 +537,8 @@ libraries = {
 &"": SubResource("AnimationLibrary_6h5x8")
 }
 
+[node name="Timer" type="Timer" parent="pn_Background/ttr_Table"]
+
 [node name="Label" type="Label" parent="pn_Background"]
 layout_mode = 0
 offset_left = 37.228027
