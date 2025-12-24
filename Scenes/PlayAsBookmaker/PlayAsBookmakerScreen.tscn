@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=3 uid="uid://dpel6cas7swbb"]
 
-[ext_resource type="Script" uid="uid://chcpicdnstqlh" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
-[ext_resource type="Texture2D" uid="uid://8krl6jdbpj3t" path="res://Assets/Table.png" id="2_o7rqj"]
+[ext_resource type="Script" uid="uid://b0c6jnfm52s64" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
+[ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="2_o7rqj"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="3_y4rrx"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="4_y4rrx"]
 
