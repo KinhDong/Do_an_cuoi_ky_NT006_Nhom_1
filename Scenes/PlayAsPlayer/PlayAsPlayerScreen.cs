@@ -428,23 +428,12 @@ public partial class PlayAsPlayerScreen : Node2D
 
 	private async void OnTimerTimeout()
 	{
-		try
-		{
-			HitButton.Disabled = true;
-			StandButton.Disabled = true;
+		HitButton.Disabled = true;
+		StandButton.Disabled = true;
 
-			if (currentScore.Item1 < 16)
-			{
-				OnHitPressed();
-			}
-			else
-			{
-				OnStandPressed();
-			}
-		}
-		catch (Exception ex)
-		{
-			GD.PrintErr(ex.Message);
-		}
+		if (currentScore.Item1 < 16)
+			OnHitPressed();			
+		else
+			OnStandPressed();	
 	}
 }
