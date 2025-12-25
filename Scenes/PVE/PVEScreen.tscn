@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=3 uid="uid://cl0grfs1yhp2o"]
 
-[ext_resource type="Texture2D" uid="uid://8krl6jdbpj3t" path="res://Assets/Table.png" id="1_25yo6"]
-[ext_resource type="Script" uid="uid://b6n0afgim500x" path="res://Scenes/PVE/PveScreen.cs" id="1_d3irp"]
+[ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="1_25yo6"]
+[ext_resource type="Script" uid="uid://bxecja3ne1am2" path="res://Scenes/PVE/PveScreen.cs" id="1_d3irp"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="2_d3irp"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="3_b2d8i"]
 
@@ -205,13 +205,13 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_eghlt"]
 _data = {
-"DealCard0": SubResource("Animation_fxv46"),
-"DealCard1": SubResource("Animation_tfju4"),
-"DealCard2": SubResource("Animation_efp1y"),
-"DealCard3": SubResource("Animation_qwdcy"),
-"DealCard4": SubResource("Animation_vrn02"),
-"DealPlayer0": SubResource("Animation_8f7vg"),
-"RESET": SubResource("Animation_bldg0")
+&"DealCard0": SubResource("Animation_fxv46"),
+&"DealCard1": SubResource("Animation_tfju4"),
+&"DealCard2": SubResource("Animation_efp1y"),
+&"DealCard3": SubResource("Animation_qwdcy"),
+&"DealCard4": SubResource("Animation_vrn02"),
+&"DealPlayer0": SubResource("Animation_8f7vg"),
+&"RESET": SubResource("Animation_bldg0")
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w685s"]
@@ -228,7 +228,7 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="PveScreen" type="Node2D" node_paths=PackedStringArray("ExitButton", "HitButton", "StandButton", "DisplayE", "DisplayP", "anim", "ECards", "PCards")]
+[node name="PveScreen" type="Node2D" node_paths=PackedStringArray("ExitButton", "HitButton", "StandButton", "DisplayE", "DisplayP", "anim")]
 script = ExtResource("1_d3irp")
 ExitButton = NodePath("pn_Background/btn_Exit")
 HitButton = NodePath("pn_Background/btn_Hit")
@@ -236,8 +236,6 @@ StandButton = NodePath("pn_Background/btn_Stand")
 DisplayE = NodePath("pn_Background/DisplayPlayerInfo0")
 DisplayP = NodePath("pn_Background/DisplayPlayerInfo1")
 anim = NodePath("pn_Background/ttr_Table/AnimationPlayer")
-ECards = [NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card0"), NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card1"), NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card2"), NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card3"), NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card4")]
-PCards = [NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card0"), NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card1"), NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card2"), NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card3"), NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card4")]
 
 [node name="pn_Background" type="Panel" parent="."]
 offset_left = 3.0
@@ -374,7 +372,7 @@ vframes = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="pn_Background/ttr_Table"]
 libraries = {
-"": SubResource("AnimationLibrary_eghlt")
+&"": SubResource("AnimationLibrary_eghlt")
 }
 
 [node name="btn_Exit" type="Button" parent="pn_Background"]

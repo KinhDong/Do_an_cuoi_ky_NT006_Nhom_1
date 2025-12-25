@@ -19,16 +19,12 @@ public partial class PveScreen : Node2D
 	PlayerClass P; // Người
 
 	[Export] DisplayPlayerInfo DisplayE, DisplayP;
-	[Export] AnimationPlayer anim;    
-	[Export] Array<Sprite2D> ECards; 
-	[Export] Array<Sprite2D> PCards; 
+	[Export] AnimationPlayer anim;   
+	Sprite2D[,] DisplayCards; 
 
-	private List<(int Rank, int Suit)> DeckOfCards; 
-	private const long BET_AMOUNT = 500; 
+	private HashSet<(int Rank, int Suit)> DeckOfCards; 
 	private bool IsGameActive = false;
-
-	private List<(int Rank, int Suit)> HandPlayer = new();
-	private List<(int Rank, int Suit)> HandEnemy = new();
+	Random ran = new Random();
 	#endregion
 
 	#region --- SETUP & START ---
@@ -44,48 +40,50 @@ public partial class PveScreen : Node2D
 		E = new PlayerClass 
 		{ 
 			InGameName = "Máy (Dealer)", 
+			Avatar = ResourceLoader.Load<Texture2D>(@"Assets\Environment_Avatar.png"),
+			Hands = new(),
 			Money = 999999 
 		};
 		
 		P = new PlayerClass 
 		{ 
 			InGameName = UserClass.InGameName ?? "Bạn", 
+			Avatar = UserClass.Avatar,
+			Hands = new(),
 			Money = UserClass.Money 
 		};
 
 		DisplayE.Display(E);
 		DisplayP.Display(P);
-		ResetCardSprites();
 
-		// Tự động bắt đầu sau 1 giây
-		GetTree().CreateTimer(1.0f).Timeout += () => StartGame();
+		DeckOfCards = new();
+		// Tạo bộ bài
+		for (int rank = 1; rank <= 13; rank++)
+		{
+			for (int suit = 1; suit <= 4; suit++)
+			{
+				DeckOfCards.Add((rank, suit));
+			}
+		}
+
+		// Thiết lập hiển thị lá bài
+		DisplayCards = new Sprite2D[2, 5];
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 5; j++)
+			{
+				DisplayCards[i, j] = GetNode<Sprite2D>($"pn_Background/ttr_Table/CardsOfPlayer{i}/Card{j}");
+			}
+		}
+
+		// Tự động bắt đầu sau 5 giây
+		GetTree().CreateTimer(5.0f).Timeout += () => StartGame();
 	}
 
 	private async void StartGame()
 	{
-		// Cứu trợ nếu hết tiền
-		if (P.Money < BET_AMOUNT)
-		{
-			long relief = 1000;
-			P.Money += relief;
-			UserClass.Money = P.Money;
-			await UpdateUserMoney(UserClass.Uid, P.Money);
-			OS.Alert($"Nhà cái hỗ trợ bạn {relief} xu để chơi tiếp!");
-		}
-
-		// Trừ tiền cược
-		P.Money -= BET_AMOUNT;
-		UserClass.Money = P.Money;
-		DisplayP.Display(P);
-		await UpdateUserMoney(UserClass.Uid, P.Money);
-
 		// Reset trạng thái
 		IsGameActive = true;
-		HandPlayer.Clear();
-		HandEnemy.Clear();
-		ResetCardSprites();
-		InitializeDeck();
-
 		await DealInitialCards();
 	}
 	#endregion
@@ -103,10 +101,8 @@ public partial class PveScreen : Node2D
 		await Task.Delay(300); 
 		AddCardToHand(true, DrawCard());
 		
-		await Task.Delay(300);
-		var hiddenCard = DrawCard();
-		HandEnemy.Add(hiddenCard);
-		DisplayCardOnTable(ECards[1], hiddenCard.Rank, hiddenCard.Suit, isFaceUp: false);
+		await Task.Delay(300);		
+		AddCardToHand(false, DrawCard());
 		
 		// Kiểm tra Xì Dách / Xì Bàn ngay lập tức (2 lá)
 		if (CheckSpecialWin2Cards()) return;
@@ -121,7 +117,7 @@ public partial class PveScreen : Node2D
 
 		AddCardToHand(true, DrawCard());
 
-		int score = CalculateScore(HandPlayer);
+		var (score, strength) = P.CaclulateScore();
 		
 		// 1. Kiểm tra Quắc
 		if (score > 21)
@@ -129,10 +125,10 @@ public partial class PveScreen : Node2D
 			EndGame(false, $"Bạn được {score} điểm -> Quắc (Bust)!");
 		}
 		// 2. Kiểm tra Ngũ Linh 
-		else if (HandPlayer.Count == 5)
+		else if (strength == 2)
 		{
-			 OS.Alert("Đã đủ 5 lá (Ngũ Linh). Tự động Dằn!");
-			 OnStandPressed(); 
+			OS.Alert("Đã đủ 5 lá (Ngũ Linh). Tự động Dằn!");
+			OnStandPressed(); 
 		}
 	}
 
@@ -141,8 +137,8 @@ public partial class PveScreen : Node2D
 		if (!IsGameActive) return;
 
 		// --- KIỂM TRA ĐỦ TUỔI (16+) ---
-		int pScore = CalculateScore(HandPlayer);
-		if (pScore < 16 && HandPlayer.Count < 5)
+		var (pScore, pStrength) = P.CaclulateScore();
+		if (pScore < 16)
 		{
 			OS.Alert($"Bạn mới có {pScore} điểm. Phải đủ 16 điểm mới được Dằn (Non)!");
 			return;
@@ -151,15 +147,11 @@ public partial class PveScreen : Node2D
 		HitButton.Disabled = true;
 		StandButton.Disabled = true;
 
-		// Lật bài máy
-		var hiddenCard = HandEnemy[1];
-		DisplayCardOnTable(ECards[1], hiddenCard.Rank, hiddenCard.Suit, true);
-
 		// Máy rút bài: Buộc phải rút nếu < 17 (Luật cái)
-		while (CalculateScore(HandEnemy) < 17)
+		while (E.CaclulateScore().Item1 < 17)
 		{
-			await Task.Delay(800);
-			if (HandEnemy.Count < 5)
+			await Task.Delay(300);
+			if (E.CaclulateScore().Item1 < 5)
 			{
 				AddCardToHand(false, DrawCard());
 			}
@@ -175,25 +167,22 @@ public partial class PveScreen : Node2D
 
 	private void CompareResult()
 	{
-		int pScore = CalculateScore(HandPlayer);
-		int eScore = CalculateScore(HandEnemy);
+		var (pScore, pStrength) = P.CaclulateScore();
+		var (eScore, eStrength) = E.CaclulateScore();
 
-		bool p5 = (HandPlayer.Count == 5 && pScore <= 21);
-		bool e5 = (HandEnemy.Count == 5 && eScore <= 21);
-
-		if (p5 && !e5) 
+		if (pStrength == 2 && eStrength != 2) 
 		{ 
 			EndGame(true, "Bạn được Ngũ Linh! Bạn thắng."); 
 			return; 
 		}
-		if (!p5 && e5) 
+		if (eStrength == 2 && pStrength != 2) 
 		{ 
 			EndGame(false, "Máy được Ngũ Linh! Bạn thua."); 
 			return; 
 		}
 		
 		// Máy Quắc
-		if (eScore > 21)
+		if (eStrength == 0)
 		{
 			EndGame(true, $"Máy được {eScore} điểm (Quắc). Bạn thắng!");
 			return;
@@ -206,70 +195,31 @@ public partial class PveScreen : Node2D
 
 	private bool CheckSpecialWin2Cards()
 	{
-		int pScore = CalculateScore(HandPlayer); 
-		bool pXiBan = IsXiBan(HandPlayer);
-		bool pXiDach = IsXiDach(HandPlayer);
+		var pStrength = P.CaclulateScore().Item2;
+		var eStrength = E.CaclulateScore().Item2;
 
-		bool eXiBan = IsXiBan(HandEnemy);
-		bool eXiDach = IsXiDach(HandEnemy);
+		if (pStrength < 2 && eStrength < 2) return false;
 
-		if (pXiBan || pXiDach || eXiBan || eXiDach)
+		if (pStrength > eStrength)
 		{
-			var hidden = HandEnemy[1];
-			DisplayCardOnTable(ECards[1], hidden.Rank, hidden.Suit, true);
-
-			if ((pXiBan || pXiDach) && !(eXiBan || eXiDach)) 
-				EndGame(true, "Bạn có Xì Dách/Xì Bàn! Bạn thắng ngay.");
-			else if (!(pXiBan || pXiDach) && (eXiBan || eXiDach)) 
-				EndGame(false, "Máy có Xì Dách/Xì Bàn! Bạn thua.");
+			if (pStrength == 2)
+				EndGame(true, "Bạn có Xì Dách! Bạn thắng ngay.");
 			else 
-				EndGame(false, "Cả hai cùng có bài đẹp. Nhà cái thắng.");
-			
+				EndGame(true, "Bạn có Xì Bàn! Bạn thắng ngay.");
 			return true;
 		}
-		return false;
-	}
 
-	#endregion
-
-	#region --- TÍNH ĐIỂM ---
-
-	private int CalculateScore(List<(int Rank, int Suit)> hand)
-	{
-		int score = 0;
-		int aceCount = 0;
-
-		foreach (var card in hand)
+		if (eStrength > pStrength)
 		{
-			int val = card.Rank + 1; 
-			if (val >= 10) score += 10; 
-			else if (val == 1) 
-			{
-				aceCount++;
-				score += 11; 
-			}
-			else score += val;
+			if (eStrength == 2)
+				EndGame(false, "Máy có Xì Dách! Bạn thua ngay.");
+			else 
+				EndGame(false, "Máy có Xì Bàn! Bạn thua ngay.");
+			return true;
 		}
 
-		while (score > 21 && aceCount > 0)
-		{
-			score -= 10;
-			aceCount--;
-		}
-		return score;
-	}
-
-	private bool IsXiBan(List<(int Rank, int Suit)> hand) 
-	{
-		return hand.Count == 2 && (hand[0].Rank == 0 && hand[1].Rank == 0);
-	}
-
-	private bool IsXiDach(List<(int Rank, int Suit)> hand)
-	{
-		if (hand.Count != 2) return false;
-		bool hasAce = (hand[0].Rank == 0 || hand[1].Rank == 0);
-		bool hasTen = (hand[0].Rank >= 9 || hand[1].Rank >= 9); 
-		return hasAce && hasTen;
+		EndGame(false, "Cả hai cùng có bài đẹp. Nhà cái thắng.");
+		return true;		
 	}
 
 	#endregion
@@ -278,99 +228,93 @@ public partial class PveScreen : Node2D
 
 	private async void EndGame(bool isWin, string message)
 	{
+		ShowCards(0, E.Hands);
+		await Task.Delay(3000);
 		IsGameActive = false;
 		HitButton.Disabled = true;
 		StandButton.Disabled = true;
 
 		if (isWin)
 		{
-			P.Money += (BET_AMOUNT * 2);
-			OS.Alert($"CHIẾN THẮNG!\n{message}\n(+{BET_AMOUNT} xu)");
+			P.Money += 5;
+			OS.Alert($"CHIẾN THẮNG!\n{message}\n(+5 xu)");
+			UserClass.Money += 5;
+			DisplayP.UpdateMoney(UserClass.Money);
+
+			try 
+			{ 
+				await FirebaseApi.Put($"Users/{UserClass.Uid}/Money", UserClass.Money);
+				DisplayP.UpdateMoney(UserClass.Money); 
+			}
+			catch (Exception ex) 
+			{ 
+				GD.PrintErr(ex.Message); 
+			}
 		}
 		else
 		{
-			OS.Alert($"THẤT BẠI!\n{message}\n(-{BET_AMOUNT} xu)");
+			OS.Alert($"THẤT BẠI!\n{message}\n");
 		}
 
-		UserClass.Money = P.Money;
-		DisplayP.Display(P);
-		
-		await UpdateUserMoney(UserClass.Uid, P.Money);
+		// Ẩn bài và thu bài về bộ
+		UnShowCards(0);
+		UnShowCards(1);
+		foreach (var card in P.Hands)
+			DeckOfCards.Add(card);
+		foreach (var card in E.Hands)
+			DeckOfCards.Add(card);
+		P.Hands.Clear();
+		E.Hands.Clear();
+				
 		await Task.Delay(2000);
 		StartGame();
 	}
 
-	private async Task UpdateUserMoney(string uid, long newMoney)
-	{
-		try 
-		{ 
-			await FirebaseApi.Patch($"Users/{uid}.json?auth={UserClass.IdToken}", JsonConvert.SerializeObject(new { Money = newMoney })); 
-		}
-		catch (Exception ex) 
-		{ 
-			GD.PrintErr(ex.Message); 
-		}
-	}
-
-	private void InitializeDeck()
-	{
-		DeckOfCards = new List<(int, int)>();
-		for (int s = 0; s < 4; s++) 
-		{
-			for (int r = 0; r < 13; r++) 
-			{
-				DeckOfCards.Add((r, s));
-			}
-		}
-
-		// Fisher-Yates Shuffle
-		Random rng = new Random();
-		int n = DeckOfCards.Count;
-		while (n > 1) 
-		{ 
-			n--; 
-			int k = rng.Next(n + 1); 
-			(DeckOfCards[k], DeckOfCards[n]) = (DeckOfCards[n], DeckOfCards[k]); 
-		}
-	}
-
 	private (int Rank, int Suit) DrawCard()
 	{
-		if (DeckOfCards.Count == 0) InitializeDeck();
-		var c = DeckOfCards[0]; 
-		DeckOfCards.RemoveAt(0); 
-		return c;
+		var card = DeckOfCards.ElementAt(ran.Next(DeckOfCards.Count)); // Bốc 1 lá
+			DeckOfCards.Remove(card);	
+		return card;
 	}
 
-	private void AddCardToHand(bool isPlayer, (int Rank, int Suit) card)
+	private async void AddCardToHand(bool isPlayer, (int Rank, int Suit) card)
 	{
-		var targetList = isPlayer ? HandPlayer : HandEnemy;
-		var targetSprites = isPlayer ? PCards : ECards;
-		
-		targetList.Add(card);
-		int idx = targetList.Count - 1;
-
-		if (idx < targetSprites.Count)
+		if (!isPlayer)
 		{
-			DisplayCardOnTable(targetSprites[idx], card.Rank, card.Suit, true);
-			
-			if (isPlayer && idx <= 4) 
-				anim.Play($"DealCard{idx}");
-			else 
-				targetSprites[idx].Visible = true;
+			E.Hands.Add(card);
+			anim.Play("DealPlayer0");
+			await Task.Delay(300);
+			ShowCard(0, 0, E.Hands[0]);
 		}
+		else
+		{
+			int cardIndex = P.Hands.Count;
+			P.Hands.Add(card);
+			anim.Play($"DealCard{cardIndex}");
+			await Task.Delay(300);
+			ShowCard(1, cardIndex, card);
+		}
+
+		anim.Queue("RESET");
 	}
 
-	private void DisplayCardOnTable(Sprite2D s, int r, int suit, bool isFaceUp)
+	private void ShowCard(int seat, int cardIndex, (int, int) card) // Hiển thị 1 lá bài
 	{
-		s.Visible = true;
-		s.FrameCoords = isFaceUp ? new Vector2I(r, suit) : new Vector2I(0, 4);
+		DisplayCards[seat, cardIndex].Frame = (card.Item1 - 1) + (card.Item2 - 1) * 13;
+		DisplayCards[seat, cardIndex].Visible = true;
 	}
 
-	private void ResetCardSprites()
+	private void ShowCards(int seat, List<(int Rank, int Suit)> hands) // Hiển thị các lá bài của 1 player
 	{
-		foreach (var c in PCards) c.Visible = false;
-		foreach (var c in ECards) c.Visible = false;
+		for(int i = 0; i < hands.Count; i++)
+			ShowCard(seat, i, hands[i]);
+	}
+
+	private void UnShowCards(int seat)
+	{
+		for(int i = 0; i < 5; i++)        
+			DisplayCards[seat, i].Visible = false;
+		DisplayCards[seat, 0].Frame = 52; // Mặt sau lá bài
 	}
 	
 	private void OnExitPressed()
