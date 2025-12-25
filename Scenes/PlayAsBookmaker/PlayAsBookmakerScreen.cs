@@ -22,6 +22,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	FirebaseStreaming EventListener;
 
+	HeartbeatService heartbeatService;
+
 	// --------------- Ván chơi -----------------
 	[Export] private Button StartGameButton;
 
@@ -86,6 +88,11 @@ public partial class PlayAsBookmakerScreen : Node2D
 		};		
 
 		EventListener.Start();
+
+		// Khởi tạo heartbeat service cho host
+		heartbeatService = new HeartbeatService();
+		AddChild(heartbeatService);
+		heartbeatService.StartHeartbeat(room.RoomId, true); // Host
 	}
 
 	private async void OnLeaveRoomPressed()
@@ -102,6 +109,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 				GD.Print("Xóa phòng thành công!");
 				
 				EventListener.Stop();
+				heartbeatService.StopHeartbeat();
 				RoomClass.CurrentRoom = null;				
 
 				GetTree().ChangeSceneToFile(@"Scenes\CreateRoom\CreateRoom.tscn");				
@@ -331,7 +339,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	private async void UpdateStand(string playerId)
 	{
-		DisplayPlayerInfos[room.Players[playerId].Seat].EndCountdown();
+		if (room.Players.ContainsKey(playerId))
+			DisplayPlayerInfos[room.Players[playerId].Seat].EndCountdown();
 		currentTurn++;
 		if(currentTurn < TurnOrder.Count)		
 			HitOrStandPlayer(TurnOrder[currentTurn]); // Tiến đến player tiếp theo	

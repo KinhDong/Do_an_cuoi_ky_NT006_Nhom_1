@@ -172,6 +172,9 @@ namespace NT106.Scripts.Models
 				if (!delPlayer)
 					throw new Exception("Không thể xóa player khỏi phòng");
 
+				// Xoá heartbeat
+				await FirebaseApi.Delete($"Rooms/{RoomId}/Heartbeat/{UserClass.Uid}");
+
 				// Giảm currentPlayers
 				CurrentPlayers--;
 				var res = await FirebaseApi.Put($"Rooms/{RoomId}/CurrentPlayers", CurrentPlayers);

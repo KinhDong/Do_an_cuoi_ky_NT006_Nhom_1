@@ -24,6 +24,8 @@ public partial class PlayAsPlayerScreen : Node2D
 	FirebaseStreaming EventListener;
 	string CurrTime;
 
+	HeartbeatService heartbeatService;
+
 	// ----- Ván chơi
 
 	// Hiển thị các lá bài
@@ -106,6 +108,11 @@ public partial class PlayAsPlayerScreen : Node2D
 		EventListener.Start();
 
 		CurrTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"); // Thời gian hiện tại
+
+		// Khởi tạo heartbeat service cho player
+		heartbeatService = new HeartbeatService();
+		AddChild(heartbeatService);
+		heartbeatService.StartHeartbeat(room.RoomId, false); // Not host
 	}
 
 	private async void OnLeaveRoomPressed()
@@ -116,6 +123,7 @@ public partial class PlayAsPlayerScreen : Node2D
 			if(!res.Item1) throw new Exception(res.Item2);
 			
 			EventListener.Stop();
+			heartbeatService.StopHeartbeat();
 			RoomClass.CurrentRoom = null;
 			GetTree().ChangeSceneToFile(@"Scenes\CreateOrJoinRoomScreen\CreateOrJoinRoom.tscn");	
 		}
