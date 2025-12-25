@@ -287,46 +287,20 @@ public partial class PlayAsPlayerScreen : Node2D
 
 	private async void OnHitPressed()
 	{
-		try
-		{
-			timer.Stop();
-			HitButton.Disabled = true;
-			StandButton.Disabled = true;
-			var evt = new RoomEvent
-			{
-				type = "hit",
-				user = UserClass.Uid,
-				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-			};
-			await FirebaseApi.Post($"Rooms/{room.RoomId}/Events", evt);
-		}
+		timer.Stop();
+		HitButton.Disabled = true;
+		StandButton.Disabled = true;
 
-		catch (Exception ex)
-		{
-			GD.PrintErr(ex.Message);
-		}		
+		await RoomEvent.PostRoomEventAsync(room.RoomId, "hit", UserClass.Uid);	
 	}
 
 	private async void OnStandPressed()
 	{
-		try
-		{
-			timer.Stop();
-			HitButton.Disabled = true;
-			StandButton.Disabled = true;
-			var evt = new RoomEvent
-			{
-				type = "stand",
-				user = UserClass.Uid,
-				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-			};
-			await FirebaseApi.Post($"Rooms/{room.RoomId}/Events", evt);			
-		}
-		
-		catch (Exception ex)
-		{
-			GD.PrintErr(ex.Message);
-		}
+		timer.Stop();
+		HitButton.Disabled = true;
+		StandButton.Disabled = true;	
+
+		await RoomEvent.PostRoomEventAsync(room.RoomId, "stand", UserClass.Uid);	
 	}
 
 	private void UpdateHit(string pid)

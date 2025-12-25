@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using NT106.Scripts.Models;
 
 namespace NT106.Scripts.Services
 {
@@ -194,15 +195,7 @@ namespace NT106.Scripts.Services
 			_cts?.Dispose();
 		}
 	}
-
-
-	public class RoomEvent
-	{
-		public string type { get; set; }   // "join", "leave", ...
-		public string user { get; set; }   // userId
-		public string time { get; set; }
-		public dynamic payload { get; set; } // Dữ liệu thêm vào (Nếu có)
-	}    
+	    
 
 	public class MessageEvent
 	{

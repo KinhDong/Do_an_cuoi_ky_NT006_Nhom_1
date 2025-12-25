@@ -223,15 +223,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 	{
 		try
 		{
-			var startEvt = new RoomEvent
-			{
-				type = "start_game",
-				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-			};
-
-			//Ghi event lên firebase
-			await FirebaseApi.Post($"Rooms/{room.RoomId}/Events", startEvt);
-
+			await RoomEvent.PostRoomEventAsync(room.RoomId, "start_game");
 			room.Status = "DEAL_INIT";
 
 			for(int i = 1; i < 4; i++) // Không lấy cái
@@ -239,7 +231,6 @@ public partial class PlayAsBookmakerScreen : Node2D
 				string pid = room.Seats[i];
 				if(pid != null) TurnOrder.Add(pid);
 			}
-
 			return true;
 		}
 
@@ -255,20 +246,13 @@ public partial class PlayAsBookmakerScreen : Node2D
 		try
 		{
 			var card = DeckOfCards.ElementAt(ran.Next(DeckOfCards.Count)); // Bốc 1 lá
-			DeckOfCards.Remove(card);			
+			DeckOfCards.Remove(card);	
 
-			var DealEvt = new RoomEvent
-			{
-				type = "deal_card",
-				user = pid,
-				payload = card,
-				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-			};
+			await RoomEvent.PostRoomEventAsync( // Ghi sự kiện
+				room.RoomId, "deal_card", pid, card);
 
 			int cardIndex = room.Players[pid].Hands.Count;
-			room.Players[pid].Hands.Add(card); // Thêm trên dữ liệu
-
-			await FirebaseApi.Post($"Rooms/{room.RoomId}/Events", DealEvt);
+			room.Players[pid].Hands.Add(card); // Thêm trên dữ liệu			
 			await FirebaseApi.Put($"Rooms/{room.RoomId}/Players/{pid}/Hands/{cardIndex}", card);
 
 			int seat = room.Players[pid].Seat;
@@ -315,15 +299,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 	{
 		try
 		{
-			var evt = new RoomEvent
-			{
-				type = "hit_or_stand",
-				user = playerId,
-				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-			};
-
-			await FirebaseApi.Post
-			($"Rooms/{room.RoomId}/Events", evt);
+			await RoomEvent.PostRoomEventAsync
+			(room.RoomId, "hit_or_stand", playerId);
 
 			DisplayPlayerInfos[room.Players[playerId].Seat].StartCountdown();
 		}
@@ -366,12 +343,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 	{
 		try
 		{         
-			var evt = new RoomEvent
-			{
-				type = "result",
-				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-			};
-			await FirebaseApi.Post($"Rooms/{room.RoomId}/Events", evt);
+			await RoomEvent.PostRoomEventAsync(room.RoomId, "result");
 			await FirebaseApi.Put($"Rooms/{room.RoomId}/Status", "RESULT");
 			room.Status = "RESULT";
 
@@ -403,13 +375,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 				room.Players[pid].Money = pMoney;
 				DisplayPlayerInfos[room.Players[pid].Seat].UpdateMoney(pMoney);
 
-				evt = new RoomEvent {
-					type = result,
-					user = pid,
-					time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-				};
-
-				await FirebaseApi.Post($"Rooms/{room.RoomId}/Events", evt);
+				await RoomEvent.PostRoomEventAsync(
+					room.RoomId, result, pid);
 
 				// Thêm animation chiến thắng, trường hợp đặc biệt, hiệu ứng cộng tiền
 			}
@@ -435,12 +402,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 	{
 		try
 		{
-			var evt = new RoomEvent
-			{
-				type = "end_round",
-				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-			};
-			await FirebaseApi.Post($"Rooms/{room.RoomId}/Events", evt);			
+			await RoomEvent.PostRoomEventAsync(room.RoomId, "end_round");	
 
 			await Task.Delay(5000);
 
