@@ -9,6 +9,7 @@ public partial class MenuScreen : Control
 	[Export] Button ExitGameButton;
 	[Export] Button SettingButton;
 	[Export] Button ProfileButton;
+	[Export] TextureButton LeaderboardButton;
 
 	public override void _Ready()
 	{
@@ -17,6 +18,8 @@ public partial class MenuScreen : Control
 		ExitGameButton.Pressed += OnExitGameButtonPressed;
 
 		ProfileButton.Pressed += OnProfileButtonPressed;
+
+		LeaderboardButton.Pressed += OnLeaderboardButtonPressed;
 	}
 
 	//Mở màn hình chọn chế độ chơi
@@ -38,5 +41,12 @@ public partial class MenuScreen : Control
 		var ProfileScene = GD.Load<PackedScene>(@"Scenes/Profile/ProfileScreen.tscn");
 
 		AddChild(ProfileScene.Instantiate());
+	}
+
+	private void OnLeaderboardButtonPressed()
+	{
+		var LeaderboardScene = GD.Load<PackedScene>(@"Scenes\Leaderboard\Leaderboard.tscn");
+
+		AddChild(LeaderboardScene.Instantiate());
 	}
 }

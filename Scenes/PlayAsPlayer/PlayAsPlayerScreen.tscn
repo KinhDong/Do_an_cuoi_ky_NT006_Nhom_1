@@ -1,10 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://bew6ci501nue0"]
 
-<<<<<<< HEAD
 [ext_resource type="Script" uid="uid://ba4hpt4kechhq" path="res://Scenes/PlayAsPlayer/PlayAsPlayerScreen.cs" id="1_as1e0"]
-=======
-[ext_resource type="Script" uid="uid://e3e4r2k37xkx" path="res://Scenes/PlayAsPlayer/PlayAsPlayerScreen.cs" id="1_as1e0"]
->>>>>>> tinhdiem
 [ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="1_so6yb"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="4_bldg0"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="4_fxv46"]
@@ -290,7 +286,6 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-<<<<<<< HEAD
 [node name="PlayAsPlayerScreen" type="Node2D" node_paths=PackedStringArray("DisplayRoomId", "DisplayBetAmount", "LeaveRoom", "DisplayPlayerInfos", "HitButton", "StandButton", "anim", "timer")]
 script = ExtResource("1_as1e0")
 DisplayRoomId = NodePath("pn_Background/le_RoomId")
@@ -301,11 +296,6 @@ HitButton = NodePath("pn_Background/btn_Hit")
 StandButton = NodePath("pn_Background/btn_Stand")
 anim = NodePath("pn_Background/ttr_Table/AnimationPlayer")
 timer = NodePath("pn_Background/Timer")
-=======
-[node name="PlayAsPlayerScreen" type="Node2D" node_paths=PackedStringArray("DisplayPlayerInfos")]
-script = ExtResource("1_as1e0")
-DisplayPlayerInfos = []
->>>>>>> tinhdiem
 
 [node name="pn_Background" type="Panel" parent="."]
 offset_left = 3.0

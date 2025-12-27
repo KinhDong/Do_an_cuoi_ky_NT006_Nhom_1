@@ -1,0 +1,473 @@
+[gd_scene load_steps=4 format=3 uid="uid://di6rc1nwu7o1b"]
+
+[ext_resource type="Script" uid="uid://c5381ywc7rriw" path="res://Scenes/Leaderboard/Leaderboard.cs" id="1_fyh68"]
+[ext_resource type="Texture2D" uid="uid://civfw8nh0xirt" path="res://Assets/Exit_Icon.png" id="2_6cx2l"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xgqdg"]
+bg_color = Color(0.6, 0.6, 0.6, 0.8117647)
+border_width_left = 2
+
+[node name="Leaderboard" type="Node2D" node_paths=PackedStringArray("CloseButton", "InGameNames", "Moneys", "YourRankLabel")]
+script = ExtResource("1_fyh68")
+CloseButton = NodePath("Panel/ttbtn_Exit")
+InGameNames = [NodePath("Panel/Player1/lb_InGameName"), NodePath("Panel/Player2/lb_InGameName"), NodePath("Panel/Player4/lb_InGameName"), NodePath("Panel/Player4/lb_InGameName"), NodePath("Panel/Player5/lb_InGameName"), NodePath("Panel/Player6/lb_InGameName"), NodePath("Panel/Player7/lb_InGameName"), NodePath("Panel/Player8/lb_InGameName"), NodePath("Panel/Player9/lb_InGameName"), NodePath("Panel/Player10/lb_InGameName"), NodePath("Panel/You/lb_InGameName")]
+Moneys = [NodePath("Panel/Player1/lb_Money"), NodePath("Panel/Player2/lb_Money"), NodePath("Panel/Player3/lb_Money"), NodePath("Panel/Player4/lb_Money"), NodePath("Panel/Player5/lb_Money"), NodePath("Panel/Player6/lb_Money"), NodePath("Panel/Player7/lb_Money"), NodePath("Panel/Player8/lb_Money"), NodePath("Panel/Player9/lb_Money"), NodePath("Panel/Player10/lb_Money"), NodePath("Panel/You/lb_Money")]
+YourRankLabel = NodePath("Panel/You/lb_Rank")
+
+[node name="Panel" type="Panel" parent="."]
+offset_top = 2.0
+offset_right = 1199.0
+offset_bottom = 798.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_xgqdg")
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 354.0
+offset_top = 1.0
+offset_right = 871.0
+offset_bottom = 177.2757
+theme_override_colors/font_color = Color(0.6901961, 0.9411765, 0.26666668, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 64
+text = "BẢNG XẾP HẠNG"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 177.0
+offset_right = 424.0
+offset_bottom = 222.0
+theme_override_font_sizes/font_size = 32
+text = "     HẠNG     "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 780.0
+offset_top = 180.0
+offset_right = 982.0
+offset_bottom = 225.0
+theme_override_font_sizes/font_size = 32
+text = "     SỐ TIỀN     "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 424.0
+offset_top = 178.0
+offset_right = 771.0
+offset_bottom = 223.0
+theme_override_font_sizes/font_size = 32
+text = "     TÊN NGƯỜI CHƠI     "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player1" type="Node2D" parent="Panel"]
+position = Vector2(363, 149)
+
+[node name="Panel" type="Panel" parent="Panel/Player1"]
+offset_left = -80.999985
+offset_top = 83.0
+offset_right = 582.5942
+offset_bottom = 123.0
+
+[node name="lb_Rank" type="Label" parent="Panel/Player1"]
+offset_left = -74.0
+offset_top = 90.0
+offset_right = 11.0
+offset_bottom = 113.0
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_InGameName" type="Label" parent="Panel/Player1"]
+offset_left = 107.0
+offset_top = 92.0
+offset_right = 362.0
+offset_bottom = 115.0
+text = "Nà ná na na a Đùng Thanh Phộ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Money" type="Label" parent="Panel/Player1"]
+offset_left = 459.0
+offset_top = 91.0
+offset_right = 571.0
+offset_bottom = 114.0
+text = "1200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player2" type="Node2D" parent="Panel"]
+position = Vector2(362, 200)
+
+[node name="Panel" type="Panel" parent="Panel/Player2"]
+offset_left = -80.999985
+offset_top = 83.0
+offset_right = 582.5942
+offset_bottom = 123.0
+
+[node name="lb_Rank" type="Label" parent="Panel/Player2"]
+offset_left = -74.0
+offset_top = 90.0
+offset_right = 11.0
+offset_bottom = 113.0
+text = "2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_InGameName" type="Label" parent="Panel/Player2"]
+offset_left = 107.0
+offset_top = 92.0
+offset_right = 362.0
+offset_bottom = 115.0
+text = "Nà ná na na a Đùng Thanh Phộ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Money" type="Label" parent="Panel/Player2"]
+offset_left = 459.0
+offset_top = 91.0
+offset_right = 571.0
+offset_bottom = 114.0
+text = "1200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player3" type="Node2D" parent="Panel"]
+position = Vector2(362, 250)
+
+[node name="Panel" type="Panel" parent="Panel/Player3"]
+offset_left = -80.999985
+offset_top = 83.0
+offset_right = 582.5942
+offset_bottom = 123.0
+
+[node name="lb_Rank" type="Label" parent="Panel/Player3"]
+offset_left = -74.0
+offset_top = 90.0
+offset_right = 11.0
+offset_bottom = 113.0
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_InGameName" type="Label" parent="Panel/Player3"]
+offset_left = 107.0
+offset_top = 92.0
+offset_right = 362.0
+offset_bottom = 115.0
+text = "Nà ná na na a Đùng Thanh Phộ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Money" type="Label" parent="Panel/Player3"]
+offset_left = 459.0
+offset_top = 91.0
+offset_right = 571.0
+offset_bottom = 114.0
+text = "1200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player4" type="Node2D" parent="Panel"]
+position = Vector2(362, 301)
+
+[node name="Panel" type="Panel" parent="Panel/Player4"]
+offset_left = -80.999985
+offset_top = 83.0
+offset_right = 582.5942
+offset_bottom = 123.0
+
+[node name="lb_Rank" type="Label" parent="Panel/Player4"]
+offset_left = -74.0
+offset_top = 90.0
+offset_right = 11.0
+offset_bottom = 113.0
+text = "4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_InGameName" type="Label" parent="Panel/Player4"]
+offset_left = 107.0
+offset_top = 92.0
+offset_right = 362.0
+offset_bottom = 115.0
+text = "Nà ná na na a Đùng Thanh Phộ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Money" type="Label" parent="Panel/Player4"]
+offset_left = 459.0
+offset_top = 91.0
+offset_right = 571.0
+offset_bottom = 114.0
+text = "1200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player5" type="Node2D" parent="Panel"]
+position = Vector2(362, 352)
+
+[node name="Panel" type="Panel" parent="Panel/Player5"]
+offset_left = -80.999985
+offset_top = 83.0
+offset_right = 582.5942
+offset_bottom = 123.0
+
+[node name="lb_Rank" type="Label" parent="Panel/Player5"]
+offset_left = -74.0
+offset_top = 90.0
+offset_right = 11.0
+offset_bottom = 113.0
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_InGameName" type="Label" parent="Panel/Player5"]
+offset_left = 107.0
+offset_top = 92.0
+offset_right = 362.0
+offset_bottom = 115.0
+text = "Nà ná na na a Đùng Thanh Phộ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Money" type="Label" parent="Panel/Player5"]
+offset_left = 459.0
+offset_top = 91.0
+offset_right = 571.0
+offset_bottom = 114.0
+text = "1200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player6" type="Node2D" parent="Panel"]
+position = Vector2(362, 402)
+
+[node name="Panel" type="Panel" parent="Panel/Player6"]
+offset_left = -80.999985
+offset_top = 83.0
+offset_right = 582.5942
+offset_bottom = 123.0
+
+[node name="lb_Rank" type="Label" parent="Panel/Player6"]
+offset_left = -74.0
+offset_top = 90.0
+offset_right = 11.0
+offset_bottom = 113.0
+text = "6"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_InGameName" type="Label" parent="Panel/Player6"]
+offset_left = 107.0
+offset_top = 92.0
+offset_right = 362.0
+offset_bottom = 115.0
+text = "Nà ná na na a Đùng Thanh Phộ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Money" type="Label" parent="Panel/Player6"]
+offset_left = 459.0
+offset_top = 91.0
+offset_right = 571.0
+offset_bottom = 114.0
+text = "1200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player7" type="Node2D" parent="Panel"]
+position = Vector2(362, 452)
+
+[node name="Panel" type="Panel" parent="Panel/Player7"]
+offset_left = -80.999985
+offset_top = 83.0
+offset_right = 582.5942
+offset_bottom = 123.0
+
+[node name="lb_Rank" type="Label" parent="Panel/Player7"]
+offset_left = -74.0
+offset_top = 90.0
+offset_right = 11.0
+offset_bottom = 113.0
+text = "7"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_InGameName" type="Label" parent="Panel/Player7"]
+offset_left = 107.0
+offset_top = 92.0
+offset_right = 362.0
+offset_bottom = 115.0
+text = "Nà ná na na a Đùng Thanh Phộ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Money" type="Label" parent="Panel/Player7"]
+offset_left = 459.0
+offset_top = 91.0
+offset_right = 571.0
+offset_bottom = 114.0
+text = "1200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player8" type="Node2D" parent="Panel"]
+position = Vector2(363, 503)
+
+[node name="Panel" type="Panel" parent="Panel/Player8"]
+offset_left = -80.999985
+offset_top = 83.0
+offset_right = 582.5942
+offset_bottom = 123.0
+
+[node name="lb_Rank" type="Label" parent="Panel/Player8"]
+offset_left = -74.0
+offset_top = 90.0
+offset_right = 11.0
+offset_bottom = 113.0
+text = "8"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_InGameName" type="Label" parent="Panel/Player8"]
+offset_left = 107.0
+offset_top = 92.0
+offset_right = 362.0
+offset_bottom = 115.0
+text = "Nà ná na na a Đùng Thanh Phộ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Money" type="Label" parent="Panel/Player8"]
+offset_left = 459.0
+offset_top = 91.0
+offset_right = 571.0
+offset_bottom = 114.0
+text = "1200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player9" type="Node2D" parent="Panel"]
+position = Vector2(363, 555)
+
+[node name="Panel" type="Panel" parent="Panel/Player9"]
+offset_left = -80.999985
+offset_top = 83.0
+offset_right = 582.5942
+offset_bottom = 123.0
+
+[node name="lb_Rank" type="Label" parent="Panel/Player9"]
+offset_left = -74.0
+offset_top = 90.0
+offset_right = 11.0
+offset_bottom = 113.0
+text = "9"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_InGameName" type="Label" parent="Panel/Player9"]
+offset_left = 107.0
+offset_top = 92.0
+offset_right = 362.0
+offset_bottom = 115.0
+text = "Nà ná na na a Đùng Thanh Phộ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Money" type="Label" parent="Panel/Player9"]
+offset_left = 459.0
+offset_top = 91.0
+offset_right = 571.0
+offset_bottom = 114.0
+text = "1200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Player10" type="Node2D" parent="Panel"]
+position = Vector2(364, 606)
+
+[node name="Panel" type="Panel" parent="Panel/Player10"]
+offset_left = -80.999985
+offset_top = 83.0
+offset_right = 582.5942
+offset_bottom = 123.0
+
+[node name="lb_Rank" type="Label" parent="Panel/Player10"]
+offset_left = -74.0
+offset_top = 90.0
+offset_right = 11.0
+offset_bottom = 113.0
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_InGameName" type="Label" parent="Panel/Player10"]
+offset_left = 107.0
+offset_top = 92.0
+offset_right = 362.0
+offset_bottom = 115.0
+text = "Nà ná na na a Đùng Thanh Phộ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Money" type="Label" parent="Panel/Player10"]
+offset_left = 459.0
+offset_top = 91.0
+offset_right = 571.0
+offset_bottom = 114.0
+text = "1200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="You" type="Node2D" parent="Panel"]
+position = Vector2(364, 656)
+
+[node name="Panel" type="Panel" parent="Panel/You"]
+offset_left = -80.999985
+offset_top = 83.0
+offset_right = 582.5942
+offset_bottom = 123.0
+
+[node name="lb_Rank" type="Label" parent="Panel/You"]
+offset_left = -74.0
+offset_top = 90.0
+offset_right = 11.0
+offset_bottom = 113.0
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_InGameName" type="Label" parent="Panel/You"]
+offset_left = 107.0
+offset_top = 92.0
+offset_right = 362.0
+offset_bottom = 115.0
+text = "Nà ná na na a Đùng Thanh Phộ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="lb_Money" type="Label" parent="Panel/You"]
+offset_left = 459.0
+offset_top = 91.0
+offset_right = 571.0
+offset_bottom = 114.0
+text = "1200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ttbtn_Exit" type="TextureButton" parent="Panel"]
+layout_mode = 0
+offset_left = 1100.0
+offset_top = 4.0
+offset_right = 1193.7344
+offset_bottom = 95.53107
+texture_normal = ExtResource("2_6cx2l")
+ignore_texture_size = true
+stretch_mode = 5
