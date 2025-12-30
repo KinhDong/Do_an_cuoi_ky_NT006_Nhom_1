@@ -1,6 +1,8 @@
 using Godot;
-using System.Net.NetworkInformation;
+using System;
 using System.Threading.Tasks;
+using NT106.Scripts.Services;
+using NT106.Scripts.Models;
 
 public partial class ConnectionMonitor : Node
 {
@@ -8,13 +10,29 @@ public partial class ConnectionMonitor : Node
     private Timer timer;
     private bool isReconnecting = false;
 
-    public override void _Ready()
+    public void StartMonitoring()
     {
+        if (timer != null && timer.IsInsideTree())
+        {
+            return; // Đã bắt đầu rồi
+        }
+
         timer = new Timer();
         timer.WaitTime = 5f;
         timer.Timeout += OnCheck;
         AddChild(timer);
         timer.Start();
+    }
+
+    public override void _Ready()
+    {
+        // Chỉ bắt đầu nếu đã đăng nhập
+        if (string.IsNullOrEmpty(UserClass.Uid) || string.IsNullOrEmpty(UserClass.IdToken))
+        {
+            return;
+        }
+
+        StartMonitoring();
     }
 
     private async void OnCheck()
@@ -52,9 +70,9 @@ public partial class ConnectionMonitor : Node
     {
         try
         {
-            var ping = new Ping();
-            var reply = await ping.SendPingAsync("8.8.8.8", 1000);
-            return reply.Status == IPStatus.Success;
+            var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            bool success = await FirebaseApi.Put($"Users/{UserClass.Uid}/LastHeartbeat", timestamp);
+            return success;
         }
         catch
         {

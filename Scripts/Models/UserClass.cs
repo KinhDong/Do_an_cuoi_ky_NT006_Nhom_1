@@ -132,7 +132,16 @@ namespace NT106.Scripts.Models
 				var userData = JsonConvert.DeserializeObject<dynamic>(userDataStr);
 
 				if (userData.isLoggedIn == true)
-					throw new Exception("Tài khoản đang được đăng nhập ở nơi khác!");
+				{
+					var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+					long lastHeartbeat = userData.LastHeartbeat != null ? (long)userData.LastHeartbeat : 0;
+					// Kiểm tra lastHeartbeat trong vòng 30 giây gần đây
+
+					if (timestamp - lastHeartbeat < 30)
+					{
+						throw new Exception("Tài khoản này đang được đăng nhập trên thiết bị khác!");
+					}
+				}					
 
 				// Cập nhật trạng thái đăng nhập
 				await http.PatchAsync(

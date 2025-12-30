@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using NT106.Scripts.Models;
+using NT106.Scripts.Services;
 
 public partial class LoginScreen : Control
 {
@@ -50,6 +51,9 @@ public partial class LoginScreen : Control
 
 		if (result.Item1)
 		{
+			// Bắt đầu monitoring kết nối sau khi đăng nhập
+			GetNode<ConnectionMonitor>("/root/ConnectionMonitor").StartMonitoring();
+
 			// Chuyển sang màn hình Menu
 			GetTree().ChangeSceneToFile(@"Scenes\Menu\MenuScreen.tscn");
 		}
