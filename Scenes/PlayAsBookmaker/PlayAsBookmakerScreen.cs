@@ -17,8 +17,6 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	// Hiển thị thông tin người chơi
 	[Export] Array<DisplayPlayerInfo> DisplayPlayerInfos;
-
-	[Export] Array<DisplayPlayerInfo> MoneyChanging;
 	
 	[Export] private Button LeaveRoom; // Rời phòng
 
@@ -328,6 +326,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	private async void HitOrStandBookmaker()
 	{
+		DisplayPlayerInfos[0].HighlightPlayerTurn();
 		var Score = room.Players[UserClass.Uid].CaclulateScore();
 
 		while(Score.Item2 == 1 && Score.Item1 < 17) // Ngừng nếu trúng các trường hợp đặc biệt
@@ -337,7 +336,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 			Score = room.Players[UserClass.Uid].CaclulateScore();
 		}
 
-		DisplayPlayerInfos[room.Players[UserClass.Uid].Seat].EndCountdown();
+		DisplayPlayerInfos[0].EndCountdown();
+		DisplayPlayerInfos[0].NotHighlightPlayerTurn();
 		ProcessResult(); // Bắt đầu tính điểm
 	}
 
@@ -379,29 +379,31 @@ public partial class PlayAsBookmakerScreen : Node2D
 				var pScore = room.Players[pid].CaclulateScore();
 				long pMoney = room.Players[pid].Money;
 
-				ShowCards(pid);				
+				ShowCards(pid);	
+				int pSeat = room.Players[pid].Seat;			
 
 				string result = Result(pScore, myScore);
 				if (result == "win")
 				{
-					MoneyChanging[room.Players[pid].Seat].AddMoneyEffect(betAmout);
+					// Animation
+					DisplayPlayerInfos[pSeat].AddMoneyEffect(betAmout);
+					DisplayPlayerInfos[0].MinusMoneyEffect(betAmout);
 					pMoney += betAmout;
 					myMoney -= betAmout;
 				} 
 				else if (result == "lose")
 				{
-					MoneyChanging[room.Players[pid].Seat].MinusMoneyEffect(betAmout);
+					// Animation
+					DisplayPlayerInfos[pSeat].MinusMoneyEffect(betAmout);
+					DisplayPlayerInfos[0].AddMoneyEffect(betAmout);
 					pMoney -= betAmout;
 					myMoney += betAmout;
 				}
 
 				room.Players[pid].Money = pMoney;
-				DisplayPlayerInfos[room.Players[pid].Seat].UpdateMoney(pMoney);
+				DisplayPlayerInfos[pSeat].UpdateMoney(pMoney);
 
-				await RoomEvent.PostRoomEventAsync(
-					room.RoomId, result, pid);
-
-				// Thêm animation chiến thắng, trường hợp đặc biệt, hiệu ứng cộng tiền
+				await RoomEvent.PostRoomEventAsync(room.RoomId, result, pid);
 			}
 
 			// Cập nhật:

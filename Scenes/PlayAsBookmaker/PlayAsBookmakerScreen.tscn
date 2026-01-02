@@ -1,6 +1,6 @@
 [gd_scene load_steps=19 format=3 uid="uid://dpel6cas7swbb"]
 
-[ext_resource type="Script" uid="uid://drd5qda8lm8pg" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
+[ext_resource type="Script" uid="uid://cs84lgop3kgvw" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
 [ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="2_o7rqj"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="3_y4rrx"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="4_y4rrx"]
@@ -292,7 +292,6 @@ script = ExtResource("1_oodwm")
 DisplayRoomId = NodePath("pn_Background/le_RoomId")
 DisplayBetAmount = NodePath("pn_Background/le_BetAmount")
 DisplayPlayerInfos = [NodePath("pn_Background/DisplayPlayerInfo0"), NodePath("pn_Background/DisplayPlayerInfo1"), NodePath("pn_Background/DisplayPlayerInfo2"), NodePath("pn_Background/DisplayPlayerInfo3")]
-MoneyChanging = [NodePath("pn_Background/DisplayPlayerInfo0"), NodePath("pn_Background/DisplayPlayerInfo1"), NodePath("pn_Background/DisplayPlayerInfo2"), NodePath("pn_Background/DisplayPlayerInfo3")]
 LeaveRoom = NodePath("pn_Background/btn_LeaveRoom")
 StartGameButton = NodePath("pn_Background/btn_StartGame")
 startEffect = NodePath("StartEffect")
