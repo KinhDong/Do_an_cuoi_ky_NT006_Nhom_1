@@ -1,9 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://bew6ci501nue0"]
+[gd_scene load_steps=19 format=3 uid="uid://bew6ci501nue0"]
 
-[ext_resource type="Script" uid="uid://ba4hpt4kechhq" path="res://Scenes/PlayAsPlayer/PlayAsPlayerScreen.cs" id="1_as1e0"]
+[ext_resource type="Script" uid="uid://cijuoskpxaece" path="res://Scenes/PlayAsPlayer/PlayAsPlayerScreen.cs" id="1_as1e0"]
 [ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="1_so6yb"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="4_bldg0"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="4_fxv46"]
+[ext_resource type="PackedScene" uid="uid://c2uhoxinuhglu" path="res://Scenes/EffectManager/StartEffect.tscn" id="5_bldg0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fxv46"]
 bg_color = Color(0.41, 0.16400002, 0, 1)
@@ -286,12 +287,13 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="PlayAsPlayerScreen" type="Node2D" node_paths=PackedStringArray("DisplayRoomId", "DisplayBetAmount", "LeaveRoom", "DisplayPlayerInfos", "HitButton", "StandButton", "anim", "timer")]
+[node name="PlayAsPlayerScreen" type="Node2D" node_paths=PackedStringArray("DisplayRoomId", "DisplayBetAmount", "LeaveRoom", "DisplayPlayerInfos", "startEffect", "HitButton", "StandButton", "anim", "timer")]
 script = ExtResource("1_as1e0")
 DisplayRoomId = NodePath("pn_Background/le_RoomId")
 DisplayBetAmount = NodePath("pn_Background/le_BetAmount")
 LeaveRoom = NodePath("pn_Background/btn_LeaveRoom")
 DisplayPlayerInfos = [NodePath("pn_Background/DisplayPlayerInfo0"), NodePath("pn_Background/DisplayPlayerInfo1"), NodePath("pn_Background/DisplayPlayerInfo2"), NodePath("pn_Background/DisplayPlayerInfo3")]
+startEffect = NodePath("StartEffect")
 HitButton = NodePath("pn_Background/btn_Hit")
 StandButton = NodePath("pn_Background/btn_Stand")
 anim = NodePath("pn_Background/ttr_Table/AnimationPlayer")
@@ -651,3 +653,6 @@ text = "Dằn
 "
 
 [node name="Timer" type="Timer" parent="pn_Background"]
+
+[node name="StartEffect" parent="." instance=ExtResource("5_bldg0")]
+visible = false

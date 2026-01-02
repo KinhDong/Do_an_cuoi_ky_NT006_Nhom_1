@@ -1,9 +1,10 @@
-[gd_scene load_steps=18 format=3 uid="uid://dpel6cas7swbb"]
+[gd_scene load_steps=19 format=3 uid="uid://dpel6cas7swbb"]
 
-[ext_resource type="Script" uid="uid://b0c6jnfm52s64" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
+[ext_resource type="Script" uid="uid://drd5qda8lm8pg" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
 [ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="2_o7rqj"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="3_y4rrx"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="4_y4rrx"]
+[ext_resource type="PackedScene" uid="uid://c2uhoxinuhglu" path="res://Scenes/EffectManager/StartEffect.tscn" id="5_li0bm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o7rqj"]
 bg_color = Color(0.41, 0.16400002, 0, 1)
@@ -286,13 +287,15 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="PlayAsBookmakerScreen" type="Node2D" node_paths=PackedStringArray("DisplayRoomId", "DisplayBetAmount", "DisplayPlayerInfos", "LeaveRoom", "StartGameButton", "anim")]
+[node name="PlayAsBookmakerScreen" type="Node2D" node_paths=PackedStringArray("DisplayRoomId", "DisplayBetAmount", "DisplayPlayerInfos", "MoneyChanging", "LeaveRoom", "StartGameButton", "startEffect", "anim")]
 script = ExtResource("1_oodwm")
 DisplayRoomId = NodePath("pn_Background/le_RoomId")
 DisplayBetAmount = NodePath("pn_Background/le_BetAmount")
 DisplayPlayerInfos = [NodePath("pn_Background/DisplayPlayerInfo0"), NodePath("pn_Background/DisplayPlayerInfo1"), NodePath("pn_Background/DisplayPlayerInfo2"), NodePath("pn_Background/DisplayPlayerInfo3")]
+MoneyChanging = [NodePath("pn_Background/DisplayPlayerInfo0"), NodePath("pn_Background/DisplayPlayerInfo1"), NodePath("pn_Background/DisplayPlayerInfo2"), NodePath("pn_Background/DisplayPlayerInfo3")]
 LeaveRoom = NodePath("pn_Background/btn_LeaveRoom")
 StartGameButton = NodePath("pn_Background/btn_StartGame")
+startEffect = NodePath("StartEffect")
 anim = NodePath("pn_Background/ttr_Table/AnimDealer")
 
 [node name="pn_Background" type="Panel" parent="."]
@@ -648,3 +651,6 @@ offset_left = 37.31079
 offset_top = 234.9621
 offset_right = 37.31079
 offset_bottom = 234.9621
+
+[node name="StartEffect" parent="." instance=ExtResource("5_li0bm")]
+visible = false
