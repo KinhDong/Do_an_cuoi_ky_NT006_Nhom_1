@@ -35,10 +35,25 @@ public partial class PlayAsPlayerScreen : Node2D
 	// Biến để theo dõi lượt chơi hiện tại
 	private string currentPlayerTurn;
 
-	public override void _Ready()
+	//nhạc nền
+    [Export] public AudioStream BackgroundMusic;
+
+    //âm thanh hiệu ứng 
+    [Export] public AudioStream sfxClick;
+    [Export] public AudioStream sfxDealCard;
+    [Export] public AudioStream sfxWin;
+    [Export] public AudioStream sfxLose;
+    [Export] public AudioStream sfxStartGame;
+    public override void _Ready()
 	{
-		// Hiển thị thông tin chung
-		DisplayRoomId.Text = RoomClass.CurrentRoom.RoomId;
+        // Phát nhạc nền
+        if (BackgroundMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(BackgroundMusic);
+        }
+
+        // Hiển thị thông tin chung
+        DisplayRoomId.Text = RoomClass.CurrentRoom.RoomId;
 		DisplayBetAmount.Text = RoomClass.CurrentRoom.BetAmount.ToString();
 
 		// Rời phòng
@@ -93,7 +108,12 @@ public partial class PlayAsPlayerScreen : Node2D
 		EventListener.Start();
 
 		CurrTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"); // Thời gian hiện tại
-	}
+
+        // Gán tiếng click cho các nút
+        HitButton.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
+        StandButton.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
+        LeaveRoom.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
+    }
 
 	private async void OnLeaveRoomPressed()
 	{
@@ -206,7 +226,8 @@ public partial class PlayAsPlayerScreen : Node2D
 
 	private void UpdateStartGame()
 	{
-		RoomClass.CurrentRoom.Status = "PLAYING";
+        AudioManager.Instance.PlaySFX(sfxStartGame); // Phát âm thanh bắt đầu game
+        RoomClass.CurrentRoom.Status = "PLAYING";
 		OS.Alert("Ván mới đã bắt đầu!");
 	}
 
@@ -215,7 +236,8 @@ public partial class PlayAsPlayerScreen : Node2D
 		int cardIndex = RoomClass.CurrentRoom.Players[pid].Hands.Count;
 		RoomClass.CurrentRoom.Players[pid].Hands.Add(cardIndex, (rank, suit));
 
-		if(pid != UserClass.Uid)
+        AudioManager.Instance.PlaySFX(sfxDealCard);// Phát âm thanh chia bài
+        if (pid != UserClass.Uid)
 		{
 			int seat = RoomClass.CurrentRoom.Players[pid].Seat;
 			anim.Play($"DealPlayer{seat}");
@@ -243,8 +265,8 @@ public partial class PlayAsPlayerScreen : Node2D
 
 		var score = RoomClass.CurrentRoom.Players[playerId].CaclulateScore();
 		GD.Print($"Score: {score.Item1}, Strength: {score.Item2}");
-
-		if(score.Item2 != 1)
+        await Task.Delay(500);
+        if (score.Item2 != 1)
 		{
 			StandButton.Disabled = false;
 			return;
@@ -310,7 +332,8 @@ public partial class PlayAsPlayerScreen : Node2D
 	private async void UpdateResultProcess()
 	{
 		ShowCards(RoomClass.CurrentRoom.HostId); // Show bài của Cái
-	}
+        await Task.Delay(500);
+    }
 
 	private async void UpdateResult(string pid, string result)
 	{
@@ -331,12 +354,14 @@ public partial class PlayAsPlayerScreen : Node2D
 			{
 				// Animation
 				change = betAmout;
-			}
+                AudioManager.Instance.PlaySFX(sfxWin);// Phát âm thanh thắng
+            }
 			else
 			{
 				// Animation
 				change = - betAmout;
-			} 
+                AudioManager.Instance.PlaySFX(sfxLose); // Phát âm thanh thua
+            } 
 			RoomClass.CurrentRoom.Players[RoomClass.CurrentRoom.HostId].Money -= change;
 			DisplayPlayerInfos[0].UpdateMoney(
 				RoomClass.CurrentRoom.Players[RoomClass.CurrentRoom.HostId].Money);

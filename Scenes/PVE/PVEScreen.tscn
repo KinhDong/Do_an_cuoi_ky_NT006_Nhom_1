@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://cl0grfs1yhp2o"]
+[gd_scene load_steps=17 format=3 uid="uid://cl0grfs1yhp2o"]
 
-[ext_resource type="Texture2D" uid="uid://8krl6jdbpj3t" path="res://Assets/Table.png" id="1_25yo6"]
-[ext_resource type="Script" uid="uid://b6n0afgim500x" path="res://Scenes/PVE/PveScreen.cs" id="1_d3irp"]
+[ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="1_25yo6"]
+[ext_resource type="Script" uid="uid://bxecja3ne1am2" path="res://Scenes/PVE/PveScreen.cs" id="1_d3irp"]
+[ext_resource type="AudioStream" uid="uid://cpsv5ixt70cx" path="res://Audio/Music/kiepdoden.ogg" id="2_b2d8i"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="2_d3irp"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="3_b2d8i"]
 
@@ -238,6 +239,7 @@ DisplayP = NodePath("pn_Background/DisplayPlayerInfo1")
 anim = NodePath("pn_Background/ttr_Table/AnimationPlayer")
 ECards = [NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card0"), NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card1"), NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card2"), NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card3"), NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card4")]
 PCards = [NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card0"), NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card1"), NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card2"), NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card3"), NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card4")]
+BackgroundMusic = ExtResource("2_b2d8i")
 
 [node name="pn_Background" type="Panel" parent="."]
 offset_left = 3.0

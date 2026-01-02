@@ -12,14 +12,21 @@ public partial class ProfileScreen : Control
 	[Export] private LineEdit Money;
 	[Export] private Button Exit;
 	[Export] private AnimationPlayer anim;
+    [Export] public AudioStream BackgroundMusic;
 
 	// Thêm một FileDialog để chọn ảnh
 	private FileDialog avatarDialog;
 
 	public override void _Ready()
 	{
-		// Tải Avatar từ UserClass
-		if (UserClass.Avatar != null)
+        // Phát nhạc nền
+        if (BackgroundMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(BackgroundMusic);
+        }
+
+        // Tải Avatar từ UserClass
+        if (UserClass.Avatar != null)
 		{
 			Avatar.Texture = UserClass.Avatar;
 		}

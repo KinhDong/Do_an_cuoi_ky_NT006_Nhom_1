@@ -18,10 +18,17 @@ public partial class PveScreen : Node2D
 	[Export] Array<Sprite2D> ECards;
 	[Export] Array<Sprite2D> PCards;
 	HashSet<(int, int)> DeckOfCards;
+    [Export] public AudioStream BackgroundMusic;
 
 	public override void _Ready()
 	{
-		E = new PlayerClass
+        // Phát nhạc nền
+        if (BackgroundMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(BackgroundMusic);
+        }
+
+        E = new PlayerClass
 		{
 			InGameName = "Environment",
 			Money = 9999,

@@ -14,11 +14,18 @@ public partial class LoginScreen : Control
 	private Texture2D EyeOpenTexture;
 	private Texture2D EyeClosedTexture;
 	[Export] private TextureButton HidePasswordButton;
+    [Export] public AudioStream BackgroundMusic;
 
-	// Mở màn hình
-	public override void _Ready()
+    // Mở màn hình
+    public override void _Ready()
 	{
-		LoginButton.Pressed += OnLogginButtonPressed;
+        // Phát nhạc nền
+        if (BackgroundMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(BackgroundMusic);
+        }
+
+        LoginButton.Pressed += OnLogginButtonPressed;
 
 		RegisterButton.Pressed += OnRegisterButtonPressed;
 
@@ -31,7 +38,7 @@ public partial class LoginScreen : Control
 		HidePasswordButton.Pressed += OnHidePasswordButtonPressed;
 
 		anim.Play("Login_Appear");
-	}
+    }
 	
 	// Nhấn nút Đăng nhập
 	private async void OnLogginButtonPressed()

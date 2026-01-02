@@ -31,10 +31,24 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	private int currentTurn;
 
-	public override void _Ready()
+    [Export] public AudioStream BackgroundMusic;
+
+    [Export] public AudioStream sfxClick;
+    [Export] public AudioStream sfxDeal;
+    [Export] public AudioStream sfxWin;   
+    [Export] public AudioStream sfxLose;  
+    [Export] public AudioStream sfxStart;
+
+    public override void _Ready()
 	{
-		// Hiển thị thông tin chung
-		DisplayRoomId.Text = RoomClass.CurrentRoom.RoomId;
+        // Phát nhạc nền
+        if (BackgroundMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(BackgroundMusic);
+        }
+
+        // Hiển thị thông tin chung
+        DisplayRoomId.Text = RoomClass.CurrentRoom.RoomId;
 		DisplayBetAmount.Text = RoomClass.CurrentRoom.BetAmount.ToString();
 
 		// Hiển thị thông tin bản thân
@@ -79,7 +93,11 @@ public partial class PlayAsBookmakerScreen : Node2D
 		};		
 
 		EventListener.Start();
-	}
+
+        // Hiệu ứng âm thanh
+        StartGameButton.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
+        LeaveRoom.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
+    }
 
 	private async void OnLeaveRoomPressed()
 	{
@@ -183,8 +201,9 @@ public partial class PlayAsBookmakerScreen : Node2D
 			OS.Alert("Chưa đủ người để bắt đầu ván.");
 			return;
 		}
+        AudioManager.Instance.PlaySFX(sfxStart);
 
-		bool started = await StartNewRound();
+        bool started = await StartNewRound();
 		if(started) StartGameButton.Disabled = true;
 		else return;
 
@@ -253,8 +272,10 @@ public partial class PlayAsBookmakerScreen : Node2D
 			await FirebaseApi.Put(
 				$"Rooms/{RoomClass.CurrentRoom.RoomId}/Players/{pid}/Hands/{cardIndex}", 
 				card);
-			
-			if(pid != UserClass.Uid)
+
+            AudioManager.Instance.PlaySFX(sfxDeal);
+
+            if (pid != UserClass.Uid)
 			{
 				int seat = RoomClass.CurrentRoom.Players[pid].Seat;
 				anim.Play($"DealPlayer{seat}");
@@ -331,7 +352,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 	private async void UpdateStand(string playerId)
 	{
 		currentTurn++;
-		if(currentTurn < TurnOrder.Count)		
+        await Task.Delay(500);
+        if (currentTurn < TurnOrder.Count)		
 			HitOrStandPlayer(TurnOrder[currentTurn]); // Tiến đến player tiếp theo	
 
 		else HitOrStandBookmaker();
@@ -364,12 +386,14 @@ public partial class PlayAsBookmakerScreen : Node2D
 				string result = Result(pScore, myScore);
 				if (result == "win")
 				{
-					pMoney += betAmout;
+                    AudioManager.Instance.PlaySFX(sfxWin);
+                    pMoney += betAmout;
 					myMoney -= betAmout;
 				} 
 				else if (result == "lose")
 				{
-					pMoney -= betAmout;
+                    AudioManager.Instance.PlaySFX(sfxLose);
+                    pMoney -= betAmout;
 					myMoney += betAmout;
 				}
 

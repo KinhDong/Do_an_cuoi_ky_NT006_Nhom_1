@@ -9,10 +9,15 @@ public partial class MenuScreen : Control
 	[Export] Button ExitGameButton;
 	[Export] Button SettingButton;
 	[Export] Button ProfileButton;
-
+    [Export] public AudioStream BackgroundMusic;
 	public override void _Ready()
 	{
-		PlayButton.Pressed += OpenModeSeclectionScreen;
+        // Phát nhạc nền
+        if (BackgroundMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(BackgroundMusic);
+        }
+        PlayButton.Pressed += OpenModeSeclectionScreen;
 
 		ExitGameButton.Pressed += OnExitGameButtonPressed;
 

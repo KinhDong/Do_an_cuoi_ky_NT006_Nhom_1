@@ -12,11 +12,18 @@ public partial class CreateRoom : Node2D
 	[Export] CheckBox Bet10;
 	[Export] CheckBox Bet20;
 	[Export] CheckBox Bet50;
+    [Export] public AudioStream BackgroundMusic;
 	
 	public override void _Ready()
     {
-		//Nút "Tạo phòng"
-		CreateRoomWithCondition.Pressed += PlayAsBookMaker;
+        // Phát nhạc nền
+        if (BackgroundMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(BackgroundMusic);
+        }
+
+        //Nút "Tạo phòng"
+        CreateRoomWithCondition.Pressed += PlayAsBookMaker;
 
 		//Nút "Quay về"
 		Return.Pressed += GoBackToCreateOrJoin;

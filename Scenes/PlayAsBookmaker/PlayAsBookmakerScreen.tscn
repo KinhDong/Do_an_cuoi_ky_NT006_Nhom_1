@@ -1,9 +1,15 @@
-[gd_scene load_steps=18 format=3 uid="uid://dpel6cas7swbb"]
+[gd_scene load_steps=24 format=3 uid="uid://dpel6cas7swbb"]
 
-[ext_resource type="Script" uid="uid://chcpicdnstqlh" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
-[ext_resource type="Texture2D" uid="uid://8krl6jdbpj3t" path="res://Assets/Table.png" id="2_o7rqj"]
+[ext_resource type="Script" uid="uid://dfe2h0m3obv4p" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
+[ext_resource type="AudioStream" uid="uid://cpsv5ixt70cx" path="res://Audio/Music/kiepdoden.ogg" id="2_li0bm"]
+[ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="2_o7rqj"]
+[ext_resource type="AudioStream" uid="uid://qi6a4i264bt1" path="res://Audio/SFX/click.ogg" id="3_canpr"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="3_y4rrx"]
+[ext_resource type="AudioStream" uid="uid://ckxv8teo61aef" path="res://Audio/SFX/deal.ogg" id="4_gq82j"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="4_y4rrx"]
+[ext_resource type="AudioStream" uid="uid://wri6uofi80py" path="res://Audio/SFX/win.ogg" id="5_pp4ku"]
+[ext_resource type="AudioStream" uid="uid://d3dsgw7q8cjeg" path="res://Audio/SFX/lose.ogg" id="6_qx4si"]
+[ext_resource type="AudioStream" uid="uid://cspsw141ane47" path="res://Audio/SFX/start.ogg" id="7_c200o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o7rqj"]
 bg_color = Color(0.41, 0.16400002, 0, 1)
@@ -294,6 +300,12 @@ DisplayPlayerInfos = [NodePath("pn_Background/DisplayPlayerInfo0"), NodePath("pn
 LeaveRoom = NodePath("pn_Background/btn_LeaveRoom")
 StartGameButton = NodePath("pn_Background/btn_StartGame")
 anim = NodePath("pn_Background/ttr_Table/AnimDealer")
+BackgroundMusic = ExtResource("2_li0bm")
+sfxClick = ExtResource("3_canpr")
+sfxDeal = ExtResource("4_gq82j")
+sfxWin = ExtResource("5_pp4ku")
+sfxLose = ExtResource("6_qx4si")
+sfxStart = ExtResource("7_c200o")
 
 [node name="pn_Background" type="Panel" parent="."]
 offset_left = 3.0
