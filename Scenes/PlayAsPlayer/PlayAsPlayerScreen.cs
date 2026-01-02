@@ -15,6 +15,8 @@ public partial class PlayAsPlayerScreen : Node2D
 	[Export] private Button LeaveRoom; // Rời phòng
 
 	[Export] Array<DisplayPlayerInfo> DisplayPlayerInfos;
+	[Export] Array<DisplayPlayerInfo> MoneyChanging;
+	[Export] StartEffect startEffect;
 
 	// Nút Hit/Stand
 	[Export] private Button HitButton;
@@ -233,6 +235,8 @@ public partial class PlayAsPlayerScreen : Node2D
 	{
 		room.Status = "DEAL_INIT";
 		OS.Alert("Ván mới đã bắt đầu!");
+		startEffect.Visible = true;
+		startEffect.startBanner();
 	}
 
 	private async void UpdateDeal(string pid, int rank, int suit)
@@ -274,6 +278,9 @@ public partial class PlayAsPlayerScreen : Node2D
 		var score = room.Players[playerId].CaclulateScore();
 		currentScore = score;
 		GD.Print($"Score: {score.Item1}, Strength: {score.Item2}");
+
+		int seat = RoomClass.CurrentRoom.Players[playerId].Seat;
+		DisplayPlayerInfos[seat].HighlightPlayerTurn();
 
 		if(score.Item2 != 1)
 		{
@@ -319,6 +326,8 @@ public partial class PlayAsPlayerScreen : Node2D
 	private void UpdateStand(string pid)
 	{
 		// Không làm sáng nữa
+		int seat = RoomClass.CurrentRoom.Players[pid].Seat;
+		DisplayPlayerInfos[seat].NotHighlightPlayerTurn();
 		DisplayPlayerInfos[room.Players[pid].Seat].EndCountdown();
 	}	
 
@@ -347,11 +356,13 @@ public partial class PlayAsPlayerScreen : Node2D
 			if (result == "win")
 			{
 				// Animation
+				MoneyChanging[room.Players[pid].Seat].AddMoneyEffect(betAmout);
 				change = betAmout;
 			}
 			else
 			{
 				// Animation
+				MoneyChanging[room.Players[pid].Seat].MinusMoneyEffect(betAmout);
 				change = - betAmout;
 			} 
 			room.Players[room.HostId].Money -= change;

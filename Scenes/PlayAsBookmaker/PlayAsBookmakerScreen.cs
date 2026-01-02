@@ -17,6 +17,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	// Hiển thị thông tin người chơi
 	[Export] Array<DisplayPlayerInfo> DisplayPlayerInfos;
+
+	[Export] Array<DisplayPlayerInfo> MoneyChanging;
 	
 	[Export] private Button LeaveRoom; // Rời phòng
 
@@ -26,6 +28,9 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	// --------------- Ván chơi -----------------
 	[Export] private Button StartGameButton;
+	
+	//Hiệu ứng
+	[Export] StartEffect startEffect;
 
 	HashSet<(int, int)> DeckOfCards; // Bộ bài
 	Random ran;
@@ -234,6 +239,9 @@ public partial class PlayAsBookmakerScreen : Node2D
 			await RoomEvent.PostRoomEventAsync(room.RoomId, "start_game");
 			room.Status = "DEAL_INIT";
 
+			startEffect.Visible = true;
+			startEffect.startBanner();
+
 			for(int i = 1; i < 4; i++) // Không lấy cái
 			{
 				string pid = room.Seats[i];
@@ -310,6 +318,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 			await RoomEvent.PostRoomEventAsync
 			(room.RoomId, "hit_or_stand", playerId);
 
+			int seat = RoomClass.CurrentRoom.Players[playerId].Seat;
+			DisplayPlayerInfos[seat].HighlightPlayerTurn();
 			DisplayPlayerInfos[room.Players[playerId].Seat].StartCountdown();
 		}
 
@@ -341,6 +351,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 	{
 		if (room.Players.ContainsKey(playerId))
 			DisplayPlayerInfos[room.Players[playerId].Seat].EndCountdown();
+		int seat = RoomClass.CurrentRoom.Players[playerId].Seat;
+		DisplayPlayerInfos[seat].NotHighlightPlayerTurn();
 		currentTurn++;
 		if(currentTurn < TurnOrder.Count)		
 			HitOrStandPlayer(TurnOrder[currentTurn]); // Tiến đến player tiếp theo	
@@ -372,11 +384,13 @@ public partial class PlayAsBookmakerScreen : Node2D
 				string result = Result(pScore, myScore);
 				if (result == "win")
 				{
+					MoneyChanging[room.Players[pid].Seat].AddMoneyEffect(betAmout);
 					pMoney += betAmout;
 					myMoney -= betAmout;
 				} 
 				else if (result == "lose")
 				{
+					MoneyChanging[room.Players[pid].Seat].MinusMoneyEffect(betAmout);
 					pMoney -= betAmout;
 					myMoney += betAmout;
 				}

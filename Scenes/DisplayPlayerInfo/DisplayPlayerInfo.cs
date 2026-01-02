@@ -11,6 +11,11 @@ public partial class DisplayPlayerInfo : Control
 	[Export] private LineEdit MoneyDisplay;
 	[Export] private Label TimerDisplay;
 	[Export] private Timer timer;
+	[Export] private Panel GlowingBorder;
+
+	[Export] private AnimationPlayer MoneyChange;
+	[Export] private Label AddMoney;
+	[Export] private Label MinusMoney;
 	int timeLeft;
 
 	public override void _Ready()
@@ -53,5 +58,27 @@ public partial class DisplayPlayerInfo : Control
 		TimerDisplay.Text = timeLeft.ToString();
 		if(timeLeft < -20)
 			EndCountdown();
+	}
+
+	public void HighlightPlayerTurn()
+	{
+		GlowingBorder.Visible = true;
+	}
+
+	public void NotHighlightPlayerTurn()
+	{
+		GlowingBorder.Visible = false;
+	}
+
+	public void AddMoneyEffect(long add)
+	{
+		AddMoney.Text = $"+{add}";
+		MoneyChange.Play("add_money");
+	}
+
+	public void MinusMoneyEffect(long minus)
+	{
+		MinusMoney.Text = $"-{minus}";
+		MoneyChange.Play("minus_money");
 	}
 }
