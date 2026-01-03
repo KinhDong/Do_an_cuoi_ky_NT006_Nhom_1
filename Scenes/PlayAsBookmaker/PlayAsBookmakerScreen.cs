@@ -370,7 +370,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 			(int, int) myScore = room.Players[UserClass.Uid].CaclulateScore();
 
-			long betAmout = room.BetAmount;
+			int betAmout = room.BetAmount;
 			long myMoney = UserClass.Money;
 
 			foreach (string pid in TurnOrder)
@@ -404,6 +404,33 @@ public partial class PlayAsBookmakerScreen : Node2D
 				DisplayPlayerInfos[pSeat].UpdateMoney(pMoney);
 
 				await RoomEvent.PostRoomEventAsync(room.RoomId, result, pid);
+
+				// Thêm lịch sử kết quả
+				var matchHistory = new MatchHistory
+				{
+					Datetime = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+					RoomId = room.RoomId,
+					You = new PlayerResult
+					{
+						PlayerInGameName = UserClass.InGameName,
+						Role = "bookmaker",
+						Score = myScore.Item1,
+						Strength = myScore.Item2,
+						Result = result,
+						MoneyChange = betAmout
+					},
+					Opponent = new PlayerResult
+					{
+						PlayerInGameName = room.Players[pid].InGameName,
+						Role = "player",
+						Score = pScore.Item1,
+						Strength = pScore.Item2,
+						Result = result == "win" ? "lose" : result == "lose" ? "win" : "draw",
+						MoneyChange = betAmout
+					}
+				};
+
+				await FirebaseApi.Post($"Users/{UserClass.Uid}/MatchHistories", matchHistory);
 			}
 
 			// Cập nhật:

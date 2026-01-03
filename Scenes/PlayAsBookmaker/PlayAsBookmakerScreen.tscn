@@ -287,7 +287,7 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="PlayAsBookmakerScreen" type="Node2D" node_paths=PackedStringArray("DisplayRoomId", "DisplayBetAmount", "DisplayPlayerInfos", "MoneyChanging", "LeaveRoom", "StartGameButton", "startEffect", "anim")]
+[node name="PlayAsBookmakerScreen" type="Node2D" node_paths=PackedStringArray("DisplayRoomId", "DisplayBetAmount", "DisplayPlayerInfos", "LeaveRoom", "StartGameButton", "startEffect", "anim")]
 script = ExtResource("1_oodwm")
 DisplayRoomId = NodePath("pn_Background/le_RoomId")
 DisplayBetAmount = NodePath("pn_Background/le_BetAmount")

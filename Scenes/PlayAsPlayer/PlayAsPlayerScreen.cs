@@ -339,14 +339,8 @@ public partial class PlayAsPlayerScreen : Node2D
 		{			
 			if (pid != UserClass.Uid) ShowCards(pid); // Show bài của Player
 
-			if (result == "draw")
-			{
-				// Animation các thứ
-				return;
-			}
-
-			long betAmout = room.BetAmount;
-			long change = 0;
+			int betAmout = room.BetAmount;
+			int change = 0;
 			int pSeat = room.Players[pid].Seat;
 
 			if (result == "win")
@@ -356,7 +350,7 @@ public partial class PlayAsPlayerScreen : Node2D
 				DisplayPlayerInfos[0].MinusMoneyEffect(betAmout);
 				change = betAmout;
 			}
-			else
+			else if (result == "lose")
 			{
 				// Animation
 				DisplayPlayerInfos[pSeat].MinusMoneyEffect(betAmout);
@@ -376,6 +370,37 @@ public partial class PlayAsPlayerScreen : Node2D
 				UserClass.Money += change;
 				await FirebaseApi.Put($"Users/{UserClass.Uid}/Money", UserClass.Money);
 				await FirebaseApi.Put($"Rooms/{room.RoomId}/Players/{UserClass.Uid}/Money", UserClass.Money);
+			
+				// Thêm lịch sử kết quả
+				var playerResult = new PlayerResult
+				{
+					PlayerInGameName = UserClass.InGameName,
+					Role = "Người chơi",
+					Score = room.Players[pid].CaclulateScore().Item1,
+					Strength = room.Players[pid].CaclulateScore().Item2,
+					Result = result,
+					MoneyChange = change
+				};
+
+				var bookmakerResult = new PlayerResult
+				{
+					PlayerInGameName = room.Players[room.HostId].InGameName,
+					Role = "Cái",
+					Score = room.Players[room.HostId].CaclulateScore().Item1,
+					Strength = room.Players[room.HostId].CaclulateScore().Item2,
+					Result = result == "win" ? "lose" : result == "lose" ? "win" : "draw",
+					MoneyChange = change
+				};
+
+				var matchHistory = new MatchHistory
+				{
+					Datetime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm"),
+					RoomId = room.RoomId,
+					You = playerResult,
+					Opponent = bookmakerResult
+				};
+
+				await FirebaseApi.Post($"Users/{UserClass.Uid}/MatchHistories", matchHistory);
 			}				
 		}
 

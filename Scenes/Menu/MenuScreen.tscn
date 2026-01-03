@@ -1,11 +1,12 @@
-[gd_scene load_steps=15 format=3 uid="uid://b8lr7yqdp75ev"]
+[gd_scene load_steps=17 format=3 uid="uid://b8lr7yqdp75ev"]
 
-[ext_resource type="Script" uid="uid://bww5e1ivfsotk" path="res://Scenes/Menu/MenuScreen.cs" id="1_5xyd2"]
+[ext_resource type="Script" uid="uid://bpe48ap7f46bi" path="res://Scenes/Menu/MenuScreen.cs" id="1_5xyd2"]
 [ext_resource type="Texture2D" uid="uid://b0jqlqa7b4e34" path="res://Assets/Menu_Background.jpg" id="1_tr0oe"]
 [ext_resource type="Texture2D" uid="uid://wyxx84wrkay4" path="res://Assets/Blackjack_Logo.png" id="3_66ftb"]
 [ext_resource type="Texture2D" uid="uid://d3axkvylbge6m" path="res://Assets/Setting_Icon.png" id="4_00dl2"]
 [ext_resource type="Texture2D" uid="uid://d4hcxr785sg82" path="res://Assets/accountprofile.png" id="5_00dl2"]
 [ext_resource type="Texture2D" uid="uid://erc20fn3sgrx" path="res://Assets/Leaderboard_Icon.jpg" id="6_jfwrt"]
+[ext_resource type="Texture2D" uid="uid://c22rcfuj4vj74" path="res://Assets/MatchHistories_Icon.jpg" id="7_8ga1o"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x4ls7"]
 texture = ExtResource("1_tr0oe")
@@ -46,7 +47,10 @@ texture = ExtResource("4_00dl2")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfwrt"]
 texture = ExtResource("5_00dl2")
 
-[node name="MenuScreen" type="Control" node_paths=PackedStringArray("PlayButton", "HowToPlayButton", "ExitGameButton", "SettingButton", "ProfileButton", "LeaderboardButton")]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5ydrk"]
+texture = ExtResource("7_8ga1o")
+
+[node name="MenuScreen" type="Control" node_paths=PackedStringArray("PlayButton", "HowToPlayButton", "ExitGameButton", "SettingButton", "ProfileButton", "LeaderboardButton", "MatchHistoryButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -60,6 +64,7 @@ ExitGameButton = NodePath("pn_Background/btn_ExitGame")
 SettingButton = NodePath("pn_Background/btn_Setting")
 ProfileButton = NodePath("pn_Background/btn_Profile")
 LeaderboardButton = NodePath("pn_Background/btn_Leaderboard")
+MatchHistoryButton = NodePath("pn_Background/btn_MatchHistories")
 
 [node name="pn_Background" type="Panel" parent="."]
 layout_mode = 0
@@ -186,3 +191,11 @@ offset_bottom = 187.0
 texture_normal = ExtResource("6_jfwrt")
 ignore_texture_size = true
 stretch_mode = 6
+
+[node name="btn_MatchHistories" type="Button" parent="pn_Background"]
+layout_mode = 0
+offset_left = 1099.0
+offset_top = 230.0
+offset_right = 1155.0
+offset_bottom = 283.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_5ydrk")

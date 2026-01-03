@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://provrhb8tp21"]
 
-[ext_resource type="Script" uid="uid://bn5opq2rrml4e" path="res://Scenes/CreateOrJoinRoomScreen/CreateOrJoinRoom.cs" id="1_52jrd"]
+[ext_resource type="Script" uid="uid://b4401nlupm2tr" path="res://Scenes/CreateOrJoinRoomScreen/CreateOrJoinRoom.cs" id="1_52jrd"]
 [ext_resource type="Texture2D" uid="uid://b0jqlqa7b4e34" path="res://Assets/Menu_Background.jpg" id="2_ifb2r"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8yfev"]

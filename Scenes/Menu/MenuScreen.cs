@@ -10,6 +10,7 @@ public partial class MenuScreen : Control
 	[Export] Button SettingButton;
 	[Export] Button ProfileButton;
 	[Export] TextureButton LeaderboardButton;
+	[Export] Button MatchHistoryButton;
 
 	public override void _Ready()
 	{
@@ -20,6 +21,8 @@ public partial class MenuScreen : Control
 		ProfileButton.Pressed += OnProfileButtonPressed;
 
 		LeaderboardButton.Pressed += OnLeaderboardButtonPressed;
+
+		MatchHistoryButton.Pressed += OnMatchHistoryButtonPressed;
 	}
 
 	//Mở màn hình chọn chế độ chơi
@@ -48,5 +51,12 @@ public partial class MenuScreen : Control
 		var LeaderboardScene = GD.Load<PackedScene>(@"Scenes\Leaderboard\Leaderboard.tscn");
 
 		AddChild(LeaderboardScene.Instantiate());
+	}
+
+	private void OnMatchHistoryButtonPressed()
+	{
+		var MatchHistoryScene = GD.Load<PackedScene>(@"Scenes\MatchHistories\MatchHistoriesScenes.tscn");
+
+		AddChild(MatchHistoryScene.Instantiate());
 	}
 }

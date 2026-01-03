@@ -1,0 +1,80 @@
+[gd_scene load_steps=8 format=3 uid="uid://cl3v6hmhea81n"]
+
+[ext_resource type="Texture2D" uid="uid://civfw8nh0xirt" path="res://Assets/Exit_Icon.png" id="1_8h55a"]
+[ext_resource type="Script" uid="uid://bvm1uj5rynn6h" path="res://Scenes/MatchHistories/MatchHistoriesScenes.cs" id="1_678jm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t8tol"]
+bg_color = Color(0.6, 0.6, 0.6, 0.58431375)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8h55a"]
+bg_color = Color(0.05882353, 0.5137255, 0.39215687, 0.61960787)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_678jm"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pisgc"]
+bg_color = Color(0.31938878, 0.6197531, 0.90868056, 0)
+border_width_left = 4
+border_width_top = 6
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.6509804, 0.57254905, 0.3254902, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_678jm"]
+texture = ExtResource("1_8h55a")
+
+[node name="MatchHistoriesScenes" type="Node2D" node_paths=PackedStringArray("ExitButton", "MatchHistoryContainer")]
+script = ExtResource("1_678jm")
+ExitButton = NodePath("Panel/btn_Exit")
+MatchHistoryContainer = NodePath("Panel/Panel/ScrollContainer/VBoxContainer")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1200.0
+offset_bottom = 799.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_t8tol")
+
+[node name="Panel" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 57.0
+offset_top = 32.0
+offset_right = 1137.0
+offset_bottom = 748.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8h55a")
+
+[node name="Label" type="Label" parent="Panel/Panel"]
+layout_mode = 0
+offset_left = 372.0
+offset_top = 29.0
+offset_right = 686.0
+offset_bottom = 98.0
+theme_override_colors/font_color = Color(0.45882353, 0.08235294, 0.29803923, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxFlat_678jm")
+text = "LỊCH SỬ ĐẤU"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/Panel"]
+layout_mode = 0
+offset_left = 226.0
+offset_top = 133.0
+offset_right = 856.0
+offset_bottom = 653.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pisgc")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/Panel/ScrollContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 8
+
+[node name="btn_Exit" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 1099.0
+offset_top = 7.0
+offset_right = 1167.0
+offset_bottom = 72.04379
+theme_override_styles/normal = SubResource("StyleBoxTexture_678jm")

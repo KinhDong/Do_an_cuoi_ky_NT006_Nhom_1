@@ -1,0 +1,246 @@
+[gd_scene load_steps=18 format=3 uid="uid://dgt8cciu52k22"]
+
+[ext_resource type="Script" uid="uid://pj17dx24w2p5" path="res://Scenes/MatchResult/MatchResultScenes.cs" id="1_ynm6k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n6nn6"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mb15c"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_girhs"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 4
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x1u1d"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 4
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtcml"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 4
+border_width_right = 2
+border_width_bottom = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sibvk"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a41gp"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_right = 2
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rqlfy"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1wgwb"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3h3kl"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hqjck"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_right = 4
+border_width_bottom = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hrkmr"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 4
+border_width_right = 2
+border_width_bottom = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ygmfd"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1rycc"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8h0fj"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_right = 2
+border_width_bottom = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2xf6b"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 2
+border_width_right = 4
+border_width_bottom = 4
+
+[node name="MatchResult" type="Control" node_paths=PackedStringArray("RoomIdLabel", "TimeLabel", "ResultContainer")]
+custom_minimum_size = Vector2(0, 137)
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 3
+script = ExtResource("1_ynm6k")
+RoomIdLabel = NodePath("Panel/RoomId")
+TimeLabel = NodePath("Panel/Datetime")
+ResultContainer = NodePath("GridContainer")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 615.1
+offset_bottom = 137.6
+theme_override_styles/panel = SubResource("StyleBoxFlat_n6nn6")
+
+[node name="RoomId" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 113.099976
+offset_top = 11.600006
+offset_right = 189.19995
+offset_bottom = 60.600006
+text = "0000"
+
+[node name="Datetime" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 448.09998
+offset_top = 15.600006
+offset_right = 602.1
+offset_bottom = 58.200012
+text = "2026/01/03 10:26:00"
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 15.099976
+offset_top = 11.600006
+offset_right = 97.099976
+offset_bottom = 34.600006
+text = "Mã phòng:"
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 46.0
+offset_right = 603.0
+offset_bottom = 126.0
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 5
+
+[node name="Label" type="Label" parent="GridContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_mb15c")
+text = "Tên người chơi"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_girhs")
+text = "Vai trò"
+horizontal_alignment = 1
+
+[node name="Label3" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_x1u1d")
+text = "Điểm"
+
+[node name="Label4" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_rtcml")
+text = "Trạng thái bài"
+
+[node name="Label5" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_sibvk")
+text = "Cập nhật số tiền"
+
+[node name="PlayerName1" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_a41gp")
+text = "Bạn"
+horizontal_alignment = 1
+
+[node name="Role1" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_rqlfy")
+text = "Người chơi"
+horizontal_alignment = 1
+
+[node name="Score1" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_1wgwb")
+text = "21"
+horizontal_alignment = 1
+
+[node name="Strength1" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_3h3kl")
+text = "Xì dách"
+horizontal_alignment = 1
+
+[node name="MoneyChanged1" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_hqjck")
+text = "+ 50"
+horizontal_alignment = 1
+
+[node name="PlayerName2" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_hrkmr")
+text = "Đối thủ"
+horizontal_alignment = 1
+
+[node name="Role2" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_ygmfd")
+text = "Cái"
+horizontal_alignment = 1
+
+[node name="Socre2" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_1rycc")
+text = "23"
+horizontal_alignment = 1
+
+[node name="Strength2" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_8h0fj")
+text = "Quắc"
+horizontal_alignment = 1
+
+[node name="MoneyChanged2" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_2xf6b")
+text = "- 50"
+horizontal_alignment = 1
