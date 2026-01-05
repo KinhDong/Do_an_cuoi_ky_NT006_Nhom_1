@@ -16,6 +16,8 @@ public partial class MenuScreen : Control
 	{
 		PlayButton.Pressed += OpenModeSeclectionScreen;
 
+		HowToPlayButton.Pressed += OnHowToPlayButtonPressed;
+
 		ExitGameButton.Pressed += OnExitGameButtonPressed;
 
 		ProfileButton.Pressed += OnProfileButtonPressed;
@@ -29,6 +31,13 @@ public partial class MenuScreen : Control
 	private void OpenModeSeclectionScreen()
 	{
 		GetTree().ChangeSceneToFile("res://Scenes/GameModeSelection/ModeChoosing.tscn");
+	}
+
+	private void OnHowToPlayButtonPressed()
+	{
+		var HowToPlayScene = GD.Load<PackedScene>(@"Scenes\HowToPlayScenes\HowToPlayScenes.tscn");
+
+		AddChild(HowToPlayScene.Instantiate());
 	}
 
 	private async void OnExitGameButtonPressed()

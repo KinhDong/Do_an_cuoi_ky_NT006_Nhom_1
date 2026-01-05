@@ -190,6 +190,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 		room.Seats[CurrSeat] = null;
 		UnShowCards(Pid);
 		DisplayPlayerInfos[CurrSeat].Visible = false;
+		DisplayPlayerInfos[CurrSeat].NotHighlightPlayerTurn();
 		room.Players.Remove(Pid);
 		room.CurrentPlayers--;
 
@@ -350,9 +351,12 @@ public partial class PlayAsBookmakerScreen : Node2D
 	private async void UpdateStand(string playerId)
 	{
 		if (room.Players.ContainsKey(playerId))
-			DisplayPlayerInfos[room.Players[playerId].Seat].EndCountdown();
-		int seat = RoomClass.CurrentRoom.Players[playerId].Seat;
-		DisplayPlayerInfos[seat].NotHighlightPlayerTurn();
+		{
+			int seat = room.Players[playerId].Seat;
+			DisplayPlayerInfos[seat].EndCountdown();			
+			DisplayPlayerInfos[seat].NotHighlightPlayerTurn();
+		}
+
 		currentTurn++;
 		if(currentTurn < TurnOrder.Count)		
 			HitOrStandPlayer(TurnOrder[currentTurn]); // Tiến đến player tiếp theo	

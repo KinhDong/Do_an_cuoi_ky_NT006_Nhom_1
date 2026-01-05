@@ -148,17 +148,10 @@ public partial class PveScreen : Node2D
 		StandButton.Disabled = true;
 
 		// Máy rút bài: Buộc phải rút nếu < 17 (Luật cái)
-		while (E.CaclulateScore().Item1 < 17)
+		while (E.CaclulateScore().Item1 < 17 && E.Hands.Count < 5)
 		{
 			await Task.Delay(300);
-			if (E.CaclulateScore().Item1 < 5)
-			{
-				AddCardToHand(false, DrawCard());
-			}
-			else 
-			{
-				break; // Đủ 5 lá
-			}
+			AddCardToHand(false, DrawCard());
 		}
 
 		await Task.Delay(500);
