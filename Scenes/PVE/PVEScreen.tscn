@@ -1,9 +1,16 @@
-[gd_scene load_steps=16 format=3 uid="uid://cl0grfs1yhp2o"]
+[gd_scene load_steps=24 format=3 uid="uid://cl0grfs1yhp2o"]
 
-[ext_resource type="Texture2D" uid="uid://8krl6jdbpj3t" path="res://Assets/Table.png" id="1_25yo6"]
-[ext_resource type="Script" uid="uid://b6n0afgim500x" path="res://Scenes/PVE/PveScreen.cs" id="1_d3irp"]
+[ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="1_25yo6"]
+[ext_resource type="Script" uid="uid://co2tv3wtcw7pu" path="res://Scenes/PVE/PveScreen.cs" id="1_d3irp"]
+[ext_resource type="AudioStream" uid="uid://cpsv5ixt70cx" path="res://Audio/Music/kiepdoden.ogg" id="2_b2d8i"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="2_d3irp"]
+[ext_resource type="AudioStream" uid="uid://qi6a4i264bt1" path="res://Audio/SFX/click.ogg" id="3_5fsk8"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="3_b2d8i"]
+[ext_resource type="AudioStream" uid="uid://ckxv8teo61aef" path="res://Audio/SFX/deal.ogg" id="4_x442e"]
+[ext_resource type="AudioStream" uid="uid://cspsw141ane47" path="res://Audio/SFX/start.ogg" id="5_afahc"]
+[ext_resource type="AudioStream" uid="uid://wri6uofi80py" path="res://Audio/SFX/win.ogg" id="6_n3aw4"]
+[ext_resource type="AudioStream" uid="uid://d3dsgw7q8cjeg" path="res://Audio/SFX/lose.ogg" id="7_eas6l"]
+[ext_resource type="Texture2D" uid="uid://d3axkvylbge6m" path="res://Assets/Setting_Icon.png" id="11_x442e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sttbr"]
 bg_color = Color(0.41, 0.16400002, 0, 1)
@@ -215,35 +222,46 @@ _data = {
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w685s"]
-bg_color = Color(0.28937218, 0.6656634, 0.6924187, 1)
+bg_color = Color(0.289372, 0.665663, 0.692419, 1)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_61vfj"]
-bg_color = Color(0.039215688, 0.6, 0.95686275, 1)
+bg_color = Color(0.0392157, 0.6, 0.956863, 1)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="PveScreen" type="Node2D" node_paths=PackedStringArray("ExitButton", "HitButton", "StandButton", "DisplayE", "DisplayP", "anim", "ECards", "PCards")]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_afahc"]
+texture = ExtResource("11_x442e")
+
+[node name="PveScreen" type="Node2D" node_paths=PackedStringArray("ExitButton", "SettingButton", "HitButton", "StandButton", "DisplayE", "DisplayP", "anim")]
 script = ExtResource("1_d3irp")
 ExitButton = NodePath("pn_Background/btn_Exit")
+SettingButton = NodePath("pn_Background/btn_Setting")
 HitButton = NodePath("pn_Background/btn_Hit")
 StandButton = NodePath("pn_Background/btn_Stand")
 DisplayE = NodePath("pn_Background/DisplayPlayerInfo0")
 DisplayP = NodePath("pn_Background/DisplayPlayerInfo1")
 anim = NodePath("pn_Background/ttr_Table/AnimationPlayer")
-ECards = [NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card0"), NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card1"), NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card2"), NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card3"), NodePath("pn_Background/ttr_Table/CardsOfPlayer0/Card4")]
-PCards = [NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card0"), NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card1"), NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card2"), NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card3"), NodePath("pn_Background/ttr_Table/CardsOfPlayer1/Card4")]
+BackgroundMusic = ExtResource("2_b2d8i")
+sfxClick = ExtResource("3_5fsk8")
+sfxDeal = ExtResource("4_x442e")
+sfxStart = ExtResource("5_afahc")
+sfxWin = ExtResource("6_n3aw4")
+sfxLose = ExtResource("7_eas6l")
 
 [node name="pn_Background" type="Panel" parent="."]
 offset_left = 3.0
 offset_top = 2.0
 offset_right = 1199.0
 offset_bottom = 801.0
+mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_sttbr")
 metadata/_edit_use_anchors_ = true
 
@@ -260,6 +278,7 @@ offset_right = 533.0
 offset_bottom = 339.5
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("1_25yo6")
 metadata/_edit_group_ = true
 metadata/_edit_use_anchors_ = true
@@ -288,7 +307,7 @@ position = Vector2(628, 60)
 [node name="Card4" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer0"]
 visible = false
 position = Vector2(-148, 102)
-scale = Vector2(0.27466884, 0.27248704)
+scale = Vector2(0.274669, 0.272487)
 texture = ExtResource("2_d3irp")
 hframes = 13
 vframes = 5
@@ -296,7 +315,7 @@ vframes = 5
 [node name="Card2" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer0"]
 visible = false
 position = Vector2(-123.00006, 102)
-scale = Vector2(0.27466884, 0.27248704)
+scale = Vector2(0.274669, 0.272487)
 texture = ExtResource("2_d3irp")
 hframes = 13
 vframes = 5
@@ -304,7 +323,7 @@ vframes = 5
 [node name="Card0" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer0"]
 visible = false
 position = Vector2(-98, 102)
-scale = Vector2(0.27466884, 0.27248704)
+scale = Vector2(0.274669, 0.272487)
 texture = ExtResource("2_d3irp")
 hframes = 13
 vframes = 5
@@ -313,7 +332,7 @@ frame = 52
 [node name="Card1" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer0"]
 visible = false
 position = Vector2(-73, 102)
-scale = Vector2(0.27466884, 0.27248704)
+scale = Vector2(0.274669, 0.272487)
 texture = ExtResource("2_d3irp")
 hframes = 13
 vframes = 5
@@ -321,7 +340,7 @@ vframes = 5
 [node name="Card3" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer0"]
 visible = false
 position = Vector2(-48, 102)
-scale = Vector2(0.27466884, 0.27248704)
+scale = Vector2(0.274669, 0.272487)
 texture = ExtResource("2_d3irp")
 hframes = 13
 vframes = 5
@@ -332,7 +351,7 @@ position = Vector2(622, 294)
 [node name="Card4" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer1"]
 visible = false
 position = Vector2(-148, 102)
-scale = Vector2(0.27466884, 0.27248704)
+scale = Vector2(0.274669, 0.272487)
 texture = ExtResource("2_d3irp")
 hframes = 13
 vframes = 5
@@ -340,7 +359,7 @@ vframes = 5
 [node name="Card2" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer1"]
 visible = false
 position = Vector2(-123.00006, 102)
-scale = Vector2(0.27466884, 0.27248704)
+scale = Vector2(0.274669, 0.272487)
 texture = ExtResource("2_d3irp")
 hframes = 13
 vframes = 5
@@ -348,7 +367,7 @@ vframes = 5
 [node name="Card0" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer1"]
 visible = false
 position = Vector2(-98, 102)
-scale = Vector2(0.27466884, 0.27248704)
+scale = Vector2(0.274669, 0.272487)
 texture = ExtResource("2_d3irp")
 hframes = 13
 vframes = 5
@@ -357,7 +376,7 @@ frame = 28
 [node name="Card1" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer1"]
 visible = false
 position = Vector2(-73, 102)
-scale = Vector2(0.27466884, 0.27248704)
+scale = Vector2(0.274669, 0.272487)
 texture = ExtResource("2_d3irp")
 hframes = 13
 vframes = 5
@@ -365,7 +384,7 @@ vframes = 5
 [node name="Card3" type="Sprite2D" parent="pn_Background/ttr_Table/CardsOfPlayer1"]
 visible = false
 position = Vector2(-48, 102)
-scale = Vector2(0.27466884, 0.27248704)
+scale = Vector2(0.274669, 0.272487)
 texture = ExtResource("2_d3irp")
 hframes = 13
 vframes = 5
@@ -378,14 +397,14 @@ libraries = {
 [node name="btn_Exit" type="Button" parent="pn_Background"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.051225796
-anchor_top = 0.8734594
-anchor_right = 0.12669909
-anchor_bottom = 0.8734594
-offset_left = -34.266052
-offset_top = 23.105957
-offset_right = 94.467896
-offset_bottom = 74.211914
+anchor_left = 0.0512258
+anchor_top = 0.873459
+anchor_right = 0.126699
+anchor_bottom = 0.873459
+offset_left = -34.2661
+offset_top = 23.106
+offset_right = 94.4679
+offset_bottom = 74.2119
 theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxFlat_w685s")
 text = "Thôi không chơi nữa
@@ -411,14 +430,14 @@ metadata/_edit_use_anchors_ = true
 [node name="btn_Hit" type="Button" parent="pn_Background"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.8629192
-anchor_top = 0.7570211
-anchor_right = 0.8629192
-anchor_bottom = 0.7570211
-offset_left = -277.0514
-offset_top = -72.85986
+anchor_left = 0.862919
+anchor_top = 0.757021
+anchor_right = 0.862919
+anchor_bottom = 0.757021
+offset_left = -277.051
+offset_top = -72.8599
 offset_right = -160.0
-offset_bottom = -18.719727
+offset_bottom = -18.7197
 theme_override_font_sizes/font_size = 19
 theme_override_styles/normal = SubResource("StyleBoxFlat_61vfj")
 disabled = true
@@ -429,17 +448,25 @@ metadata/_edit_use_anchors_ = true
 [node name="btn_Stand" type="Button" parent="pn_Background"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.8629192
-anchor_top = 0.7570211
-anchor_right = 0.8629192
-anchor_bottom = 0.7570211
-offset_left = -686.0514
-offset_top = -73.85986
+anchor_left = 0.862919
+anchor_top = 0.757021
+anchor_right = 0.862919
+anchor_bottom = 0.757021
+offset_left = -686.051
+offset_top = -73.8599
 offset_right = -569.0
-offset_bottom = -19.719727
+offset_bottom = -19.7197
 theme_override_font_sizes/font_size = 19
 theme_override_styles/normal = SubResource("StyleBoxFlat_61vfj")
 disabled = true
 text = "Dằn
 "
 metadata/_edit_use_anchors_ = true
+
+[node name="btn_Setting" type="Button" parent="pn_Background"]
+layout_mode = 0
+offset_left = 1103.0
+offset_top = 17.0
+offset_right = 1180.0
+offset_bottom = 95.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_afahc")

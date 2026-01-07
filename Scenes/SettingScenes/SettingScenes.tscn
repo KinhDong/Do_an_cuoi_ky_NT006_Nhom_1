@@ -1,0 +1,92 @@
+[gd_scene load_steps=6 format=3 uid="uid://c01474a66tipv"]
+
+[ext_resource type="Script" uid="uid://ca8q7652f8iy7" path="res://Scenes/SettingScenes/SettingScenes.cs" id="1_cib2b"]
+[ext_resource type="Texture2D" uid="uid://civfw8nh0xirt" path="res://Assets/Exit_Icon.png" id="2_u3pln"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_amo3d"]
+bg_color = Color(0.6, 0.6, 0.6, 0.64705884)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cib2b"]
+bg_color = Color(0.664875, 0.81, 0.4617, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tsrah"]
+texture = ExtResource("2_u3pln")
+
+[node name="SettingScenes" type="Node2D" node_paths=PackedStringArray("MusicSlider", "SFXSlider", "ExitButton")]
+script = ExtResource("1_cib2b")
+MusicSlider = NodePath("Panel/Panel/hs_music")
+SFXSlider = NodePath("Panel/Panel/hs_soundEffect")
+ExitButton = NodePath("Panel/btn_Exit")
+
+[node name="Panel" type="Panel" parent="."]
+offset_top = 1.0
+offset_right = 1200.0
+offset_bottom = 800.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_amo3d")
+
+[node name="Panel" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 194.0
+offset_top = 133.0
+offset_right = 1006.0
+offset_bottom = 649.77637
+theme_override_styles/panel = SubResource("StyleBoxFlat_cib2b")
+
+[node name="Label" type="Label" parent="Panel/Panel"]
+layout_mode = 0
+offset_left = 297.0
+offset_top = 30.776367
+offset_right = 514.0
+offset_bottom = 108.77637
+theme_override_font_sizes/font_size = 57
+text = "CÀI ĐẶT"
+
+[node name="hs_music" type="HSlider" parent="Panel/Panel"]
+layout_mode = 0
+offset_left = 286.0
+offset_top = 209.77637
+offset_right = 631.66376
+offset_bottom = 225.77637
+max_value = 1.0
+step = 0.01
+
+[node name="hs_soundEffect" type="HSlider" parent="Panel/Panel"]
+layout_mode = 0
+offset_left = 286.0
+offset_top = 289.77637
+offset_right = 634.0
+offset_bottom = 305.77637
+max_value = 1.0
+step = 0.01
+
+[node name="Label2" type="Label" parent="Panel/Panel"]
+layout_mode = 0
+offset_left = 130.0
+offset_top = 196.77637
+offset_right = 202.0
+offset_bottom = 232.77637
+theme_override_colors/font_color = Color(0.36, 0.025199998, 0.025199998, 1)
+theme_override_font_sizes/font_size = 26
+text = "Nhạc:"
+
+[node name="Label3" type="Label" parent="Panel/Panel"]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 274.77637
+offset_right = 250.0
+offset_bottom = 310.77637
+theme_override_colors/font_color = Color(0.36, 0.025199998, 0.025199998, 1)
+theme_override_font_sizes/font_size = 26
+text = "Hiệu ứng:"
+
+[node name="btn_Exit" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 961.0
+offset_top = 101.0
+offset_right = 1047.0
+offset_bottom = 183.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_tsrah")

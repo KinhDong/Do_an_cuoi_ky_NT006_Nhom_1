@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using NT106.Scripts.Models;
+using NT106.Scripts.Services;
 
 public partial class LoginScreen : Control
 {
@@ -14,11 +15,18 @@ public partial class LoginScreen : Control
 	private Texture2D EyeOpenTexture;
 	private Texture2D EyeClosedTexture;
 	[Export] private TextureButton HidePasswordButton;
+    [Export] public AudioStream BackgroundMusic;
 
-	// Mở màn hình
-	public override void _Ready()
+    // Mở màn hình
+    public override void _Ready()
 	{
-		LoginButton.Pressed += OnLogginButtonPressed;
+        // Phát nhạc nền với âm lương theo cài đặt
+        if (BackgroundMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(BackgroundMusic);
+        }
+
+        LoginButton.Pressed += OnLogginButtonPressed;
 
 		RegisterButton.Pressed += OnRegisterButtonPressed;
 
@@ -31,7 +39,7 @@ public partial class LoginScreen : Control
 		HidePasswordButton.Pressed += OnHidePasswordButtonPressed;
 
 		anim.Play("Login_Appear");
-	}
+    }
 	
 	// Nhấn nút Đăng nhập
 	private async void OnLogginButtonPressed()
@@ -50,6 +58,9 @@ public partial class LoginScreen : Control
 
 		if (result.Item1)
 		{
+			// Bắt đầu monitoring kết nối sau khi đăng nhập
+			GetNode<ConnectionMonitor>("/root/ConnectionMonitor").StartMonitoring();
+
 			// Chuyển sang màn hình Menu
 			GetTree().ChangeSceneToFile(@"Scenes\Menu\MenuScreen.tscn");
 		}

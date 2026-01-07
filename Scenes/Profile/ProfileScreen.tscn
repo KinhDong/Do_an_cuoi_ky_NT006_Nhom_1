@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://dbpkclo3eb1uw"]
+[gd_scene load_steps=17 format=3 uid="uid://dbpkclo3eb1uw"]
 
 [ext_resource type="Texture2D" uid="uid://civfw8nh0xirt" path="res://Assets/Exit_Icon.png" id="1_mkpkl"]
 [ext_resource type="Script" uid="uid://djdf1i6thicj3" path="res://Scenes/Profile/ProfileScreen.cs" id="1_q4vvm"]
+[ext_resource type="AudioStream" uid="uid://cpsv5ixt70cx" path="res://Audio/Music/kiepdoden.ogg" id="2_5fdyp"]
 [ext_resource type="Texture2D" uid="uid://3j7txd87necs" path="res://Assets/Profile_Icon.jpg" id="2_g28nm"]
 [ext_resource type="Texture2D" uid="uid://dg5v7lpreshah" path="res://Assets/Edit_Icon.png" id="4_uncs2"]
 [ext_resource type="Texture2D" uid="uid://dy576w7ukhv0g" path="res://Assets/Save_Icon.png" id="5_5fdyp"]
@@ -107,6 +108,7 @@ ChangeInGameName = NodePath("Panel/pn_Profile/ttbtn_ChangeInGameName")
 Money = NodePath("Panel/pn_Profile/le_Money")
 Exit = NodePath("Panel/pn_Profile/btn_Exit")
 anim = NodePath("AnimationPlayer")
+BackgroundMusic = ExtResource("2_5fdyp")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0

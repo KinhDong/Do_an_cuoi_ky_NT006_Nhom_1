@@ -1,6 +1,7 @@
 using Godot;
 using NT106.Scripts.Models;
 using System;
+using System.Threading.Tasks;
 
 public partial class DisplayPlayerInfo : Control
 {
@@ -8,6 +9,19 @@ public partial class DisplayPlayerInfo : Control
 	[Export] private TextureRect AvatarDisplay;
 	[Export] private LineEdit NameDisplay;
 	[Export] private LineEdit MoneyDisplay;
+	[Export] private Label TimerDisplay;
+	[Export] private Timer timer;
+	[Export] private Panel GlowingBorder;
+
+	[Export] private AnimationPlayer MoneyChange;
+	[Export] private Label AddMoney;
+	[Export] private Label MinusMoney;
+	int timeLeft;
+
+	public override void _Ready()
+	{
+		timer.Timeout += OnTimeout;
+	}
 
 	public void Display(PlayerClass player)
 	{
@@ -22,4 +36,49 @@ public partial class DisplayPlayerInfo : Control
     {
         MoneyDisplay.Text = money.ToString();
     }
+
+	public async void StartCountdown() // Đếm ngược
+	{
+		TimerDisplay.Visible = true;
+
+		timeLeft = 10;
+		TimerDisplay.Text = timeLeft.ToString();
+		timer.Start();
+	}
+
+	public void EndCountdown()
+	{
+		timer.Stop();
+		TimerDisplay.Visible = false;
+	}
+
+	public void OnTimeout()
+	{
+		timeLeft--;
+		TimerDisplay.Text = timeLeft.ToString();
+		if(timeLeft < -20)
+			EndCountdown();
+	}
+
+	public void HighlightPlayerTurn()
+	{
+		GlowingBorder.Visible = true;
+	}
+
+	public void NotHighlightPlayerTurn()
+	{
+		GlowingBorder.Visible = false;
+	}
+
+	public void AddMoneyEffect(long add)
+	{
+		AddMoney.Text = $"+{add}";
+		MoneyChange.Play("add_money");
+	}
+
+	public void MinusMoneyEffect(long minus)
+	{
+		MinusMoney.Text = $"-{minus}";
+		MoneyChange.Play("minus_money");
+	}
 }

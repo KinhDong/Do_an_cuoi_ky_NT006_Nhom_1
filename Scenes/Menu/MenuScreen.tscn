@@ -1,10 +1,13 @@
-[gd_scene load_steps=14 format=3 uid="uid://b8lr7yqdp75ev"]
+[gd_scene load_steps=18 format=3 uid="uid://b8lr7yqdp75ev"]
 
-[ext_resource type="Script" uid="uid://cfkbnktngluqa" path="res://Scenes/Menu/MenuScreen.cs" id="1_5xyd2"]
+[ext_resource type="Script" uid="uid://bpe48ap7f46bi" path="res://Scenes/Menu/MenuScreen.cs" id="1_5xyd2"]
 [ext_resource type="Texture2D" uid="uid://b0jqlqa7b4e34" path="res://Assets/Menu_Background.jpg" id="1_tr0oe"]
-[ext_resource type="Texture2D" uid="uid://d3dmthr56osya" path="res://Assets/Blackjack_Logo.png" id="3_66ftb"]
+[ext_resource type="AudioStream" uid="uid://cpsv5ixt70cx" path="res://Audio/Music/kiepdoden.ogg" id="2_jfwrt"]
+[ext_resource type="Texture2D" uid="uid://wyxx84wrkay4" path="res://Assets/Blackjack_Logo.png" id="3_66ftb"]
 [ext_resource type="Texture2D" uid="uid://d3axkvylbge6m" path="res://Assets/Setting_Icon.png" id="4_00dl2"]
 [ext_resource type="Texture2D" uid="uid://d4hcxr785sg82" path="res://Assets/accountprofile.png" id="5_00dl2"]
+[ext_resource type="Texture2D" uid="uid://erc20fn3sgrx" path="res://Assets/Leaderboard_Icon.jpg" id="6_jfwrt"]
+[ext_resource type="Texture2D" uid="uid://c22rcfuj4vj74" path="res://Assets/MatchHistories_Icon.jpg" id="7_8ga1o"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x4ls7"]
 texture = ExtResource("1_tr0oe")
@@ -45,7 +48,10 @@ texture = ExtResource("4_00dl2")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jfwrt"]
 texture = ExtResource("5_00dl2")
 
-[node name="MenuScreen" type="Control" node_paths=PackedStringArray("PlayButton", "HowToPlayButton", "ExitGameButton", "SettingButton", "ProfileButton")]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5ydrk"]
+texture = ExtResource("7_8ga1o")
+
+[node name="MenuScreen" type="Control" node_paths=PackedStringArray("PlayButton", "HowToPlayButton", "ExitGameButton", "SettingButton", "ProfileButton", "LeaderboardButton", "MatchHistoryButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -58,6 +64,9 @@ HowToPlayButton = NodePath("pn_Background/btn_HowToPlay")
 ExitGameButton = NodePath("pn_Background/btn_ExitGame")
 SettingButton = NodePath("pn_Background/btn_Setting")
 ProfileButton = NodePath("pn_Background/btn_Profile")
+LeaderboardButton = NodePath("pn_Background/btn_Leaderboard")
+MatchHistoryButton = NodePath("pn_Background/btn_MatchHistories")
+BackgroundMusic = ExtResource("2_jfwrt")
 
 [node name="pn_Background" type="Panel" parent="."]
 layout_mode = 0
@@ -87,10 +96,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -240.5
-offset_top = -304.0
-offset_right = 245.5
-offset_bottom = -106.0
+offset_left = -240.0
+offset_top = -368.0
+offset_right = 246.0
+offset_bottom = -170.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_66ftb")
@@ -174,3 +183,21 @@ offset_bottom = -308.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_jfwrt")
+
+[node name="btn_Leaderboard" type="TextureButton" parent="pn_Background"]
+layout_mode = 0
+offset_left = 1098.0
+offset_top = 134.0
+offset_right = 1157.0
+offset_bottom = 187.0
+texture_normal = ExtResource("6_jfwrt")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="btn_MatchHistories" type="Button" parent="pn_Background"]
+layout_mode = 0
+offset_left = 1099.0
+offset_top = 230.0
+offset_right = 1155.0
+offset_bottom = 283.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_5ydrk")

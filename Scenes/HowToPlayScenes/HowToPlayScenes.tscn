@@ -1,0 +1,95 @@
+[gd_scene load_steps=8 format=3 uid="uid://crj78opxqp38u"]
+
+[ext_resource type="Script" uid="uid://eq5srnosxblp" path="res://Scenes/HowToPlayScenes/HowToPlayScenes.cs" id="1_1xdfw"]
+[ext_resource type="Texture2D" uid="uid://0dye7k7ypm52" path="res://Assets/GoBack_Icon.png" id="1_d4tj6"]
+[ext_resource type="Texture2D" uid="uid://b0jqlqa7b4e34" path="res://Assets/Menu_Background.jpg" id="1_rfvno"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xdfw"]
+texture = ExtResource("1_rfvno")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rfvno"]
+texture = ExtResource("1_d4tj6")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d4tj6"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rfvno"]
+bg_color = Color(0.03599999, 0.4, 0.28473336, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[node name="HowToPlayScenes" type="Node2D" node_paths=PackedStringArray("BackButton")]
+script = ExtResource("1_1xdfw")
+BackButton = NodePath("Panel/btn_Back")
+
+[node name="Panel" type="Panel" parent="."]
+show_behind_parent = true
+offset_right = 1199.0
+offset_bottom = 798.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_1xdfw")
+
+[node name="btn_Back" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 16.0
+offset_right = 88.99025
+offset_bottom = 78.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_rfvno")
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 409.0
+offset_top = 23.0
+offset_right = 795.0
+offset_bottom = 101.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 57
+theme_override_styles/normal = SubResource("StyleBoxFlat_d4tj6")
+text = "HOW TO PLAY"
+
+[node name="Panel" type="Panel" parent="Panel"]
+layout_mode = 0
+offset_left = 63.0
+offset_top = 109.0
+offset_right = 1136.0
+offset_bottom = 719.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rfvno")
+
+[node name="VScrollBar" type="VScrollBar" parent="Panel/Panel"]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 35.0
+offset_right = 1036.0
+offset_bottom = 579.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel/Panel/VScrollBar"]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 12.0
+offset_right = 995.0
+offset_bottom = 553.0
+theme_override_font_sizes/normal_font_size = 20
+text = "	Mục tiêu của trò chơi: Mục tiêu của xì dách là có được tổng điểm của lá bài gần bằng hoặc bằng 21, nhưng không vượt quá. Người chơi cũng có thể thắng nếu tổng điểm của họ cao hơn điểm của người chia bài.
+
+	Giá trị của các lá bài: Trong xì dách, các lá bài từ 2 đến 10 giữ giá trị tương đương với số điểm trên lá bài. Các lá bài J, Q, K có giá trị là 10 điểm. Lá bài Á có thể được tính là 1 hoặc 11 điểm, tùy thuộc vào lựa chọn của người chơi.
+
+	Luồng chơi cơ bản: Mỗi người chơi và người chia bài sẽ nhận hai lá bài ban đầu. Người chơi có thể yêu cầu thêm lá bài (hit) để tăng tổng điểm hoặc giữ nguyên (stand) nếu họ cảm thấy tổng điểm hiện tại là đủ.
+
+	Quy tắc về người chia bài: Người chia bài phải hit nếu tổng điểm của họ dưới 17 và phải stand nếu tổng điểm từ 17 trở lên.
+
+	Kết quả của trò chơi: Nếu tổng điểm của người chơi vượt quá 21, họ sẽ thua và mất cược. Nếu tổng điểm của họ bằng 21, họ sẽ thắng một lần và nhận lại cược. Nếu tổng điểm của họ ít hơn 21 và cao hơn tổng điểm của người chia bài, họ cũng sẽ thắng và nhận lại cược.
+
+CÁCH TÍNH ĐIỂM:
+	Đầu tiên, mỗi lá bài trong bộ bài xì dách sẽ có giá trị điểm tương ứng. Các lá bài từ 2 đến 10 sẽ giữ nguyên giá trị của chúng, tức là 2 sẽ có giá trị 2 điểm, 3 sẽ có giá trị 3 điểm và cứ như vậy cho đến lá bài có giá trị 10. Những lá bài J (Jack), Q (Queen) và K (King) sẽ có giá trị là 10 điểm. Lá bài A (Ace) có thể được tính là 1 hoặc 11 điểm, tùy thuộc vào lựa chọn nào là phù hợp với tình huống cụ thể.
+
+	Khi tính điểm trong xì dách, người chơi cố gắng để tổng giá trị của các lá bài trong tay không vượt quá 21. Nếu tổng giá trị của các lá bài trong tay vượt quá 21, người chơi sẽ bị “bust” và thua cuộc ngay lập tức.
+
+	Khi tính điểm trong xì dách, người chơi có thể quyết định rút thêm lá bài hoặc ở lại với số điểm hiện tại. Quyết định này phụ thuộc vào tổng giá trị của lá bài trong tay và cũng phụ thuộc vào lá bài mà người chia bài đang mở.
+
+	Các trường họp đặc biệt: Một số trạng thái đặc biệt của bộ bài có thể giúp bộ bài thắng 1 bộ bài bình thường bất chấp số điểm:
+	+ Ngũ linh: Khi bộ bài có đúng 5 lá bài và số điểm < 22. Chỉ thua khi đối thủ có Xì dách, Xì bàn hoặc Ngũ linh với điểm số cao hơn.
+	+ Xì dách: Khi bộ bài có đúng 2 lá, trong đó có 1 lá A và 1 lá có giá trị 10 (10, J, Q, K). Chỉ thua khi đối thủ có Xì bàn.
+	+ Xì bàn: Mức độ cao nhất, không thể thua. Đạt được khi bộ bài có đúng 2 lá A."

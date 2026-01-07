@@ -5,16 +5,18 @@ using NT106.Scripts.Models;
 using NT106.Scripts.Services;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 
 public partial class PlayAsPlayerScreen : Node2D
 {
+	RoomClass room;
 	// Hiển thị mã phòng và mức cược
 	[Export] private LineEdit DisplayRoomId;
 	[Export] private LineEdit DisplayBetAmount;	
 	[Export] private Button LeaveRoom; // Rời phòng
 
 	[Export] Array<DisplayPlayerInfo> DisplayPlayerInfos;
+	[Export] StartEffect startEffect;
+	[Export] Button SettingButton;
 
 	// Nút Hit/Stand
 	[Export] private Button HitButton;
@@ -24,6 +26,8 @@ public partial class PlayAsPlayerScreen : Node2D
 	FirebaseStreaming EventListener;
 	string CurrTime;
 
+	HeartbeatService heartbeatService;
+
 	// ----- Ván chơi
 
 	// Hiển thị các lá bài
@@ -32,21 +36,55 @@ public partial class PlayAsPlayerScreen : Node2D
 	// Animation
 	[Export] AnimationPlayer anim;
 
-	// Biến để theo dõi lượt chơi hiện tại
-	private string currentPlayerTurn;
+	// Timer cho lựa chọn Hit/Stand
+	[Export] private Timer timer;
 
+	// Điểm số hiện tại để quyết định khi timeout
+	private (int, int) currentScore;
+
+	//nhạc nền
+	[Export] public AudioStream BackgroundMusic;
+
+	//âm thanh hiệu ứng 
+	[Export] public AudioStream sfxClick;
+	[Export] public AudioStream sfxDealCard;
+	[Export] public AudioStream sfxWin;
+	[Export] public AudioStream sfxLose;
+	[Export] public AudioStream sfxStartGame;
 	public override void _Ready()
 	{
+		room = RoomClass.CurrentRoom;
 		// Hiển thị thông tin chung
-		DisplayRoomId.Text = RoomClass.CurrentRoom.RoomId;
-		DisplayBetAmount.Text = RoomClass.CurrentRoom.BetAmount.ToString();
+		DisplayRoomId.Text = room.RoomId;
+		DisplayBetAmount.Text = room.BetAmount.ToString();
+		// Phát nhạc nền
+		if (BackgroundMusic != null)
+		{
+			AudioManager.Instance.PlayMusic(BackgroundMusic);
+		}
 
 		// Rời phòng
 		LeaveRoom = GetNode<Button>("pn_Background/btn_LeaveRoom");
 		LeaveRoom.Pressed += OnLeaveRoomPressed;
 
+		// Setting
+		SettingButton.Pressed += () =>
+		{
+			AudioManager.Instance.PlaySFX(sfxClick);
+			var settingScene = ResourceLoader.Load<PackedScene>("res://Scenes/SettingScenes/SettingScenes.tscn");
+			var settingInstance = settingScene.Instantiate();
+			AddChild(settingInstance);
+		};
+
 		HitButton.Pressed += OnHitPressed;
 		StandButton.Pressed += OnStandPressed;
+
+		timer.Timeout += OnTimerTimeout;
+
+		// Gán tiếng click cho các nút
+		HitButton.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
+		StandButton.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
+		LeaveRoom.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
 
 		// Hiển thị các lá bài
 		DisplayCards = new Sprite2D[4, 5];
@@ -59,50 +97,60 @@ public partial class PlayAsPlayerScreen : Node2D
 		}
 
 		// Hiển thị thông tin các người chơi
-		foreach (var p in RoomClass.CurrentRoom.Players) 
+		foreach (var p in room.Players) 
 			DisplayPlayerInfos[p.Value.Seat].Display(p.Value);
 
 		// Hiển thị các lá bài của những người chơi đã ở trong phòng
-		if (RoomClass.CurrentRoom.Status == "PLAYING")
+		if (room.Status != "WAITING")
 		{
 			for(int i = 0; i < 4; i++)
 			{
-				string pid = RoomClass.CurrentRoom.Seats[i];
+				string pid = room.Seats[i];
 				if(pid == null) continue;
-				if(RoomClass.CurrentRoom.Players[pid].Hands.Count > 0)
+				if(room.Players[pid].Hands.Count > 0)
 					DisplayCards[i, 0].Visible = true;
 			}
 		}        
 
 		// Thực hiện lắng nghe
-		EventListener = new(FirebaseApi.BaseUrl, $"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", UserClass.IdToken);
-		EventListener.OnConnected += () => GD.Print("Firebase connected");
-		EventListener.OnDisconnected += () => GD.Print("Firebase disconnected");
-		EventListener.OnError += (msg) => GD.Print("ERR: " + msg);
+		EventListener = new(
+			FirebaseApi.BaseUrl, 
+			$"Rooms/{room.RoomId}/Events", 
+			UserClass.IdToken);
 
-		EventListener.OnData += (json) =>
+		EventListener.OnConnected += () => Console.WriteLine("Connected");
+		EventListener.OnDisconnected += err => Console.WriteLine(err ? "Disconnected (error)" : "Stopped");
+		EventListener.OnError += Console.WriteLine;
+
+		EventListener.OnData += (eventType, json) =>
 		{
 			var evt = json.ToObject<MessageEvent>();
 
 			if(evt != null && evt.data != null)
 			{
-				_ = Update(evt.data);	
+				_ = Update(evt.data);
 			}
 		};
 
 		EventListener.Start();
 
 		CurrTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"); // Thời gian hiện tại
+
+		// Khởi tạo heartbeat service cho player
+		heartbeatService = new HeartbeatService();
+		AddChild(heartbeatService);
+		heartbeatService.StartHeartbeat(room.RoomId, false); // Not host
 	}
 
 	private async void OnLeaveRoomPressed()
 	{
 		try
 		{
-			var res = await RoomClass.CurrentRoom.LeaveAsync();
+			var res = await room.LeaveAsync();
 			if(!res.Item1) throw new Exception(res.Item2);
 			
 			EventListener.Stop();
+			heartbeatService.StopHeartbeat();
 			RoomClass.CurrentRoom = null;
 			GetTree().ChangeSceneToFile(@"Scenes\CreateOrJoinRoomScreen\CreateOrJoinRoom.tscn");	
 		}
@@ -115,25 +163,25 @@ public partial class PlayAsPlayerScreen : Node2D
 
 	private async void UpdateJoin(string Pid)
 	{
-		var newPlayer = await FirebaseApi.Get<PlayerClass>($"Rooms/{RoomClass.CurrentRoom.RoomId}/Players/{Pid}");
+		var newPlayer = await FirebaseApi.Get<PlayerClass>($"Rooms/{room.RoomId}/Players/{Pid}");
 		await newPlayer.LoadAvatarAsync();
 		newPlayer.Hands = new();
-		RoomClass.CurrentRoom.Players.Add(Pid, newPlayer);
+		room.Players.Add(Pid, newPlayer);
 
 		int seat = 2;
-		while(RoomClass.CurrentRoom.Seats[seat] != null) seat++;
+		while(room.Seats[seat] != null) seat++;
 		
-		RoomClass.CurrentRoom.Players[Pid].Seat = seat;
-		DisplayPlayerInfos[seat].Display(RoomClass.CurrentRoom.Players[Pid]);
+		room.Players[Pid].Seat = seat;
+		DisplayPlayerInfos[seat].Display(room.Players[Pid]);
 		DisplayPlayerInfos[seat].Visible = true;
 	}
 
 	private void UpdateLeave(string Pid)
 	{
 		// Lấy lại chỗ
-		int seat = RoomClass.CurrentRoom.Players[Pid].Seat;
-		RoomClass.CurrentRoom.Players.Remove(Pid);
-		RoomClass.CurrentRoom.Seats[seat] = null;
+		int seat = room.Players[Pid].Seat;
+		room.Players.Remove(Pid);
+		room.Seats[seat] = null;
 		DisplayPlayerInfos[seat].Visible = false;
 	}
 
@@ -181,6 +229,10 @@ public partial class PlayAsPlayerScreen : Node2D
 				CallDeferred(nameof(UpdateHitOrStand), evtData.user);
 				break;
 
+			case "hit":
+				CallDeferred(nameof(UpdateHit), evtData.user);
+				break;
+
 			case "stand":
 				CallDeferred(nameof(UpdateStand), evtData.user);
 				break;
@@ -206,18 +258,20 @@ public partial class PlayAsPlayerScreen : Node2D
 
 	private void UpdateStartGame()
 	{
-		RoomClass.CurrentRoom.Status = "PLAYING";
-		OS.Alert("Ván mới đã bắt đầu!");
+		room.Status = "DEAL_INIT";
+		startEffect.Visible = true;
+		startEffect.startBanner();
 	}
 
 	private async void UpdateDeal(string pid, int rank, int suit)
 	{	
-		int cardIndex = RoomClass.CurrentRoom.Players[pid].Hands.Count;
-		RoomClass.CurrentRoom.Players[pid].Hands.Add(cardIndex, (rank, suit));
+		int cardIndex = room.Players[pid].Hands.Count;
+		room.Players[pid].Hands.Add((rank, suit));
+		int seat = room.Players[pid].Seat;
 
+		AudioManager.Instance.PlaySFX(sfxDealCard);// Phát âm thanh chia bài
 		if(pid != UserClass.Uid)
-		{
-			int seat = RoomClass.CurrentRoom.Players[pid].Seat;
+		{			
 			anim.Play($"DealPlayer{seat}");
 			await Task.Delay(300);
 			DisplayCards[seat, 0].Visible = true;
@@ -232,84 +286,81 @@ public partial class PlayAsPlayerScreen : Node2D
 			if (cardIndex >= 2) UpdateHitOrStand(UserClass.Uid);
 		}
 
+		if (room.Status == "HIT_OR_STAND")
+			DisplayPlayerInfos[seat].StartCountdown();
 		anim.Queue("RESET");
 	}
 
 	private async void UpdateHitOrStand(string playerId)
 	{
+		room.Status = "HIT_OR_STAND";
 		// Animation làm sáng các thứ
+		DisplayPlayerInfos[room.Players[playerId].Seat].StartCountdown();
+		timer.Start(10);
 
 		if (playerId != UserClass.Uid) return; // Không phải mình thì không quan tâm
 
-		var score = RoomClass.CurrentRoom.Players[playerId].CaclulateScore();
+		var score = room.Players[playerId].CaclulateScore();
+		currentScore = score;
 		GD.Print($"Score: {score.Item1}, Strength: {score.Item2}");
+
+		int seat = RoomClass.CurrentRoom.Players[playerId].Seat;
+		DisplayPlayerInfos[seat].HighlightPlayerTurn();
 
 		if(score.Item2 != 1)
 		{
 			StandButton.Disabled = false;
+			timer.Start(10);
 			return;
 		}
 
 		if(score.Item1 < 16)
 		{
 			HitButton.Disabled = false;
+			timer.Start(10);
 			return;
 		}
 
 		HitButton.Disabled = false;
-		StandButton.Disabled = false;
+		StandButton.Disabled = false;		
 	}
 
 	private async void OnHitPressed()
 	{
-		try
-		{
-			HitButton.Disabled = true;
-			StandButton.Disabled = true;
-			var evt = new RoomEvent
-			{
-				type = "hit",
-				user = UserClass.Uid,
-				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-			};
-			await FirebaseApi.Post($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", evt);
-		}
+		timer.Stop();
+		HitButton.Disabled = true;
+		StandButton.Disabled = true;
 
-		catch (Exception ex)
-		{
-			GD.PrintErr(ex.Message);
-		}		
+		await RoomEvent.PostRoomEventAsync(room.RoomId, "hit", UserClass.Uid);	
 	}
 
 	private async void OnStandPressed()
 	{
-		try
-		{
-			HitButton.Disabled = true;
-			StandButton.Disabled = true;
-			var evt = new RoomEvent
-			{
-				type = "stand",
-				user = UserClass.Uid,
-				time = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
-			};
-			await FirebaseApi.Post($"Rooms/{RoomClass.CurrentRoom.RoomId}/Events", evt);			
-		}
-		
-		catch (Exception ex)
-		{
-			GD.PrintErr(ex.Message);
-		}
+		timer.Stop();
+		HitButton.Disabled = true;
+		StandButton.Disabled = true;	
+
+		await RoomEvent.PostRoomEventAsync(room.RoomId, "stand", UserClass.Uid);	
 	}
 
-	private void UpdateStand(string playerId)
+	private void UpdateHit(string pid)
+	{
+		DisplayPlayerInfos[room.Players[pid].Seat].EndCountdown();
+	}
+
+	private void UpdateStand(string pid)
 	{
 		// Không làm sáng nữa
+		int seat = RoomClass.CurrentRoom.Players[pid].Seat;
+		DisplayPlayerInfos[seat].NotHighlightPlayerTurn();
+		DisplayPlayerInfos[room.Players[pid].Seat].EndCountdown();
 	}	
 
 	private async void UpdateResultProcess()
 	{
-		ShowCards(RoomClass.CurrentRoom.HostId); // Show bài của Cái
+		room.Status = "RESULT";
+		DisplayPlayerInfos[0].EndCountdown();
+		ShowCards(room.HostId); // Show bài của Cái
 	}
 
 	private async void UpdateResult(string pid, string result)
@@ -318,40 +369,71 @@ public partial class PlayAsPlayerScreen : Node2D
 		{			
 			if (pid != UserClass.Uid) ShowCards(pid); // Show bài của Player
 
-			if (result == "draw")
-			{
-				// Animation các thứ
-				return;
-			}
-
-			long betAmout = RoomClass.CurrentRoom.BetAmount;
-			long change = RoomClass.CurrentRoom.Players[pid].Money;
+			int betAmout = room.BetAmount;
+			int change = 0;
+			int pSeat = room.Players[pid].Seat;
 
 			if (result == "win")
 			{
 				// Animation
+				AudioManager.Instance.PlaySFX(sfxWin);// Phát âm thanh thắng
+				DisplayPlayerInfos[pSeat].AddMoneyEffect(betAmout);
+				DisplayPlayerInfos[0].MinusMoneyEffect(betAmout);
 				change = betAmout;
 			}
-			else
+			else if (result == "lose")
 			{
 				// Animation
+				AudioManager.Instance.PlaySFX(sfxLose); // Phát âm thanh thua
+				DisplayPlayerInfos[pSeat].MinusMoneyEffect(betAmout);
+				DisplayPlayerInfos[0].AddMoneyEffect(betAmout);
 				change = - betAmout;
 			} 
-			RoomClass.CurrentRoom.Players[RoomClass.CurrentRoom.HostId].Money -= change;
+			room.Players[room.HostId].Money -= change;
 			DisplayPlayerInfos[0].UpdateMoney(
-				RoomClass.CurrentRoom.Players[RoomClass.CurrentRoom.HostId].Money);
+				room.Players[room.HostId].Money);
 
-			RoomClass.CurrentRoom.Players[pid].Money += change;
-			DisplayPlayerInfos[RoomClass.CurrentRoom.Players[pid].Seat].UpdateMoney(
-				RoomClass.CurrentRoom.Players[pid].Money);			
+			room.Players[pid].Money += change;
+			DisplayPlayerInfos[pSeat].UpdateMoney(
+				room.Players[pid].Money);			
 
 			if (pid == UserClass.Uid)
 			{
 				UserClass.Money += change;
-				await FirebaseApi.Put($"Users/{UserClass.Uid}/Money", 
-				UserClass.Money + change);
-			}
-				
+				await FirebaseApi.Put($"Users/{UserClass.Uid}/Money", UserClass.Money);
+				await FirebaseApi.Put($"Rooms/{room.RoomId}/Players/{UserClass.Uid}/Money", UserClass.Money);
+			
+				// Thêm lịch sử kết quả
+				var playerResult = new PlayerResult
+				{
+					PlayerInGameName = UserClass.InGameName,
+					Role = "Người chơi",
+					Score = room.Players[pid].CaclulateScore().Item1,
+					Strength = room.Players[pid].CaclulateScore().Item2,
+					Result = result,
+					MoneyChange = change
+				};
+
+				var bookmakerResult = new PlayerResult
+				{
+					PlayerInGameName = room.Players[room.HostId].InGameName,
+					Role = "Cái",
+					Score = room.Players[room.HostId].CaclulateScore().Item1,
+					Strength = room.Players[room.HostId].CaclulateScore().Item2,
+					Result = result == "win" ? "lose" : result == "lose" ? "win" : "draw",
+					MoneyChange = change
+				};
+
+				var matchHistory = new MatchHistory
+				{
+					Datetime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm"),
+					RoomId = room.RoomId,
+					You = playerResult,
+					Opponent = bookmakerResult
+				};
+
+				await FirebaseApi.Post($"Users/{UserClass.Uid}/MatchHistories", matchHistory);
+			}				
 		}
 
 		catch (Exception ex) {GD.PrintErr(ex.Message);}
@@ -360,11 +442,13 @@ public partial class PlayAsPlayerScreen : Node2D
 	private async void UpdateEnd()
 	{
 		await Task.Delay(5000); // Cho 5s ngắm bài
-		foreach (var player in RoomClass.CurrentRoom.Players)
+		foreach (var player in room.Players)
 		{
 			UnShowCards(player.Key);
-			RoomClass.CurrentRoom.Players[player.Key].Hands.Clear();		
+			room.Players[player.Key].Hands.Clear();		
 		}
+
+		room.Status = "WAITING";
 	}
 
 	private void ShowCard(int seat, int cardIndex, (int, int) card) // Hiển thị 1 lá bài
@@ -375,18 +459,29 @@ public partial class PlayAsPlayerScreen : Node2D
 
 	private void ShowCards(string pid) // Hiển thị các lá bài của 1 player
 	{
-		int seat = RoomClass.CurrentRoom.Players[pid].Seat;
+		int seat = room.Players[pid].Seat;
 
-		for(int i = 0; i < RoomClass.CurrentRoom.Players[pid].Hands.Count; i++)        
-			ShowCard(seat, i, RoomClass.CurrentRoom.Players[pid].Hands[i]);        
+		for(int i = 0; i < room.Players[pid].Hands.Count; i++)        
+			ShowCard(seat, i, room.Players[pid].Hands[i]);        
 	}
 
 	private void UnShowCards(string pid)
 	{
-		int seat = RoomClass.CurrentRoom.Players[pid].Seat;
+		int seat = room.Players[pid].Seat;
 
-		for(int i = 0; i < RoomClass.CurrentRoom.Players[pid].Hands.Count; i++)        
+		for(int i = 0; i < room.Players[pid].Hands.Count; i++)        
 			DisplayCards[seat, i].Visible = false;
 		DisplayCards[seat, 0].Frame = 52; // Mặt sau lá bài
+	}
+
+	private async void OnTimerTimeout()
+	{
+		HitButton.Disabled = true;
+		StandButton.Disabled = true;
+
+		if (currentScore.Item1 < 16)
+			OnHitPressed();			
+		else
+			OnStandPressed();	
 	}
 }

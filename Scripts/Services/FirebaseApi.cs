@@ -21,7 +21,7 @@ namespace NT106.Scripts.Services
 			return BaseUrl + path + ".json?auth=" + UserClass.IdToken;
 		}
 
-		public static async Task<T?> Get<T>(string path)
+		public static async Task<T> Get<T>(string path)
 		{
 			string url = BuildUrl(path);
 			var res = await client.GetStringAsync(url);

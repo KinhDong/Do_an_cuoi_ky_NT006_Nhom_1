@@ -1,9 +1,17 @@
-[gd_scene load_steps=18 format=3 uid="uid://bew6ci501nue0"]
+[gd_scene load_steps=27 format=3 uid="uid://bew6ci501nue0"]
 
-[ext_resource type="Script" uid="uid://mq624opd4o3b" path="res://Scenes/PlayAsPlayer/PlayAsPlayerScreen.cs" id="1_as1e0"]
-[ext_resource type="Texture2D" uid="uid://8krl6jdbpj3t" path="res://Assets/Table.png" id="1_so6yb"]
+[ext_resource type="Script" uid="uid://cf572p0dbt1ls" path="res://Scenes/PlayAsPlayer/PlayAsPlayerScreen.cs" id="1_as1e0"]
+[ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="1_so6yb"]
+[ext_resource type="AudioStream" uid="uid://cpsv5ixt70cx" path="res://Audio/Music/kiepdoden.ogg" id="2_bldg0"]
+[ext_resource type="AudioStream" uid="uid://qi6a4i264bt1" path="res://Audio/SFX/click.ogg" id="3_8f7vg"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="4_bldg0"]
+[ext_resource type="AudioStream" uid="uid://ckxv8teo61aef" path="res://Audio/SFX/deal.ogg" id="4_f65oe"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="4_fxv46"]
+[ext_resource type="PackedScene" uid="uid://c2uhoxinuhglu" path="res://Scenes/EffectManager/StartEffect.tscn" id="5_bldg0"]
+[ext_resource type="AudioStream" uid="uid://wri6uofi80py" path="res://Audio/SFX/win.ogg" id="5_fni6k"]
+[ext_resource type="AudioStream" uid="uid://d3dsgw7q8cjeg" path="res://Audio/SFX/lose.ogg" id="6_eghlt"]
+[ext_resource type="AudioStream" uid="uid://cspsw141ane47" path="res://Audio/SFX/start.ogg" id="7_ca4kq"]
+[ext_resource type="Texture2D" uid="uid://d3axkvylbge6m" path="res://Assets/Setting_Icon.png" id="12_fni6k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fxv46"]
 bg_color = Color(0.41, 0.16400002, 0, 1)
@@ -286,15 +294,27 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="PlayAsPlayerScreen" type="Node2D" node_paths=PackedStringArray("DisplayRoomId", "DisplayBetAmount", "LeaveRoom", "DisplayPlayerInfos", "HitButton", "StandButton", "anim")]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_eghlt"]
+texture = ExtResource("12_fni6k")
+
+[node name="PlayAsPlayerScreen" type="Node2D" node_paths=PackedStringArray("DisplayRoomId", "DisplayBetAmount", "LeaveRoom", "DisplayPlayerInfos", "startEffect", "SettingButton", "HitButton", "StandButton", "anim", "timer")]
 script = ExtResource("1_as1e0")
 DisplayRoomId = NodePath("pn_Background/le_RoomId")
 DisplayBetAmount = NodePath("pn_Background/le_BetAmount")
 LeaveRoom = NodePath("pn_Background/btn_LeaveRoom")
 DisplayPlayerInfos = [NodePath("pn_Background/DisplayPlayerInfo0"), NodePath("pn_Background/DisplayPlayerInfo1"), NodePath("pn_Background/DisplayPlayerInfo2"), NodePath("pn_Background/DisplayPlayerInfo3")]
+startEffect = NodePath("StartEffect")
+SettingButton = NodePath("btn_Setting")
 HitButton = NodePath("pn_Background/btn_Hit")
 StandButton = NodePath("pn_Background/btn_Stand")
 anim = NodePath("pn_Background/ttr_Table/AnimationPlayer")
+timer = NodePath("pn_Background/Timer")
+BackgroundMusic = ExtResource("2_bldg0")
+sfxClick = ExtResource("3_8f7vg")
+sfxDealCard = ExtResource("4_f65oe")
+sfxWin = ExtResource("5_fni6k")
+sfxLose = ExtResource("6_eghlt")
+sfxStartGame = ExtResource("7_ca4kq")
 
 [node name="pn_Background" type="Panel" parent="."]
 offset_left = 3.0
@@ -535,10 +555,10 @@ metadata/_edit_use_anchors_ = true
 [node name="Label2" type="Label" parent="pn_Background"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.7188729
-anchor_top = 0.0027345794
-anchor_right = 0.7707124
-anchor_bottom = 0.008992402
+anchor_left = 0.0023177029
+anchor_top = 0.07282219
+anchor_right = 0.054157168
+anchor_bottom = 0.07908001
 offset_left = 37.228027
 offset_top = 27.815071
 offset_right = 77.22803
@@ -563,10 +583,10 @@ anchor_left = 0.7590152
 anchor_top = 0.068862304
 anchor_right = 0.7590152
 anchor_bottom = 0.068862304
-offset_left = 106.217834
-offset_top = -27.02098
-offset_right = 254.21783
-offset_bottom = 8.979019
+offset_left = -743.78217
+offset_top = 31.97902
+offset_right = -586.78217
+offset_bottom = 67.97902
 editable = false
 
 [node name="btn_LeaveRoom" type="Button" parent="pn_Background"]
@@ -648,3 +668,370 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_bldg0")
 disabled = true
 text = "Dằn
 "
+
+[node name="Timer" type="Timer" parent="pn_Background"]
+
+[node name="pn_Background2" type="Panel" parent="."]
+offset_left = 3.0
+offset_top = 2.0
+offset_right = 1199.0
+offset_bottom = 801.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_fxv46")
+metadata/_edit_use_anchors_ = true
+
+[node name="ttr_Table" type="TextureRect" parent="pn_Background2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -507.0
+offset_top = -273.5
+offset_right = 533.0
+offset_bottom = 339.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_so6yb")
+metadata/_edit_group_ = true
+
+[node name="Cards" type="Sprite2D" parent="pn_Background2/ttr_Table"]
+position = Vector2(523.99994, 275.00003)
+rotation = 1.5707964
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="CardsAni" type="Sprite2D" parent="pn_Background2/ttr_Table"]
+position = Vector2(523.99994, 275.00003)
+rotation = 1.5707964
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="CardsOfPlayer0" type="Node2D" parent="pn_Background2/ttr_Table"]
+position = Vector2(628, 60)
+
+[node name="Card4" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer0"]
+visible = false
+position = Vector2(-148, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="Card2" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer0"]
+visible = false
+position = Vector2(-123.00006, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="Card0" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer0"]
+visible = false
+position = Vector2(-98, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="Card1" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer0"]
+visible = false
+position = Vector2(-73, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="Card3" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer0"]
+visible = false
+position = Vector2(-48, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="CardsOfPlayer1" type="Node2D" parent="pn_Background2/ttr_Table"]
+position = Vector2(622, 294)
+
+[node name="Card4" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer1"]
+visible = false
+position = Vector2(-148, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="Card2" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer1"]
+visible = false
+position = Vector2(-123.00006, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="Card0" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer1"]
+visible = false
+position = Vector2(-98, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+frame = 28
+
+[node name="Card1" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer1"]
+visible = false
+position = Vector2(-73, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="Card3" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer1"]
+visible = false
+position = Vector2(-48, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="CardsOfPlayer2" type="Node2D" parent="pn_Background2/ttr_Table"]
+position = Vector2(900, 167)
+
+[node name="Card4" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer2"]
+visible = false
+position = Vector2(-148, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="Card3" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer2"]
+visible = false
+position = Vector2(-123.00006, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="Card2" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer2"]
+visible = false
+position = Vector2(-98, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="Card1" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer2"]
+visible = false
+position = Vector2(-73, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="Card0" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer2"]
+visible = false
+position = Vector2(-48, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="CardsOfPlayer3" type="Node2D" parent="pn_Background2/ttr_Table"]
+position = Vector2(320, 167)
+
+[node name="Card0" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer3"]
+visible = false
+position = Vector2(-148, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="Card1" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer3"]
+visible = false
+position = Vector2(-123.00006, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="Card2" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer3"]
+visible = false
+position = Vector2(-98, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+frame = 52
+
+[node name="Card3" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer3"]
+visible = false
+position = Vector2(-73, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="Card4" type="Sprite2D" parent="pn_Background2/ttr_Table/CardsOfPlayer3"]
+visible = false
+position = Vector2(-48, 102)
+scale = Vector2(0.27466884, 0.27248704)
+texture = ExtResource("4_fxv46")
+hframes = 13
+vframes = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="pn_Background2/ttr_Table"]
+libraries = {
+&"": SubResource("AnimationLibrary_eghlt")
+}
+
+[node name="Label" type="Label" parent="pn_Background2"]
+layout_mode = 0
+offset_left = 37.228027
+offset_top = 27.815071
+offset_right = 77.22803
+offset_bottom = 50.81507
+theme_override_font_sizes/font_size = 20
+text = "Mã phòng:"
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="pn_Background2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0023177029
+anchor_top = 0.07282219
+anchor_right = 0.054157168
+anchor_bottom = 0.07908001
+offset_left = 37.228027
+offset_top = 27.815071
+offset_right = 77.22803
+offset_bottom = 50.81507
+theme_override_font_sizes/font_size = 20
+text = "Mức cược:"
+metadata/_edit_use_anchors_ = true
+
+[node name="le_RoomId" type="LineEdit" parent="pn_Background2"]
+layout_mode = 0
+offset_left = 165.0
+offset_top = 27.0
+offset_right = 321.0
+offset_bottom = 64.0
+editable = false
+metadata/_edit_use_anchors_ = true
+
+[node name="le_BetAmount" type="LineEdit" parent="pn_Background2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7590152
+anchor_top = 0.068862304
+anchor_right = 0.7590152
+anchor_bottom = 0.068862304
+offset_left = -743.78217
+offset_top = 31.97902
+offset_right = -586.78217
+offset_bottom = 67.97902
+editable = false
+
+[node name="btn_LeaveRoom" type="Button" parent="pn_Background2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.051225796
+anchor_top = 0.8734594
+anchor_right = 0.051225796
+anchor_bottom = 0.8734594
+offset_left = -34.266052
+offset_top = 23.105957
+offset_right = 94.467896
+offset_bottom = 74.211914
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_efp1y")
+text = "Rời phòng
+"
+
+[node name="DisplayPlayerInfo0" parent="pn_Background2" instance=ExtResource("4_bldg0")]
+layout_mode = 0
+offset_left = 618.0
+offset_top = 122.0
+offset_right = 618.0
+offset_bottom = 122.0
+
+[node name="DisplayPlayerInfo1" parent="pn_Background2" instance=ExtResource("4_bldg0")]
+layout_mode = 0
+offset_left = 619.0
+offset_top = 690.0
+offset_right = 619.0
+offset_bottom = 690.0
+
+[node name="DisplayPlayerInfo2" parent="pn_Background2" instance=ExtResource("4_bldg0")]
+visible = false
+layout_mode = 0
+offset_left = 1066.0
+offset_top = 398.0
+offset_right = 1066.0
+offset_bottom = 398.0
+
+[node name="DisplayPlayerInfo3" parent="pn_Background2" instance=ExtResource("4_bldg0")]
+visible = false
+layout_mode = 0
+offset_left = 143.0
+offset_top = 399.0
+offset_right = 143.0
+offset_bottom = 399.0
+
+[node name="btn_Hit" type="Button" parent="pn_Background2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8629192
+anchor_top = 0.7570211
+anchor_right = 0.8629192
+anchor_bottom = 0.7570211
+offset_left = -277.0514
+offset_top = -72.85986
+offset_right = -160.0
+offset_bottom = -18.719727
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBoxFlat_bldg0")
+disabled = true
+text = "Rút
+"
+
+[node name="btn_Stand" type="Button" parent="pn_Background2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8629192
+anchor_top = 0.7570211
+anchor_right = 0.8629192
+anchor_bottom = 0.7570211
+offset_left = -686.0514
+offset_top = -73.85986
+offset_right = -569.0
+offset_bottom = -19.719727
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBoxFlat_bldg0")
+disabled = true
+text = "Dằn
+"
+
+[node name="Timer" type="Timer" parent="pn_Background2"]
+
+[node name="StartEffect" parent="." instance=ExtResource("5_bldg0")]
+visible = false
+
+[node name="btn_Setting" type="Button" parent="."]
+offset_left = 1103.0
+offset_top = 17.0
+offset_right = 1180.0
+offset_bottom = 95.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_eghlt")
