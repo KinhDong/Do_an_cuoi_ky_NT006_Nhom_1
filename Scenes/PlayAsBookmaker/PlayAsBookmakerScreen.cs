@@ -19,6 +19,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 	[Export] Array<DisplayPlayerInfo> DisplayPlayerInfos;
 	
 	[Export] private Button LeaveRoom; // Rời phòng
+	[Export] Button SettingButton;
 
 	FirebaseStreaming EventListener;
 
@@ -63,6 +64,13 @@ public partial class PlayAsBookmakerScreen : Node2D
 		DisplayPlayerInfos[0].Display(room.Players[UserClass.Uid]);
 
 		LeaveRoom.Pressed += OnLeaveRoomPressed;
+
+		SettingButton.Pressed += () => {
+			AudioManager.Instance.PlaySFX(sfxClick);
+			var settingScene = ResourceLoader.Load<PackedScene>("res://Scenes/SettingScenes/SettingScenes.tscn");
+			var settingInstance = settingScene.Instantiate<SettingScenes>();
+			AddChild(settingInstance);
+		};
 
 		// Bắt đầu game
 		StartGameButton.Pressed += OnStartGame;
@@ -234,7 +242,6 @@ public partial class PlayAsBookmakerScreen : Node2D
 			OS.Alert("Chưa đủ người để bắt đầu ván.");
 			return;
 		}
-		AudioManager.Instance.PlaySFX(sfxStart);
 
 		bool started = await StartNewRound();
 		if(started) StartGameButton.Disabled = true;

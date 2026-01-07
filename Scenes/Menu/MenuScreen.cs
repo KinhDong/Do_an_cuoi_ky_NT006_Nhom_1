@@ -26,6 +26,8 @@ public partial class MenuScreen : Control
 
 		ExitGameButton.Pressed += OnExitGameButtonPressed;
 
+		SettingButton.Pressed += OnSettingButtonPressed;
+
 		ProfileButton.Pressed += OnProfileButtonPressed;
 
 		LeaderboardButton.Pressed += OnLeaderboardButtonPressed;
@@ -52,6 +54,13 @@ public partial class MenuScreen : Control
 		await UserClass.LogoutAsync();
 
 		GetTree().Quit();
+	}
+
+	private void OnSettingButtonPressed()
+	{
+		var SettingScene = GD.Load<PackedScene>(@"Scenes/SettingScenes/SettingScenes.tscn");
+
+		AddChild(SettingScene.Instantiate());
 	}
 
 	private void OnProfileButtonPressed()

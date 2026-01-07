@@ -1,10 +1,16 @@
-[gd_scene load_steps=17 format=3 uid="uid://cl0grfs1yhp2o"]
+[gd_scene load_steps=24 format=3 uid="uid://cl0grfs1yhp2o"]
 
 [ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="1_25yo6"]
-[ext_resource type="Script" uid="uid://bxecja3ne1am2" path="res://Scenes/PVE/PveScreen.cs" id="1_d3irp"]
+[ext_resource type="Script" uid="uid://co2tv3wtcw7pu" path="res://Scenes/PVE/PveScreen.cs" id="1_d3irp"]
 [ext_resource type="AudioStream" uid="uid://cpsv5ixt70cx" path="res://Audio/Music/kiepdoden.ogg" id="2_b2d8i"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="2_d3irp"]
+[ext_resource type="AudioStream" uid="uid://qi6a4i264bt1" path="res://Audio/SFX/click.ogg" id="3_5fsk8"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="3_b2d8i"]
+[ext_resource type="AudioStream" uid="uid://ckxv8teo61aef" path="res://Audio/SFX/deal.ogg" id="4_x442e"]
+[ext_resource type="AudioStream" uid="uid://cspsw141ane47" path="res://Audio/SFX/start.ogg" id="5_afahc"]
+[ext_resource type="AudioStream" uid="uid://wri6uofi80py" path="res://Audio/SFX/win.ogg" id="6_n3aw4"]
+[ext_resource type="AudioStream" uid="uid://d3dsgw7q8cjeg" path="res://Audio/SFX/lose.ogg" id="7_eas6l"]
+[ext_resource type="Texture2D" uid="uid://d3axkvylbge6m" path="res://Assets/Setting_Icon.png" id="11_x442e"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sttbr"]
 bg_color = Color(0.41, 0.16400002, 0, 1)
@@ -231,14 +237,24 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="PveScreen" type="Node2D" node_paths=PackedStringArray("ExitButton", "HitButton", "StandButton", "DisplayE", "DisplayP", "anim")]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_afahc"]
+texture = ExtResource("11_x442e")
+
+[node name="PveScreen" type="Node2D" node_paths=PackedStringArray("ExitButton", "SettingButton", "HitButton", "StandButton", "DisplayE", "DisplayP", "anim")]
 script = ExtResource("1_d3irp")
 ExitButton = NodePath("pn_Background/btn_Exit")
+SettingButton = NodePath("pn_Background/btn_Setting")
 HitButton = NodePath("pn_Background/btn_Hit")
 StandButton = NodePath("pn_Background/btn_Stand")
 DisplayE = NodePath("pn_Background/DisplayPlayerInfo0")
 DisplayP = NodePath("pn_Background/DisplayPlayerInfo1")
 anim = NodePath("pn_Background/ttr_Table/AnimationPlayer")
+BackgroundMusic = ExtResource("2_b2d8i")
+sfxClick = ExtResource("3_5fsk8")
+sfxDeal = ExtResource("4_x442e")
+sfxStart = ExtResource("5_afahc")
+sfxWin = ExtResource("6_n3aw4")
+sfxLose = ExtResource("7_eas6l")
 
 [node name="pn_Background" type="Panel" parent="."]
 offset_left = 3.0
@@ -446,3 +462,11 @@ disabled = true
 text = "Dằn
 "
 metadata/_edit_use_anchors_ = true
+
+[node name="btn_Setting" type="Button" parent="pn_Background"]
+layout_mode = 0
+offset_left = 1103.0
+offset_top = 17.0
+offset_right = 1180.0
+offset_bottom = 95.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_afahc")

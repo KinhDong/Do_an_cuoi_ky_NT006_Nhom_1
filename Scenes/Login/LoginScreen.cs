@@ -20,7 +20,7 @@ public partial class LoginScreen : Control
     // Mở màn hình
     public override void _Ready()
 	{
-        // Phát nhạc nền
+        // Phát nhạc nền với âm lương theo cài đặt
         if (BackgroundMusic != null)
         {
             AudioManager.Instance.PlayMusic(BackgroundMusic);

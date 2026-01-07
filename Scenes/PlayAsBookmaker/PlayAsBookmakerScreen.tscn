@@ -1,6 +1,6 @@
-[gd_scene load_steps=24 format=3 uid="uid://dpel6cas7swbb"]
+[gd_scene load_steps=27 format=3 uid="uid://dpel6cas7swbb"]
 
-[ext_resource type="Script" uid="uid://dfe2h0m3obv4p" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
+[ext_resource type="Script" uid="uid://cs84lgop3kgvw" path="res://Scenes/PlayAsBookmaker/PlayAsBookmakerScreen.cs" id="1_oodwm"]
 [ext_resource type="AudioStream" uid="uid://cpsv5ixt70cx" path="res://Audio/Music/kiepdoden.ogg" id="2_li0bm"]
 [ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="2_o7rqj"]
 [ext_resource type="AudioStream" uid="uid://qi6a4i264bt1" path="res://Audio/SFX/click.ogg" id="3_canpr"]
@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://wri6uofi80py" path="res://Audio/SFX/win.ogg" id="5_pp4ku"]
 [ext_resource type="AudioStream" uid="uid://d3dsgw7q8cjeg" path="res://Audio/SFX/lose.ogg" id="6_qx4si"]
 [ext_resource type="AudioStream" uid="uid://cspsw141ane47" path="res://Audio/SFX/start.ogg" id="7_c200o"]
+[ext_resource type="Texture2D" uid="uid://d3axkvylbge6m" path="res://Assets/Setting_Icon.png" id="11_pp4ku"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o7rqj"]
 bg_color = Color(0.41, 0.16400002, 0, 1)
@@ -293,12 +294,16 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="PlayAsBookmakerScreen" type="Node2D" node_paths=PackedStringArray("DisplayRoomId", "DisplayBetAmount", "DisplayPlayerInfos", "LeaveRoom", "StartGameButton", "startEffect", "anim")]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qx4si"]
+texture = ExtResource("11_pp4ku")
+
+[node name="PlayAsBookmakerScreen" type="Node2D" node_paths=PackedStringArray("DisplayRoomId", "DisplayBetAmount", "DisplayPlayerInfos", "LeaveRoom", "SettingButton", "StartGameButton", "startEffect", "anim")]
 script = ExtResource("1_oodwm")
 DisplayRoomId = NodePath("pn_Background/le_RoomId")
 DisplayBetAmount = NodePath("pn_Background/le_BetAmount")
 DisplayPlayerInfos = [NodePath("pn_Background/DisplayPlayerInfo0"), NodePath("pn_Background/DisplayPlayerInfo1"), NodePath("pn_Background/DisplayPlayerInfo2"), NodePath("pn_Background/DisplayPlayerInfo3")]
 LeaveRoom = NodePath("pn_Background/btn_LeaveRoom")
+SettingButton = NodePath("pn_Background/btn_Setting")
 StartGameButton = NodePath("pn_Background/btn_StartGame")
 startEffect = NodePath("StartEffect")
 anim = NodePath("pn_Background/ttr_Table/AnimDealer")
@@ -337,10 +342,10 @@ metadata/_edit_use_anchors_ = true
 [node name="Label2" type="Label" parent="pn_Background/ttr_Table"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.76420385
-anchor_top = -0.14977987
-anchor_right = 0.8228577
-anchor_bottom = -0.14162327
+anchor_left = -0.07425772
+anchor_top = -0.05679457
+anchor_right = -0.015603872
+anchor_bottom = -0.048637964
 offset_left = 37.228027
 offset_top = 27.815071
 offset_right = 77.22803
@@ -606,10 +611,10 @@ anchor_left = 0.7590152
 anchor_top = 0.068862304
 anchor_right = 0.7590152
 anchor_bottom = 0.068862304
-offset_left = 114.217834
-offset_top = -30.02098
-offset_right = 262.21783
-offset_bottom = 5.979019
+offset_left = -743.78217
+offset_top = 33.97902
+offset_right = -586.78217
+offset_bottom = 69.97902
 editable = false
 
 [node name="DisplayPlayerInfo0" parent="pn_Background" instance=ExtResource("4_y4rrx")]
@@ -662,6 +667,14 @@ offset_left = 37.31079
 offset_top = 234.9621
 offset_right = 37.31079
 offset_bottom = 234.9621
+
+[node name="btn_Setting" type="Button" parent="pn_Background"]
+layout_mode = 0
+offset_left = 1103.0
+offset_top = 17.0
+offset_right = 1180.0
+offset_bottom = 95.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_qx4si")
 
 [node name="StartEffect" parent="." instance=ExtResource("5_li0bm")]
 visible = false

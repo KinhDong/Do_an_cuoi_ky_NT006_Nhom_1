@@ -7,8 +7,10 @@ public partial class AudioManager : Node
     public static AudioManager Instance { get; private set; }
 
     // Gọi hàm khởi tạo khi node được thêm vào cảnh
-    private AudioStreamPlayer _musicPlayer; //dùng cho nhạc nền
-    private AudioStreamPlayer _sfxPlayer;   //dùng cho hiệu ứng âm thanh
+    public AudioStreamPlayer _musicPlayer; //dùng cho nhạc nền
+    public AudioStreamPlayer _sfxPlayer;   //dùng cho hiệu ứng âm thanh
+    private ConfigFile config = new ConfigFile();
+    private string configPath = "user://settings.cfg";
 
     public override void _Ready()
     {
@@ -34,6 +36,9 @@ public partial class AudioManager : Node
         _sfxPlayer = new AudioStreamPlayer();
         _sfxPlayer.Bus = "SFX"; //gán bus SFX
         AddChild(_sfxPlayer);
+
+        // Load volume settings
+        LoadSettings();
     }
 
     //Hàm phát nhạc nền
@@ -62,11 +67,29 @@ public partial class AudioManager : Node
     }
 
     //Hàm chỉnh âm lượng (Dùng cho Slider trong cài đặt)
-   public void SetVolume (string busName, float linearVal)
+    public void SetVolume (string busName, float linearVal)
     {
         int busIndex = AudioServer.GetBusIndex(busName);
         float dbVal = Mathf.LinearToDb(linearVal);
 
         AudioServer.SetBusVolumeDb(busIndex, dbVal);
+    }
+
+    private void LoadSettings()
+    {
+        Error err = config.Load(configPath);
+        if (err == Error.Ok)
+        {
+            float musicVolume = (float)config.GetValue("audio", "music_volume", 0.5);
+            float sfxVolume = (float)config.GetValue("audio", "sfx_volume", 0.5);
+            SetVolume("Music", musicVolume);
+            SetVolume("SFX", sfxVolume);
+        }
+        else
+        {
+            // Default volumes
+            SetVolume("Music", 0.5f);
+            SetVolume("SFX", 0.5f);
+        }
     }
 }

@@ -16,6 +16,7 @@ public partial class PlayAsPlayerScreen : Node2D
 
 	[Export] Array<DisplayPlayerInfo> DisplayPlayerInfos;
 	[Export] StartEffect startEffect;
+	[Export] Button SettingButton;
 
 	// Nút Hit/Stand
 	[Export] private Button HitButton;
@@ -65,6 +66,15 @@ public partial class PlayAsPlayerScreen : Node2D
 		// Rời phòng
 		LeaveRoom = GetNode<Button>("pn_Background/btn_LeaveRoom");
 		LeaveRoom.Pressed += OnLeaveRoomPressed;
+
+		// Setting
+		SettingButton.Pressed += () =>
+		{
+			AudioManager.Instance.PlaySFX(sfxClick);
+			var settingScene = ResourceLoader.Load<PackedScene>("res://Scenes/SettingScenes/SettingScenes.tscn");
+			var settingInstance = settingScene.Instantiate();
+			AddChild(settingInstance);
+		};
 
 		HitButton.Pressed += OnHitPressed;
 		StandButton.Pressed += OnStandPressed;
@@ -251,7 +261,6 @@ public partial class PlayAsPlayerScreen : Node2D
 		room.Status = "DEAL_INIT";
 		startEffect.Visible = true;
 		startEffect.startBanner();
-		AudioManager.Instance.PlaySFX(sfxStartGame); // Phát âm thanh bắt đầu game
 	}
 
 	private async void UpdateDeal(string pid, int rank, int suit)

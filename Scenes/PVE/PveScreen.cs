@@ -12,6 +12,7 @@ public partial class PveScreen : Node2D
 {
 	#region --- KHAI BÁO BIẾN ---
 	[Export] Button ExitButton;
+	[Export] Button SettingButton;
 	[Export] Button HitButton;
 	[Export] Button StandButton;
 
@@ -22,6 +23,11 @@ public partial class PveScreen : Node2D
 	[Export] AnimationPlayer anim;   
 	Sprite2D[,] DisplayCards; 
 	[Export] public AudioStream BackgroundMusic;
+	[Export] public AudioStream sfxClick;
+	[Export] public AudioStream sfxDeal;
+	[Export] public AudioStream sfxStart;
+	[Export] public AudioStream sfxWin;
+	[Export] public AudioStream sfxLose;
 
 	private HashSet<(int Rank, int Suit)> DeckOfCards; 
 	private bool IsGameActive = false;
@@ -32,12 +38,21 @@ public partial class PveScreen : Node2D
 	public override void _Ready()
 	{
 		// Phát nhạc nền
-        if (BackgroundMusic != null)
-        {
-            AudioManager.Instance.PlayMusic(BackgroundMusic);
-        }
+		if (BackgroundMusic != null)
+		{
+			AudioManager.Instance.PlayMusic(BackgroundMusic);
+		}
 
 		ExitButton.Pressed += OnExitPressed;
+
+		SettingButton.Pressed += () => 
+		{
+			AudioManager.Instance.PlaySFX(sfxClick);
+			var settingScene = GD.Load<PackedScene>("res://Scenes/SettingScenes/SettingScenes.tscn");
+			var settingInstance = settingScene.Instantiate<SettingScenes>();
+			AddChild(settingInstance);
+		};
+
 		HitButton.Pressed += OnHitPressed;
 		StandButton.Pressed += OnStandPressed;
 		
@@ -120,6 +135,7 @@ public partial class PveScreen : Node2D
 
 	private void OnHitPressed()
 	{
+		if (sfxClick != null) AudioManager.Instance.PlaySFX(sfxClick);
 		if (!IsGameActive) return;
 
 		AddCardToHand(true, DrawCard());
@@ -141,6 +157,7 @@ public partial class PveScreen : Node2D
 
 	private async void OnStandPressed()
 	{
+		if (sfxClick != null) AudioManager.Instance.PlaySFX(sfxClick);
 		if (!IsGameActive) return;
 
 		// --- KIỂM TRA ĐỦ TUỔI (16+) ---
@@ -236,6 +253,7 @@ public partial class PveScreen : Node2D
 
 		if (isWin)
 		{
+			if (sfxWin != null) AudioManager.Instance.PlaySFX(sfxWin);
 			P.Money += 5;
 			OS.Alert($"CHIẾN THẮNG!\n{message}\n(+5 xu)");
 			UserClass.Money += 5;
@@ -253,6 +271,7 @@ public partial class PveScreen : Node2D
 		}
 		else
 		{
+			if (sfxLose != null) AudioManager.Instance.PlaySFX(sfxLose);
 			OS.Alert($"THẤT BẠI!\n{message}\n");
 		}
 
@@ -279,6 +298,7 @@ public partial class PveScreen : Node2D
 
 	private async void AddCardToHand(bool isPlayer, (int Rank, int Suit) card)
 	{
+		if (sfxDeal != null) AudioManager.Instance.PlaySFX(sfxDeal);
 		if (!isPlayer)
 		{
 			E.Hands.Add(card);
@@ -319,6 +339,7 @@ public partial class PveScreen : Node2D
 	
 	private void OnExitPressed()
 	{
+		if (sfxClick != null) AudioManager.Instance.PlaySFX(sfxClick);
 		GetTree().ChangeSceneToFile("res://Scenes/GameModeSelection/ModeChoosing.tscn");
 	}
 
