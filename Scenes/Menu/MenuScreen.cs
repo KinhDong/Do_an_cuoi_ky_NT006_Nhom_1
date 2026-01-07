@@ -12,9 +12,15 @@ public partial class MenuScreen : Control
 	[Export] TextureButton LeaderboardButton;
 	[Export] Button MatchHistoryButton;
 
+    [Export] public AudioStream BackgroundMusic;
 	public override void _Ready()
 	{
-		PlayButton.Pressed += OpenModeSeclectionScreen;
+        // Phát nhạc nền
+        if (BackgroundMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(BackgroundMusic);
+        }
+        PlayButton.Pressed += OpenModeSeclectionScreen;
 
 		HowToPlayButton.Pressed += OnHowToPlayButtonPressed;
 

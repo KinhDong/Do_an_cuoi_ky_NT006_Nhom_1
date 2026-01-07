@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://cl0grfs1yhp2o"]
+[gd_scene load_steps=17 format=3 uid="uid://cl0grfs1yhp2o"]
 
 [ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="1_25yo6"]
 [ext_resource type="Script" uid="uid://bxecja3ne1am2" path="res://Scenes/PVE/PveScreen.cs" id="1_d3irp"]
+[ext_resource type="AudioStream" uid="uid://cpsv5ixt70cx" path="res://Audio/Music/kiepdoden.ogg" id="2_b2d8i"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="2_d3irp"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="3_b2d8i"]
 

@@ -38,6 +38,14 @@ public partial class PlayAsBookmakerScreen : Node2D
 
 	private int currentTurn;
 
+	[Export] public AudioStream BackgroundMusic;
+
+	[Export] public AudioStream sfxClick;
+	[Export] public AudioStream sfxDeal;
+	[Export] public AudioStream sfxWin;   
+	[Export] public AudioStream sfxLose;  
+	[Export] public AudioStream sfxStart;
+
 	public override void _Ready()
 	{
 		room = RoomClass.CurrentRoom;
@@ -45,6 +53,11 @@ public partial class PlayAsBookmakerScreen : Node2D
 		// Hiển thị thông tin chung
 		DisplayRoomId.Text = room.RoomId;
 		DisplayBetAmount.Text = room.BetAmount.ToString();
+		// Phát nhạc nền
+		if (BackgroundMusic != null)
+		{
+			AudioManager.Instance.PlayMusic(BackgroundMusic);
+		}
 
 		// Hiển thị thông tin bản thân
 		DisplayPlayerInfos[0].Display(room.Players[UserClass.Uid]);
@@ -91,6 +104,10 @@ public partial class PlayAsBookmakerScreen : Node2D
 		};		
 
 		EventListener.Start();
+
+		// Hiệu ứng âm thanh
+		StartGameButton.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
+		LeaveRoom.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
 
 		// Khởi tạo heartbeat service cho host
 		heartbeatService = new HeartbeatService();
@@ -217,6 +234,7 @@ public partial class PlayAsBookmakerScreen : Node2D
 			OS.Alert("Chưa đủ người để bắt đầu ván.");
 			return;
 		}
+		AudioManager.Instance.PlaySFX(sfxStart);
 
 		bool started = await StartNewRound();
 		if(started) StartGameButton.Disabled = true;
@@ -270,10 +288,9 @@ public partial class PlayAsBookmakerScreen : Node2D
 			room.Players[pid].Hands.Add(card); // Thêm trên dữ liệu			
 			await FirebaseApi.Put($"Rooms/{room.RoomId}/Players/{pid}/Hands/{cardIndex}", card);
 
-			int seat = room.Players[pid].Seat;
-			if (room.Status == "HIT_OR_STAND")
-				DisplayPlayerInfos[seat].StartCountdown(); // Chạy timer
-			
+			AudioManager.Instance.PlaySFX(sfxDeal);
+
+			int seat = room.Players[pid].Seat;	
 			if(pid != UserClass.Uid)
 			{
 				anim.Play($"DealPlayer{seat}");
@@ -288,7 +305,10 @@ public partial class PlayAsBookmakerScreen : Node2D
 				ShowCard(0, cardIndex, card);
 			}
 
-			anim.Queue("RESET");						
+			anim.Queue("RESET");	
+
+			if (room.Status == "HIT_OR_STAND")
+				DisplayPlayerInfos[seat].StartCountdown(); // Chạy timer					
 			return true;
 		}
 
@@ -358,7 +378,8 @@ public partial class PlayAsBookmakerScreen : Node2D
 		}
 
 		currentTurn++;
-		if(currentTurn < TurnOrder.Count)		
+		await Task.Delay(500);
+		if (currentTurn < TurnOrder.Count)		
 			HitOrStandPlayer(TurnOrder[currentTurn]); // Tiến đến player tiếp theo	
 
 		else HitOrStandBookmaker();
@@ -392,14 +413,16 @@ public partial class PlayAsBookmakerScreen : Node2D
 					// Animation
 					DisplayPlayerInfos[pSeat].AddMoneyEffect(betAmout);
 					DisplayPlayerInfos[0].MinusMoneyEffect(betAmout);
+					AudioManager.Instance.PlaySFX(sfxWin);                    
 					pMoney += betAmout;
 					myMoney -= betAmout;
 				} 
 				else if (result == "lose")
 				{
-					// Animation
+					// Music, Animation
+					AudioManager.Instance.PlaySFX(sfxLose);
 					DisplayPlayerInfos[pSeat].MinusMoneyEffect(betAmout);
-					DisplayPlayerInfos[0].AddMoneyEffect(betAmout);
+					DisplayPlayerInfos[0].AddMoneyEffect(betAmout);                    
 					pMoney -= betAmout;
 					myMoney += betAmout;
 				}

@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://by3pv2il328cq"]
+[gd_scene load_steps=12 format=3 uid="uid://by3pv2il328cq"]
 
 [ext_resource type="Script" uid="uid://dip426kbfcqop" path="res://Scenes/CreateRoom/CreateRoom.cs" id="1_pmnob"]
 [ext_resource type="Texture2D" uid="uid://bjahvlewakmvr" path="res://Assets/MucCuocDesign.png" id="2_30iju"]
 [ext_resource type="Texture2D" uid="uid://dmcio6a7e0g85" path="res://Assets/MucCuocBackground.jpg" id="2_aeb13"]
+[ext_resource type="AudioStream" uid="uid://cpsv5ixt70cx" path="res://Audio/Music/kiepdoden.ogg" id="2_dsngn"]
 [ext_resource type="Texture2D" uid="uid://b0jqlqa7b4e34" path="res://Assets/Menu_Background.jpg" id="2_i0jhr"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dsngn"]
@@ -46,6 +47,7 @@ Return = NodePath("Background/btnReturn")
 Bet10 = NodePath("BetAmmount/cbBet10")
 Bet20 = NodePath("BetAmmount/cbBet20")
 Bet50 = NodePath("BetAmmount/cbBet50")
+BackgroundMusic = ExtResource("2_dsngn")
 
 [node name="Panel" type="Panel" parent="."]
 offset_right = 1200.0

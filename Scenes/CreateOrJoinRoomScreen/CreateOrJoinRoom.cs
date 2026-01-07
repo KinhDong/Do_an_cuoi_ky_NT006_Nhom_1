@@ -8,11 +8,18 @@ public partial class CreateOrJoinRoom : Node2D
 	[Export] LineEdit RoomId;
 
 	[Export] Button Return;
+    [Export] public AudioStream BackgroundMusic;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		//Nút "Tạo phòng"
-		CreateRoom.Pressed += OpenCreateRoom;
+        // Phát nhạc nền
+        if (BackgroundMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(BackgroundMusic);
+        }
+
+        //Nút "Tạo phòng"
+        CreateRoom.Pressed += OpenCreateRoom;
 
 		//Nút "Tham gia phòng"
 		JoinRoom.Pressed += OnJoinRoomPressed;

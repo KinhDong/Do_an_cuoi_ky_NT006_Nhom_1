@@ -21,6 +21,7 @@ public partial class PveScreen : Node2D
 	[Export] DisplayPlayerInfo DisplayE, DisplayP;
 	[Export] AnimationPlayer anim;   
 	Sprite2D[,] DisplayCards; 
+	[Export] public AudioStream BackgroundMusic;
 
 	private HashSet<(int Rank, int Suit)> DeckOfCards; 
 	private bool IsGameActive = false;
@@ -30,6 +31,12 @@ public partial class PveScreen : Node2D
 	#region --- SETUP & START ---
 	public override void _Ready()
 	{
+		// Phát nhạc nền
+        if (BackgroundMusic != null)
+        {
+            AudioManager.Instance.PlayMusic(BackgroundMusic);
+        }
+
 		ExitButton.Pressed += OnExitPressed;
 		HitButton.Pressed += OnHitPressed;
 		StandButton.Pressed += OnStandPressed;

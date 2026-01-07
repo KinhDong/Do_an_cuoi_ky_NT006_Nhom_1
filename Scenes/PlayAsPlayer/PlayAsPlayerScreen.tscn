@@ -1,10 +1,16 @@
-[gd_scene load_steps=19 format=3 uid="uid://bew6ci501nue0"]
+[gd_scene load_steps=24 format=3 uid="uid://bew6ci501nue0"]
 
-[ext_resource type="Script" uid="uid://cijuoskpxaece" path="res://Scenes/PlayAsPlayer/PlayAsPlayerScreen.cs" id="1_as1e0"]
+[ext_resource type="Script" uid="uid://b7l8sawqmgphd" path="res://Scenes/PlayAsPlayer/PlayAsPlayerScreen.cs" id="1_as1e0"]
 [ext_resource type="Texture2D" uid="uid://n56ikcil0j0h" path="res://Assets/Table.png" id="1_so6yb"]
+[ext_resource type="AudioStream" uid="uid://cpsv5ixt70cx" path="res://Audio/Music/kiepdoden.ogg" id="2_bldg0"]
+[ext_resource type="AudioStream" uid="uid://qi6a4i264bt1" path="res://Audio/SFX/click.ogg" id="3_8f7vg"]
 [ext_resource type="PackedScene" uid="uid://kpjpgk3symv4" path="res://Scenes/DisplayPlayerInfo/DisplayPlayerInfo.tscn" id="4_bldg0"]
+[ext_resource type="AudioStream" uid="uid://ckxv8teo61aef" path="res://Audio/SFX/deal.ogg" id="4_f65oe"]
 [ext_resource type="Texture2D" uid="uid://kv827r1l3vmq" path="res://Assets/AllCards.png" id="4_fxv46"]
 [ext_resource type="PackedScene" uid="uid://c2uhoxinuhglu" path="res://Scenes/EffectManager/StartEffect.tscn" id="5_bldg0"]
+[ext_resource type="AudioStream" uid="uid://wri6uofi80py" path="res://Audio/SFX/win.ogg" id="5_fni6k"]
+[ext_resource type="AudioStream" uid="uid://d3dsgw7q8cjeg" path="res://Audio/SFX/lose.ogg" id="6_eghlt"]
+[ext_resource type="AudioStream" uid="uid://cspsw141ane47" path="res://Audio/SFX/start.ogg" id="7_ca4kq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fxv46"]
 bg_color = Color(0.41, 0.16400002, 0, 1)
@@ -298,6 +304,12 @@ HitButton = NodePath("pn_Background/btn_Hit")
 StandButton = NodePath("pn_Background/btn_Stand")
 anim = NodePath("pn_Background/ttr_Table/AnimationPlayer")
 timer = NodePath("pn_Background/Timer")
+BackgroundMusic = ExtResource("2_bldg0")
+sfxClick = ExtResource("3_8f7vg")
+sfxDealCard = ExtResource("4_f65oe")
+sfxWin = ExtResource("5_fni6k")
+sfxLose = ExtResource("6_eghlt")
+sfxStartGame = ExtResource("7_ca4kq")
 
 [node name="pn_Background" type="Panel" parent="."]
 offset_left = 3.0

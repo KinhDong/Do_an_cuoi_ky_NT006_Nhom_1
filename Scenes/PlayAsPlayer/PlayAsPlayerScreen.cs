@@ -41,12 +41,26 @@ public partial class PlayAsPlayerScreen : Node2D
 	// Điểm số hiện tại để quyết định khi timeout
 	private (int, int) currentScore;
 
+	//nhạc nền
+	[Export] public AudioStream BackgroundMusic;
+
+	//âm thanh hiệu ứng 
+	[Export] public AudioStream sfxClick;
+	[Export] public AudioStream sfxDealCard;
+	[Export] public AudioStream sfxWin;
+	[Export] public AudioStream sfxLose;
+	[Export] public AudioStream sfxStartGame;
 	public override void _Ready()
 	{
 		room = RoomClass.CurrentRoom;
 		// Hiển thị thông tin chung
 		DisplayRoomId.Text = room.RoomId;
 		DisplayBetAmount.Text = room.BetAmount.ToString();
+		// Phát nhạc nền
+		if (BackgroundMusic != null)
+		{
+			AudioManager.Instance.PlayMusic(BackgroundMusic);
+		}
 
 		// Rời phòng
 		LeaveRoom = GetNode<Button>("pn_Background/btn_LeaveRoom");
@@ -56,6 +70,11 @@ public partial class PlayAsPlayerScreen : Node2D
 		StandButton.Pressed += OnStandPressed;
 
 		timer.Timeout += OnTimerTimeout;
+
+		// Gán tiếng click cho các nút
+		HitButton.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
+		StandButton.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
+		LeaveRoom.Pressed += () => AudioManager.Instance.PlaySFX(sfxClick);
 
 		// Hiển thị các lá bài
 		DisplayCards = new Sprite2D[4, 5];
@@ -232,6 +251,7 @@ public partial class PlayAsPlayerScreen : Node2D
 		room.Status = "DEAL_INIT";
 		startEffect.Visible = true;
 		startEffect.startBanner();
+		AudioManager.Instance.PlaySFX(sfxStartGame); // Phát âm thanh bắt đầu game
 	}
 
 	private async void UpdateDeal(string pid, int rank, int suit)
@@ -240,6 +260,7 @@ public partial class PlayAsPlayerScreen : Node2D
 		room.Players[pid].Hands.Add((rank, suit));
 		int seat = room.Players[pid].Seat;
 
+		AudioManager.Instance.PlaySFX(sfxDealCard);// Phát âm thanh chia bài
 		if(pid != UserClass.Uid)
 		{			
 			anim.Play($"DealPlayer{seat}");
@@ -346,6 +367,7 @@ public partial class PlayAsPlayerScreen : Node2D
 			if (result == "win")
 			{
 				// Animation
+				AudioManager.Instance.PlaySFX(sfxWin);// Phát âm thanh thắng
 				DisplayPlayerInfos[pSeat].AddMoneyEffect(betAmout);
 				DisplayPlayerInfos[0].MinusMoneyEffect(betAmout);
 				change = betAmout;
@@ -353,6 +375,7 @@ public partial class PlayAsPlayerScreen : Node2D
 			else if (result == "lose")
 			{
 				// Animation
+				AudioManager.Instance.PlaySFX(sfxLose); // Phát âm thanh thua
 				DisplayPlayerInfos[pSeat].MinusMoneyEffect(betAmout);
 				DisplayPlayerInfos[0].AddMoneyEffect(betAmout);
 				change = - betAmout;
