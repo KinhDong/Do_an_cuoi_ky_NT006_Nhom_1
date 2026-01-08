@@ -54,6 +54,7 @@ public partial class PlayAsPlayerScreen : Node2D
 	public override void _Ready()
 	{
 		room = RoomClass.CurrentRoom;
+		GD.Print("Room loaded: ", room?.RoomId ?? "null");
 		// Hiển thị thông tin chung
 		DisplayRoomId.Text = room.RoomId;
 		DisplayBetAmount.Text = room.BetAmount.ToString();
@@ -65,6 +66,13 @@ public partial class PlayAsPlayerScreen : Node2D
 
 		// Rời phòng
 		LeaveRoom = GetNode<Button>("pn_Background/btn_LeaveRoom");
+		GD.Print("LeaveRoom node: ", LeaveRoom != null ? "found" : "null");
+		if (LeaveRoom != null)
+		{
+			GD.Print("LeaveRoom visible: ", LeaveRoom.Visible, " disabled: ", LeaveRoom.Disabled);
+			LeaveRoom.Disabled = false;
+			LeaveRoom.Visible = true;
+		}
 		LeaveRoom.Pressed += OnLeaveRoomPressed;
 
 		// Setting
@@ -98,7 +106,16 @@ public partial class PlayAsPlayerScreen : Node2D
 
 		// Hiển thị thông tin các người chơi
 		foreach (var p in room.Players) 
+		{
+			GD.Print("Displaying player: ", p.Value.InGameName, " at seat ", p.Value.Seat, " avatar: ", p.Value.Avatar != null ? "loaded" : "null");
+			if (DisplayPlayerInfos[p.Value.Seat] == null)
+			{
+				GD.PrintErr("DisplayPlayerInfo is null at seat ", p.Value.Seat);
+				continue;
+			}
 			DisplayPlayerInfos[p.Value.Seat].Display(p.Value);
+			GD.Print("Set visible for seat ", p.Value.Seat);
+		}
 
 		// Hiển thị các lá bài của những người chơi đã ở trong phòng
 		if (room.Status != "WAITING")
@@ -144,15 +161,17 @@ public partial class PlayAsPlayerScreen : Node2D
 
 	private async void OnLeaveRoomPressed()
 	{
+		GD.Print("Leave button pressed");
 		try
 		{
 			var res = await room.LeaveAsync();
+			GD.Print("Leave result: ", res.Item1, " ", res.Item2);
 			if(!res.Item1) throw new Exception(res.Item2);
 			
 			EventListener.Stop();
 			heartbeatService.StopHeartbeat();
 			RoomClass.CurrentRoom = null;
-			GetTree().ChangeSceneToFile(@"Scenes\CreateOrJoinRoomScreen\CreateOrJoinRoom.tscn");	
+			GetTree().ChangeSceneToFile("res://Scenes/CreateOrJoinRoomScreen/CreateOrJoinRoom.tscn");	
 		}
 
 		catch (Exception ex)

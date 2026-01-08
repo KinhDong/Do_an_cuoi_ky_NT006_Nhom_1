@@ -50,7 +50,7 @@ public partial class CreateOrJoinRoom : Node2D
 			if(!res.Item1) throw new Exception(res.Item2);
 
 			// Thành công
-			GetTree().ChangeSceneToFile(@"Scenes\PlayAsPlayer\PlayAsPlayerScreen.tscn");
+			GetTree().ChangeSceneToFile("res://Scenes/PlayAsPlayer/PlayAsPlayerScreen.tscn");
         }
 
 		catch (Exception ex)
